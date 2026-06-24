@@ -603,14 +603,70 @@
     min-height: auto;
   }
 
+  .hero-banner__layout {
+    padding: 1.5rem 0 1.25rem;
+  }
+
+  .hero-banner__eyebrow {
+    margin-bottom: 0.85rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-banner h1 {
+    margin-bottom: 0.85rem;
+    font-size: clamp(1.5rem, 6.8vw, 1.85rem);
+    line-height: 1.15;
+  }
+
+  .hero-banner__text {
+    margin-bottom: 1.1rem;
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+
+  .hero-banner__badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .hero-banner__badge {
+    white-space: normal;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 0.5rem 0.6rem;
+    line-height: 1.35;
+  }
+
+  .hero-banner__badge:first-child {
+    grid-column: 1 / -1;
+  }
+
   .hero-banner__actions {
     flex-direction: column;
+    gap: 0.65rem;
   }
 
   .btn--hero-primary,
   .btn--hero-secondary {
     width: 100%;
     text-align: center;
+    padding-block: 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .categories-showcase {
+    padding-block: 2.5rem;
+  }
+
+  .categories-showcase__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .categories-showcase__header h2 {
+    font-size: clamp(1.6rem, 5.5vw, 2rem);
   }
 
   .split {

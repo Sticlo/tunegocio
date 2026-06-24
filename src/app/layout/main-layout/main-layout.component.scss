@@ -7,3 +7,9 @@
 .layout__content {
   flex: 1;
 }
+
+@media (max-width: 768px) {
+  .layout {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
