@@ -1,30 +1,20 @@
-<section class="hero-banner">
-  <div class="hero-banner__bg" aria-hidden="true">
-    <img
-      class="hero-banner__image"
-      src="assets/hero-banner.png"
-      alt="Fábrica de equipos industriales en acero inoxidable para panaderías y restaurantes en Bogotá, Colombia"
-      width="1920"
-      height="1080"
-      fetchpriority="high"
-    />
-    <div class="hero-banner__overlay"></div>
-  </div>
+<section class="hero-banner" aria-label="Equipamiento profesional TUNEGOCIO">
+  <div class="container hero-banner__inner">
+    <div class="hero-banner__visual">
+      <img
+        class="hero-banner__image"
+        src="assets/hero-banner.png"
+        alt="TUNEGOCIO equipamiento profesional de cocina industrial en acero inoxidable"
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+      />
+    </div>
 
-  <div class="container hero-banner__layout">
-    <div class="hero-banner__panel">
-      <p class="hero-banner__eyebrow">Fabricación propia en Colombia</p>
-
-      <h1>
-        Equipos industriales
-        <span class="hero-banner__highlight">listos para producir</span>
-        desde el día uno
+    <div class="hero-banner__footer">
+      <h1 class="hero-banner__sr-title">
+        TUNEGOCIO — Equipos industriales y equipamiento profesional en Colombia
       </h1>
-
-      <p class="hero-banner__text">
-        Hornos, asadores, estufas y maquinaria en acero inoxidable. Cotiza hoy y arranca tu
-        producción con instalación y soporte técnico incluido.
-      </p>
 
       <ul class="hero-banner__badges">
         <li class="hero-banner__badge">★ {{ reviewSummary.rating }} Google · {{ reviewSummary.totalReviews }} reseñas</li>
@@ -34,9 +24,9 @@
 
       <div class="hero-banner__actions">
         <a class="btn btn--hero-primary" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
-          <span>Cotizar ahora por WhatsApp</span>
+          Cotizar por WhatsApp
         </a>
-        <a class="btn btn--hero-secondary" routerLink="/productos">Ver equipos y precios</a>
+        <a class="btn btn--hero-secondary" routerLink="/productos">Ver catálogo</a>
       </div>
     </div>
   </div>
