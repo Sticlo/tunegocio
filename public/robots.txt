@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tunegocio.com.co/sitemap.xml

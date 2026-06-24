@@ -1,0 +1,28 @@
+<section class="page-hero">
+  <div class="container">
+    <app-breadcrumb [items]="breadcrumbs" />
+    <h1>{{ category().title }}</h1>
+    <p class="page-hero__text">{{ category().intro }} {{ category().description }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Catálogo de {{ category().heading }}</h2>
+      @if (products().length > 0) {
+        <p>{{ products().length }} equipos disponibles. Cotiza precio, envío e instalación.</p>
+      } @else {
+        <p>Próximamente publicaremos el catálogo completo. Mientras tanto, solicita tu cotización.</p>
+      }
+    </div>
+
+    @if (products().length > 0) {
+      <div class="grid grid--products">
+        @for (product of products(); track product.id) {
+          <app-product-card [product]="product" (addToCart)="addToCart($event)" />
+        }
+      </div>
+    }
+  </div>
+</section>

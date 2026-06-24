@@ -1,0 +1,168 @@
+<section class="hero-banner">
+  <div class="hero-banner__bg" aria-hidden="true">
+    <img
+      class="hero-banner__image"
+      src="assets/hero-banner.png"
+      alt="Fábrica de equipos industriales en acero inoxidable para panaderías y restaurantes en Bogotá, Colombia"
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+    />
+    <div class="hero-banner__overlay"></div>
+  </div>
+
+  <div class="container hero-banner__layout">
+    <div class="hero-banner__panel">
+      <p class="hero-banner__eyebrow">Fabricación propia en Colombia</p>
+
+      <h1>
+        Equipos industriales
+        <span class="hero-banner__highlight">listos para producir</span>
+        desde el día uno
+      </h1>
+
+      <p class="hero-banner__text">
+        Hornos, asadores, estufas y maquinaria en acero inoxidable. Cotiza hoy y arranca tu
+        producción con instalación y soporte técnico incluido.
+      </p>
+
+      <ul class="hero-banner__badges">
+        <li class="hero-banner__badge">★ {{ reviewSummary.rating }} Google · {{ reviewSummary.totalReviews }} reseñas</li>
+        <li class="hero-banner__badge">Envío nacional</li>
+        <li class="hero-banner__badge">Respuesta en minutos</li>
+      </ul>
+
+      <div class="hero-banner__actions">
+        <a class="btn btn--hero-primary" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+          <span>Cotizar ahora por WhatsApp</span>
+        </a>
+        <a class="btn btn--hero-secondary" routerLink="/productos">Ver equipos y precios</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="categories-showcase" aria-labelledby="categories-title">
+  <div class="container">
+    <header class="categories-showcase__header">
+      <p class="categories-showcase__eyebrow">Nuestras categorías</p>
+      <h2 id="categories-title">Maquinaria industrial para tu negocio</h2>
+      <p class="categories-showcase__lead">
+        Hornos, asadores, estufas, vitrinas y equipos en acero inoxidable. Elige tu categoría y
+        cotiza hoy.
+      </p>
+      <a class="categories-showcase__catalog" routerLink="/productos">Ver catálogo completo</a>
+    </header>
+
+    <div class="categories-showcase__grid">
+      @for (category of categories; track category.slug; let i = $index) {
+        <app-category-card
+          [category]="category"
+          [animationDelay]="i * 70 + 'ms'"
+          variant="showcase"
+        />
+      }
+    </div>
+  </div>
+</section>
+
+<section class="home-seo" aria-labelledby="home-seo-title">
+  <div class="container home-seo__inner">
+    <h2 id="home-seo-title">Equipos industriales en Bogotá y todo Colombia</h2>
+    <p>
+      En <strong>{{ siteName }}</strong> somos fabricantes de hornos industriales, asadores de pollos,
+      estufas, vitrinas, mesones en acero inoxidable y maquinaria especializada para panaderías,
+      restaurantes y negocios gastronómicos.
+    </p>
+    <p>
+      Desde Bogotá atendemos clientes en todo el país con envío nacional, instalación profesional,
+      asesoría técnica y cotización rápida por WhatsApp. Si buscas equipos robustos, listos para
+      producir y con respaldo posventa, explora nuestras categorías o solicita una cotización
+      personalizada hoy mismo.
+    </p>
+    <div class="home-seo__links">
+      <a routerLink="/hornos-industriales">Hornos industriales</a>
+      <a routerLink="/asadores-de-pollos">Asadores de pollos</a>
+      <a routerLink="/estufas-industriales">Estufas industriales</a>
+      <a routerLink="/instalacion-extraccion-industrial">Instalación industrial</a>
+      <a routerLink="/contacto">Contacto y cotización</a>
+    </div>
+  </div>
+</section>
+
+<section class="featured-products" aria-labelledby="featured-title">
+  <div class="container">
+    <header class="featured-products__header">
+      <p class="featured-products__eyebrow">Más solicitados</p>
+      <h2 id="featured-title">Equipos industriales destacados</h2>
+      <p>Conoce algunos de los equipos que más cotizan nuestros clientes en Colombia.</p>
+    </header>
+
+    <div class="featured-products__grid">
+      @for (product of featuredProducts; track product.slug) {
+        <article class="featured-product-card">
+          <a class="featured-product-card__media" [routerLink]="['/productos', product.slug]">
+            <img
+              [src]="assetUrl(product.image)"
+              [alt]="product.name + ' - equipos industriales TUNEGOCIO.COM'"
+              width="400"
+              height="300"
+              loading="lazy"
+            />
+          </a>
+          <div class="featured-product-card__body">
+            <h3>
+              <a [routerLink]="['/productos', product.slug]">{{ product.name }}</a>
+            </h3>
+            <p>{{ product.shortDescription }}</p>
+            <div class="featured-product-card__footer">
+              <span class="featured-product-card__price">{{ product.priceLabel }}</span>
+              <a class="featured-product-card__link" [routerLink]="['/', product.categorySlug]">
+                Ver categoría
+              </a>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<app-value-proposition />
+
+<app-reviews-section />
+
+<section class="section section--warm">
+  <div class="container split">
+    <div>
+      <p class="section__eyebrow">Servicio integral</p>
+      <h2>Instalación de ductos y sistemas de extracción</h2>
+      <p>
+        Diseñamos e instalamos extractores industriales y campanas en acero inoxidable para
+        mantener higiene, seguridad y eficiencia en tu cocina.
+      </p>
+      <a class="btn btn--gold" routerLink="/instalacion-extraccion-industrial">Conocer servicio</a>
+    </div>
+    <div class="highlight-box highlight-box--gold">
+      <h3>¿Por qué elegirnos?</h3>
+      <ul>
+        <li>Fabricación propia en acero inoxidable</li>
+        <li>Asesoría técnica personalizada</li>
+        <li>Instalación y soporte posventa</li>
+        <li>Cotización rápida por WhatsApp</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--cta">
+  <div class="container cta-panel">
+    <h2>¿Listo para equipar tu negocio?</h2>
+    <p>
+      Cotiza hoy mismo y recibe asesoría personalizada para elegir el equipo ideal.
+    </p>
+    <a class="btn btn--cta" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+      Quiero cotizar ahora
+    </a>
+  </div>
+</section>

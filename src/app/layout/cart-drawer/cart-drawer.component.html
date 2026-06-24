@@ -1,0 +1,108 @@
+@if (cart.isOpen()) {
+  <div
+    class="cart-backdrop"
+    role="presentation"
+    (click)="onBackdropClick($event)"
+    (keydown.escape)="close()"
+  >
+    <aside
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Carrito de compras"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="cart-drawer__header">
+        <div>
+          <h2>Carrito de compras</h2>
+          <p>{{ cart.itemCount() }} {{ cart.itemCount() === 1 ? 'producto' : 'productos' }}</p>
+        </div>
+        <button type="button" class="cart-drawer__close" aria-label="Cerrar carrito" (click)="close()">
+          ✕
+        </button>
+      </header>
+
+      @if (cart.isEmpty()) {
+        <div class="cart-drawer__empty">
+          <div class="cart-drawer__empty-icon" aria-hidden="true">🛒</div>
+          <h3>Tu carrito está vacío</h3>
+          <p>Agrega equipos desde el catálogo para cotizar más rápido.</p>
+          <button type="button" class="btn btn--gold" (click)="close()">Seguir comprando</button>
+        </div>
+      } @else {
+        <ul class="cart-drawer__list">
+          @for (item of cart.cartItems(); track item.id) {
+            <li class="cart-item">
+              <div class="cart-item__image" aria-hidden="true">
+                @if (item.imageUrl) {
+                  <img [src]="item.imageUrl" [alt]="item.name" />
+                } @else {
+                  <span>TN</span>
+                }
+              </div>
+
+              <div class="cart-item__body">
+                <a class="cart-item__name" [routerLink]="['/productos', item.slug]" (click)="close()">
+                  {{ item.name }}
+                </a>
+                <p class="cart-item__price">{{ cart.formatPrice(item.price) }}</p>
+
+                <div class="cart-item__actions">
+                  <div class="qty-control" aria-label="Cantidad">
+                    <button
+                      type="button"
+                      aria-label="Disminuir cantidad"
+                      (click)="cart.updateQuantity(item.id, item.quantity - 1)"
+                    >
+                      −
+                    </button>
+                    <span>{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      aria-label="Aumentar cantidad"
+                      (click)="cart.updateQuantity(item.id, item.quantity + 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="cart-item__remove"
+                    (click)="cart.removeItem(item.id)"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+
+              <p class="cart-item__subtotal">{{ cart.formatPrice(item.price * item.quantity) }}</p>
+            </li>
+          }
+        </ul>
+
+        <footer class="cart-drawer__footer">
+          <div class="cart-drawer__total">
+            <span>Subtotal estimado</span>
+            <strong>{{ cart.formatPrice(cart.subtotal()) }}</strong>
+          </div>
+          <p class="cart-drawer__note">
+            Los precios pueden ajustarse según especificaciones. Cotiza por WhatsApp para confirmar.
+          </p>
+          <a
+            class="btn btn--gold cart-drawer__cta"
+            [href]="cart.getWhatsAppUrl()"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Cotizar por WhatsApp
+          </a>
+          <button type="button" class="btn btn--ghost cart-drawer__continue" (click)="close()">
+            Seguir comprando
+          </button>
+          <button type="button" class="cart-drawer__clear" (click)="cart.clear()">Vaciar carrito</button>
+        </footer>
+      }
+    </aside>
+  </div>
+}

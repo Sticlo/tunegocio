@@ -1,0 +1,61 @@
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__brand" routerLink="/" (click)="closeMenu()">
+      <img
+        class="header__logo"
+        src="assets/logo.png"
+        alt="TUNEGOCIO.COM - Equipos Industriales"
+        width="220"
+        height="72"
+      />
+    </a>
+
+    <nav
+      class="header__nav"
+      [class.header__nav--open]="menuOpen()"
+      aria-label="Navegación principal"
+    >
+      @for (item of navItems; track item.path) {
+        <a
+          class="header__link"
+          [routerLink]="item.path"
+          routerLinkActive="header__link--active"
+          (click)="closeMenu()"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="header__actions">
+      <button
+        type="button"
+        class="header__toggle"
+        aria-label="Abrir menú"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="toggleMenu()"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button
+        type="button"
+        class="header__cart"
+        aria-label="Abrir carrito de compras"
+        [attr.aria-expanded]="cartOpen()"
+        (click)="openCart()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="9" cy="20" r="1.5" />
+          <circle cx="17" cy="20" r="1.5" />
+          <path d="M2 3h2l2.2 11.2a2 2 0 0 0 2 1.6h9.3a2 2 0 0 0 2-1.6L22 7H6" />
+        </svg>
+        @if (cartCount() > 0) {
+          <span class="header__cart-count">{{ cartCount() }}</span>
+        }
+      </button>
+    </div>
+  </div>
+</header>

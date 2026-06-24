@@ -1,0 +1,64 @@
+<section class="value-prop" aria-labelledby="value-prop-title">
+  <div class="container">
+    <figure class="value-prop__promo">
+      <img
+        src="assets/addi-promo-banner.png"
+        alt="Addi: Emprende ahora, paga después. A 3 cuotas y 0% de interés con TUNEGOCIO.COM"
+        width="1024"
+        height="509"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="value-prop__intro">
+      <div class="value-prop__copy">
+        <p class="value-prop__eyebrow">Compra con confianza</p>
+        <h2 id="value-prop-title">Financia, instala y arranca tu producción</h2>
+        <p class="value-prop__lead">
+          Aceptamos varios medios de pago y te acompañamos en la instalación para que tu equipo
+          quede listo desde el primer día.
+        </p>
+        <a class="btn btn--gold" routerLink="/contacto">Consultar formas de pago</a>
+      </div>
+
+      <ul class="value-prop__payments" aria-label="Medios de pago aceptados">
+        @for (method of paymentMethods; track method.name) {
+          <li>{{ method.name }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="value-prop__pillars">
+      @for (pillar of pillars; track pillar.title) {
+        <article class="value-prop__pillar">
+          <div class="value-prop__pillar-icon" aria-hidden="true">
+            @switch (pillar.icon) {
+              @case ('install') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+              }
+              @case ('factory') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2 20h20M5 20V10l5-3 4 3v10M14 20V8l5-3v15M9 14h2M9 17h2M15 14h2" />
+                </svg>
+              }
+              @case ('support') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+                </svg>
+              }
+              @default {
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l2.9 6.9L22 9.2l-5.2 4.5 1.6 6.8L12 17.8l-6.4 2.7 1.6-6.8L2 9.2l7.1-.3z" />
+                </svg>
+              }
+            }
+          </div>
+          <h3>{{ pillar.title }}</h3>
+          <p>{{ pillar.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

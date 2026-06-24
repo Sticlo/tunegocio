@@ -1,0 +1,23 @@
+<section class="page-hero">
+  <div class="container">
+    <app-breadcrumb [items]="breadcrumbs" />
+    <h1>Catálogo de equipos industriales</h1>
+    <p class="page-hero__text">
+      Equipos industriales en acero inoxidable para panaderías, restaurantes y negocios gastronómicos.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--categories grid--categories-showcase">
+      @for (category of categories; track category.slug; let i = $index) {
+        <app-category-card
+          [category]="category"
+          [animationDelay]="i * 60 + 'ms'"
+          variant="showcase"
+        />
+      }
+    </div>
+  </div>
+</section>

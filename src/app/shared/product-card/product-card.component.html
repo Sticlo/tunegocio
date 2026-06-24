@@ -1,0 +1,27 @@
+<article class="product-card">
+  <a class="product-card__media" [routerLink]="['/productos', product().slug]">
+    <img
+      [src]="assetUrl(product().image)"
+      [alt]="product().name + ' - equipos industriales TUNEGOCIO.COM'"
+      width="400"
+      height="300"
+      loading="lazy"
+    />
+  </a>
+
+  <div class="product-card__body">
+    <h3>
+      <a [routerLink]="['/productos', product().slug]">{{ product().name }}</a>
+    </h3>
+    <p>{{ product().shortDescription }}</p>
+    <div class="product-card__footer">
+      <span class="product-card__price">{{ product().priceLabel }}</span>
+      <div class="product-card__actions">
+        <button type="button" class="btn btn--gold btn--sm" (click)="onAddToCart()">
+          Añadir al carrito
+        </button>
+        <a class="product-card__link" [routerLink]="['/productos', product().slug]">Ver ficha</a>
+      </div>
+    </div>
+  </div>
+</article>

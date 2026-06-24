@@ -1,0 +1,26 @@
+<a
+  class="category-card"
+  [class.category-card--showcase]="variant() === 'showcase'"
+  [routerLink]="['/', category().slug]"
+  [style.animation-delay]="animationDelay()"
+>
+  <div class="category-card__media">
+    @if (!imageError) {
+      <img
+        [src]="category().image"
+        [alt]="category().heading"
+        loading="lazy"
+        (error)="onImageError()"
+      />
+    } @else {
+      <div class="category-card__placeholder" aria-hidden="true">
+        <span class="category-card__placeholder-mark">{{ category().heading.charAt(0) }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="category-card__body">
+    <h3>{{ category().heading }}</h3>
+    <span class="category-card__link">Ver productos</span>
+  </div>
+</a>

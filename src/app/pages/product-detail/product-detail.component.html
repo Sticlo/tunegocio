@@ -1,0 +1,55 @@
+<section class="page-hero">
+  <div class="container">
+    <app-breadcrumb [items]="breadcrumbs" />
+    <h1>{{ title }}</h1>
+    @if (product) {
+      <p class="page-hero__text">{{ product.shortDescription }}</p>
+    } @else {
+      <p class="page-hero__text">Solicita cotización de este equipo con fabricación en acero inoxidable.</p>
+    }
+  </div>
+</section>
+
+<section class="section">
+  <div class="container product">
+    <div class="product__gallery">
+      @if (product) {
+        <img
+          class="product__image"
+          [src]="assetUrl(product.image)"
+          [alt]="title + ' - equipos industriales TUNEGOCIO.COM'"
+          width="800"
+          height="600"
+        />
+      } @else {
+        <div class="product__image-placeholder">Imagen no disponible</div>
+      }
+    </div>
+
+    <div class="product__info">
+      @if (product) {
+        <p class="product__price">{{ product.priceLabel }}</p>
+      }
+      <p>
+        Equipo industrial fabricado en acero inoxidable. Cotiza disponibilidad, medidas, capacidad,
+        tipo de energía e instalación según las necesidades de tu negocio.
+      </p>
+      <ul class="product__specs">
+        <li>Material: acero inoxidable</li>
+        <li>Fabricación y asesoría técnica en Colombia</li>
+        <li>Envío nacional e instalación disponible</li>
+      </ul>
+      <div class="product__actions">
+        <button type="button" class="btn btn--gold" (click)="addToCart()" [disabled]="!product">
+          Añadir al carrito
+        </button>
+        <a class="btn btn--ghost" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+          Cotizar por WhatsApp
+        </a>
+        @if (product) {
+          <a class="btn btn--ghost" [routerLink]="['/', product.categorySlug]">Ver más en categoría</a>
+        }
+      </div>
+    </div>
+  </div>
+</section>

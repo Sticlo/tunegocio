@@ -1,0 +1,30 @@
+<section class="page-hero">
+  <div class="container">
+    <app-breadcrumb [items]="breadcrumbs" />
+    <h1>Ubicaciones y cobertura nacional</h1>
+    <p class="page-hero__text">
+      Estamos en Bogotá y atendemos clientes en todo Colombia con envíos e instalación profesional.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="locations">
+      @for (location of locations; track location.city) {
+        <article class="location-card">
+          <h2>{{ location.city }}</h2>
+          <p>{{ location.detail }}</p>
+          <span class="location-card__coverage">{{ location.coverage }}</span>
+        </article>
+      }
+    </div>
+
+    <div class="locations-cta">
+      <p>¿Necesitas confirmar cobertura para tu ciudad?</p>
+      <a class="btn btn--gold" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+        Consultar por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
