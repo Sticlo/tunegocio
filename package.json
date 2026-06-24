@@ -6,6 +6,8 @@
     "start": "ng serve",
     "catalog:generate": "node scripts/generate-products-catalog.mjs",
     "build": "ng build",
+    "deploy": "npm run build && wrangler deploy",
+    "preview:cf": "npm run build && wrangler dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:tunegocio-web": "node dist/tunegocio-web/server/server.mjs"
@@ -34,6 +36,7 @@
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "wrangler": "^4.35.0"
   }
 }

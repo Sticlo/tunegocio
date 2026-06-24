@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tunegocio",
+  "compatibility_date": "2025-03-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./dist/tunegocio-web/server/server.mjs",
+  "assets": {
+    "directory": "./dist/tunegocio-web/browser",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

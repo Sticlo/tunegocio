@@ -1,78 +1,62 @@
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
-import express from 'express';
-import { join } from 'node:path';
+import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 import {
   LEGACY_CATEGORY_SLUGS,
   LEGACY_EXACT_REDIRECTS,
 } from './app/core/constants/legacy-redirects';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
 const CANONICAL_HOST = 'tunegocio.com.co';
 
-const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularAppEngine({
+  allowedHosts: ['localhost', '127.0.0.1', CANONICAL_HOST, '.workers.dev'],
+});
 
-/** Preserva autoridad del dominio: www → canónico */
-app.use((req, res, next) => {
-  const host = req.headers.host ?? '';
+function permanentRedirect(target: string): Response {
+  return Response.redirect(target, 301);
+}
 
-  if (host.startsWith('www.')) {
-    return res.redirect(301, `https://${CANONICAL_HOST}${req.originalUrl}`);
+function tryLegacyRedirect(request: Request): Response | null {
+  const url = new URL(request.url);
+
+  if (url.hostname.startsWith('www.')) {
+    return permanentRedirect(`https://${CANONICAL_HOST}${url.pathname}${url.search}`);
   }
 
-  next();
-});
+  const exactTarget = LEGACY_EXACT_REDIRECTS[url.pathname];
+  if (exactTarget) {
+    return permanentRedirect(new URL(exactTarget, url.origin).toString());
+  }
 
-/** Redirecciones 301 desde URLs WordPress / WooCommerce */
-for (const [from, to] of Object.entries(LEGACY_EXACT_REDIRECTS)) {
-  app.get(from, (req, res) => res.redirect(301, to));
+  const categoryMatch = url.pathname.match(/^\/product-category\/([^/]+)\/?$/);
+  if (categoryMatch) {
+    const wpSlug = categoryMatch[1].toLowerCase();
+    const target = LEGACY_CATEGORY_SLUGS[wpSlug] ?? 'productos';
+    return permanentRedirect(new URL(`/${target}`, url.origin).toString());
+  }
+
+  const productMatch = url.pathname.match(/^\/product(?:o)?\/([^/]+)\/?$/);
+  if (productMatch) {
+    return permanentRedirect(new URL(`/productos/${productMatch[1]}`, url.origin).toString());
+  }
+
+  return null;
 }
 
-app.get('/product-category/:slug', (req, res) => {
-  const wpSlug = String(req.params['slug']).toLowerCase();
-  const target = LEGACY_CATEGORY_SLUGS[wpSlug] ?? 'productos';
-  res.redirect(301, `/${target}`);
-});
+async function handleRequest(request: Request): Promise<Response> {
+  const legacyRedirect = tryLegacyRedirect(request);
+  if (legacyRedirect) {
+    return legacyRedirect;
+  }
 
-app.get('/product/:slug', (req, res) => {
-  res.redirect(301, `/productos/${req.params['slug']}`);
-});
-
-app.get('/producto/:slug', (req, res) => {
-  res.redirect(301, `/productos/${req.params['slug']}`);
-});
-
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: false,
-    redirect: false,
-  }),
-);
-
-app.use((req, res, next) => {
-  angularApp
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
-    .catch(next);
-});
-
-if (isMainModule(import.meta.url) || process.env['pm_id']) {
-  const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
-    if (error) {
-      throw error;
-    }
-
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
+  const response = await angularApp.handle(request);
+  return response ?? new Response('Page not found.', { status: 404 });
 }
 
-export const reqHandler = createNodeRequestHandler(app);
+/**
+ * Handler usado por Angular CLI (dev-server y build).
+ */
+export const reqHandler = createRequestHandler(handleRequest);
+
+/**
+ * Entry point de Cloudflare Workers.
+ */
+export default { fetch: reqHandler };

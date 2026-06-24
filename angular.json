@@ -36,10 +36,11 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": ["tunegocio.com.co", "localhost", ".workers.dev"]
             },
             "ssr": {
-              "entry": "src/server.ts"
+              "entry": "src/server.ts",
+              "platform": "neutral"
             }
           },
           "configurations": {
