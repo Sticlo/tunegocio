@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve('public/assets/categorias');
 const OUTPUT = path.resolve('src/app/core/constants/products.catalog.ts');
+const OVERRIDES_PATH = path.resolve('scripts/product-overrides.json');
 
 const FOLDER_TO_CATEGORY = {
   'HORNOS - TUNEGOCIO.COM': 'hornos-industriales',
@@ -18,6 +20,14 @@ const FOLDER_TO_CATEGORY = {
 };
 
 const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
+
+function loadOverrides() {
+  if (!fs.existsSync(OVERRIDES_PATH)) {
+    return { names: {}, exclude: [] };
+  }
+
+  return JSON.parse(fs.readFileSync(OVERRIDES_PATH, 'utf8'));
+}
 
 function shouldExclude(filename) {
   const lower = filename.toLowerCase();
@@ -38,6 +48,18 @@ const CATEGORY_LABELS = {
   'mesones-acero-inoxidable': 'Mesón en acero inoxidable',
   'vitrinas-industriales': 'Vitrina industrial',
 };
+
+/** Misma foto exportada varias veces (imgi_12_foo.png ≈ imgi_99_foo.png). */
+function photoSourceKey(filename) {
+  const stem = filename
+    .replace(/\.[^.]+$/i, '')
+    .replace(/^imgi_\d+_/i, '')
+    .toLowerCase()
+    .replace(/[-_]+/g, '-')
+    .replace(/-+$/, '');
+
+  return stem.length > 0 ? stem : null;
+}
 
 function humanize(filename) {
   const base = filename
@@ -63,9 +85,12 @@ function humanize(filename) {
 function isGenericName(name) {
   if (!name) return true;
   if (/^\d{4}(\s+\d{2}){2}/.test(name)) return true;
+  if (/^\d{8}(\s+\d+)?/.test(name)) return true;
+  if (/^\d{8}\s+wa\d+/i.test(name)) return true;
   if (/^at\s+\d/i.test(name)) return true;
   if (/^imgi/i.test(name)) return true;
   if (/^\d+(\.\d+){2,}/.test(name)) return true;
+  if (/^wa\d+/i.test(name)) return true;
   return name.length < 4;
 }
 
@@ -79,28 +104,103 @@ function slugify(value) {
     .slice(0, 72);
 }
 
+function fileHash(filePath) {
+  const data = fs.readFileSync(filePath);
+  return crypto.createHash('sha256').update(data).digest('hex');
+}
+
+function collectCategoryFiles(categorySlug) {
+  const entries = [];
+
+  for (const [folder, mappedCategory] of Object.entries(FOLDER_TO_CATEGORY)) {
+    if (mappedCategory !== categorySlug) continue;
+
+    const dir = path.join(ROOT, folder);
+    if (!fs.existsSync(dir)) continue;
+
+    for (const file of fs.readdirSync(dir)) {
+      const ext = path.extname(file).toLowerCase();
+      if (!IMAGE_EXT.has(ext) || shouldExclude(file)) continue;
+
+      const filePath = path.join(dir, file);
+      const stats = fs.statSync(filePath);
+
+      entries.push({
+        folder,
+        categorySlug,
+        file,
+        filePath,
+        size: stats.size,
+        hash: fileHash(filePath),
+        sourceKey: photoSourceKey(file),
+        image: `assets/categorias/${folder}/${file}`,
+      });
+    }
+  }
+
+  return entries;
+}
+
+function pickUniqueFiles(categorySlug) {
+  const entries = collectCategoryFiles(categorySlug);
+  const bestBySource = new Map();
+  const withoutSource = [];
+
+  for (const entry of entries) {
+    if (entry.sourceKey) {
+      const groupKey = `${categorySlug}::${entry.sourceKey}`;
+      const current = bestBySource.get(groupKey);
+      if (!current || entry.size > current.size) {
+        bestBySource.set(groupKey, entry);
+      }
+      continue;
+    }
+
+    withoutSource.push(entry);
+  }
+
+  const selected = [...bestBySource.values(), ...withoutSource].sort((a, b) =>
+    a.file.localeCompare(b.file),
+  );
+
+  const seenHashes = new Set();
+  const unique = [];
+
+  for (const entry of selected) {
+    if (seenHashes.has(entry.hash)) continue;
+    seenHashes.add(entry.hash);
+    unique.push(entry);
+  }
+
+  return {
+    unique,
+    skipped: entries.length - unique.length,
+  };
+}
+
+const overrides = loadOverrides();
 const products = [];
 const slugCounts = new Map();
 const categoryCounters = new Map();
+let skippedDuplicates = 0;
 
-for (const [folder, categorySlug] of Object.entries(FOLDER_TO_CATEGORY)) {
-  const dir = path.join(ROOT, folder);
-  if (!fs.existsSync(dir)) continue;
+for (const categorySlug of new Set(Object.values(FOLDER_TO_CATEGORY))) {
+  const { unique, skipped } = pickUniqueFiles(categorySlug);
+  skippedDuplicates += skipped;
 
-  for (const file of fs.readdirSync(dir).sort()) {
-    const ext = path.extname(file).toLowerCase();
-    if (!IMAGE_EXT.has(ext) || shouldExclude(file)) continue;
+  for (const entry of unique) {
+    if (overrides.exclude?.includes(entry.image)) continue;
 
-    const baseSlug = slugify(file.replace(ext, ''));
+    const ext = path.extname(entry.file).toLowerCase();
+    const baseSlug = slugify(entry.file.replace(ext, ''));
     const count = slugCounts.get(baseSlug) ?? 0;
     slugCounts.set(baseSlug, count + 1);
     const slug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
 
-    const image = `assets/categorias/${folder}/${file}`;
-    const parsedName = humanize(file);
-    let name = parsedName;
+    const parsedName = humanize(entry.file);
+    let name = overrides.names?.[entry.image] ?? parsedName;
 
-    if (isGenericName(parsedName)) {
+    if (!overrides.names?.[entry.image] && isGenericName(parsedName)) {
       const label = CATEGORY_LABELS[categorySlug] ?? 'Equipo industrial';
       const index = (categoryCounters.get(categorySlug) ?? 0) + 1;
       categoryCounters.set(categorySlug, index);
@@ -112,7 +212,7 @@ for (const [folder, categorySlug] of Object.entries(FOLDER_TO_CATEGORY)) {
       slug,
       name,
       categorySlug,
-      image,
+      image: entry.image,
       price: 0,
       priceLabel: 'Cotizar precio',
       shortDescription: 'Equipo industrial en acero inoxidable. Cotiza disponibilidad e instalación.',
@@ -122,6 +222,7 @@ for (const [folder, categorySlug] of Object.entries(FOLDER_TO_CATEGORY)) {
 
 const content = `/* eslint-disable */
 // Archivo generado automáticamente. Ejecuta: npm run catalog:generate
+// Nombres manuales: scripts/product-overrides.json
 
 export interface CatalogProduct {
   id: string;
@@ -138,4 +239,6 @@ export const PRODUCT_CATALOG: CatalogProduct[] = ${JSON.stringify(products, null
 `;
 
 fs.writeFileSync(OUTPUT, content);
-console.log(`Generated ${products.length} products -> ${OUTPUT}`);
+console.log(
+  `Generated ${products.length} products (${skippedDuplicates} duplicados omitidos) -> ${OUTPUT}`,
+);
