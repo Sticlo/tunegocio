@@ -1,46 +1,1354 @@
-.locations {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+@keyframes zonas-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.location-card {
-  padding: 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.65rem;
-  background: #fff;
+@keyframes zonas-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 
-  h2 {
+  50% {
+    opacity: 0.45;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes zonas-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+// ─── Hero (blanco + dorado, como inicio) ───
+.hero-zonas {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 1.75rem) 0 clamp(2rem, 5vw, 3rem);
+  color: var(--color-brand-charcoal);
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hero-zonas__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 85% 0%, rgba(184, 149, 46, 0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 5% 100%, rgba(245, 241, 232, 0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #fff 0%, var(--color-brand-ivory) 100%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-brand-gold) 20%,
+      var(--color-brand-gold-light) 50%,
+      var(--color-brand-gold) 80%,
+      transparent 100%
+    );
+  }
+}
+
+.hero-zonas .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-zonas__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.hero-zonas__content {
+  max-width: 40rem;
+  animation: zonas-fade-up 0.65s ease both;
+}
+
+.hero-zonas__visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: zonas-fade-up 0.65s ease 0.12s both;
+}
+
+.hero-zonas__visual-glow {
+  position: absolute;
+  inset: 8% 0;
+  background: radial-gradient(
+    ellipse 70% 65% at 50% 45%,
+    rgba(184, 149, 46, 0.28) 0%,
+    rgba(184, 149, 46, 0.08) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.hero-zonas__map-image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  max-width: clamp(18rem, 42vw, 32rem);
+  height: auto;
+  margin-inline: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(26, 26, 26, 0.14)) drop-shadow(0 8px 24px rgba(184, 149, 46, 0.2));
+  transition: transform 0.35s ease, filter 0.35s ease;
+
+  &:hover {
+    transform: scale(1.02) translateY(-4px);
+    filter: drop-shadow(0 28px 60px rgba(26, 26, 26, 0.16)) drop-shadow(0 12px 32px rgba(184, 149, 46, 0.28));
+  }
+}
+
+.hero-zonas__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #e5d9c0;
+  background: var(--color-brand-champagne);
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.hero-zonas__pulse-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-brand-gold);
+  box-shadow: 0 0 0 0 rgba(184, 149, 46, 0.45);
+  animation: zonas-pulse 2s ease-in-out infinite;
+}
+
+.hero-zonas h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-nav);
+  font-size: clamp(1.85rem, 4.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--color-brand-charcoal);
+
+  span {
+    display: block;
+    margin-top: 0.25rem;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+    color: var(--color-brand-gold-dark);
+    letter-spacing: -0.01em;
+  }
+}
+
+.hero-zonas__sub {
+  margin: 0 0 1.5rem;
+  max-width: 46ch;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--color-brand-warm-gray);
+
+  strong {
+    color: var(--color-brand-charcoal);
+    font-weight: 600;
+  }
+}
+
+.hero-zonas__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hero-zonas__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
+  font-family: var(--font-nav);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+.hero-zonas__cta--primary {
+  color: #fff;
+  background: var(--color-brand-gold);
+  box-shadow: var(--shadow-gold);
+
+  &:hover {
+    background: var(--color-brand-gold-dark);
+    box-shadow: 0 10px 28px rgba(184, 149, 46, 0.22);
+  }
+}
+
+.hero-zonas__cta--secondary {
+  color: var(--color-brand-charcoal);
+  border: 1px solid var(--color-brand-charcoal);
+  background: transparent;
+
+  &:hover {
+    background: var(--color-brand-charcoal);
+    color: #fff;
+  }
+}
+
+.hero-zonas__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.hero-zonas__metric {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--color-border);
+
+  strong {
+    display: block;
+    font-family: var(--font-nav);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  span {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+  }
+}
+
+.hero-zonas__metric-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
+  background: var(--color-brand-champagne);
+  border: 1px solid #e5d9c0;
+  color: var(--color-brand-gold-dark);
+}
+
+// ─── Trust strip ───
+.zonas-trust {
+  padding: 1.25rem 0 1.5rem;
+  background: var(--color-brand-champagne);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.zonas-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.zonas-trust__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 0.75rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(184, 149, 46, 0.45);
+  }
+
+  strong {
+    font-family: var(--font-nav);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    line-height: 1.35;
+  }
+}
+
+.zonas-trust__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+}
+
+// ─── Política local vs nacional ───
+.zonas-politica {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245, 241, 232, 0.9) 0%, transparent 70%),
+    #fff;
+}
+
+.zonas-politica__header {
+  max-width: 36rem;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.zonas-politica__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #e5d9c0;
+  background: var(--color-brand-champagne);
+  font-family: var(--font-nav);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.zonas-politica__header h2 {
+  margin: 0;
+  font-family: var(--font-nav);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-brand-charcoal);
+}
+
+.zonas-politica__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.zonas-politica__card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 1.35rem 1.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(26, 26, 26, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 48px rgba(26, 26, 26, 0.09);
+  }
+
+  h3 {
     margin: 0 0 0.5rem;
     font-family: var(--font-nav);
-    font-size: 1.1rem;
-    color: var(--color-brand-gold-dark);
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--color-brand-charcoal);
   }
-
-  p {
-    margin: 0 0 0.75rem;
-    color: #555;
-    line-height: 1.6;
-  }
-}
-
-.location-card__coverage {
-  display: inline-block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #777;
-}
-
-.locations-cta {
-  text-align: center;
-  padding: 2rem;
-  border-radius: 0.65rem;
-  background: #fafafa;
-  border: 1px solid var(--color-border);
 
   p {
     margin: 0 0 1rem;
-    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+}
+
+.zonas-politica__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.zonas-politica__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+
+  &--local {
+    background: var(--color-brand-champagne);
+    color: var(--color-brand-gold-dark);
+  }
+
+  &--nacional {
+    background: var(--color-brand-ivory);
+    color: var(--color-brand-charcoal);
+    border: 1px solid var(--color-border);
+  }
+}
+
+.zonas-politica__card--local {
+  border-top: 4px solid var(--color-brand-gold);
+}
+
+.zonas-politica__card--nacional {
+  border-top: 4px solid var(--color-brand-charcoal);
+}
+
+.zonas-politica__tag {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-family: var(--font-nav);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.zonas-politica__card--local .zonas-politica__tag {
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+}
+
+.zonas-politica__card--nacional .zonas-politica__tag {
+  background: var(--color-brand-ivory);
+  color: var(--color-brand-charcoal);
+}
+
+.zonas-politica__features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--color-brand-warm-gray);
+
+    span {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: var(--color-brand-champagne);
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--color-brand-gold-dark);
+    }
+  }
+}
+
+.zonas-politica__card--nacional .zonas-politica__features li span {
+  background: var(--color-brand-ivory);
+  color: var(--color-brand-charcoal);
+}
+
+// ─── Main map + cards ───
+.zonas-main {
+  position: relative;
+  padding: 3.5rem 0;
+  background: linear-gradient(180deg, #fff 0%, var(--color-brand-ivory) 100%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-brand-gold) 20%,
+      var(--color-brand-gold-light) 50%,
+      var(--color-brand-gold) 80%,
+      transparent 100%
+    );
+  }
+}
+
+.zonas-main__header {
+  max-width: 44rem;
+  margin: 0 auto 2.25rem;
+  text-align: center;
+}
+
+.zonas-main__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #e5d9c0;
+  background: var(--color-brand-champagne);
+  font-family: var(--font-nav);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.zonas-main__header h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-nav);
+  font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--color-brand-charcoal);
+
+  span {
+    color: var(--color-brand-gold-dark);
+  }
+}
+
+.zonas-main__header p {
+  margin: 0 auto 1rem;
+  max-width: 42ch;
+  color: var(--color-muted);
+  line-height: 1.7;
+  font-size: 0.98rem;
+}
+
+.zonas-main__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.zonas-main__chip {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-muted);
+
+  &--local {
+    border-color: rgba(184, 149, 46, 0.35);
+    background: var(--color-brand-champagne);
+    color: var(--color-brand-gold-dark);
+  }
+
+  &--nacional {
+    border-color: rgba(26, 26, 26, 0.15);
+    background: var(--color-brand-ivory);
+    color: var(--color-brand-charcoal);
+  }
+}
+
+.zonas-main__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.zonas-main__map {
+  position: sticky;
+  top: 6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(26, 26, 26, 0.08);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(184, 149, 46, 0.15);
+  }
+}
+
+.zonas-main__map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.zonas-main__map-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-family: var(--font-nav);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-brand-charcoal);
+
+  svg {
+    color: var(--color-brand-gold-dark);
+  }
+}
+
+.zonas-main__map-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-brand-gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.zonas-main__map-live {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-brand-gold);
+  animation: zonas-live 1.8s ease-in-out infinite;
+}
+
+.zonas-main__map-frame {
+  aspect-ratio: 4 / 3;
+  background: #e8e8e8;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+}
+
+.zonas-main__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  counter-reset: zona-region;
+}
+
+.zona-region {
+  position: relative;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--color-brand-gold);
+  }
+
+  &--nacional::before {
+    background: linear-gradient(180deg, var(--color-brand-charcoal), rgba(26, 26, 26, 0.5));
+  }
+}
+
+.zona-region__header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-left: 0.35rem;
+}
+
+.zona-region__number {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.65rem;
+  background: var(--color-brand-champagne);
+  border: 1px solid #e5d9c0;
+  font-family: var(--font-nav);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--color-brand-gold-dark);
+  counter-increment: zona-region;
+
+  &::before {
+    content: counter(zona-region, decimal-leading-zero);
+  }
+}
+
+.zona-region--nacional .zona-region__number {
+  background: var(--color-brand-ivory);
+  border-color: var(--color-border);
+  color: var(--color-brand-charcoal);
+}
+
+.zona-region__badge {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-family: var(--font-nav);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  &--local {
+    background: var(--color-brand-champagne);
+    color: var(--color-brand-gold-dark);
+  }
+
+  &--nacional {
+    background: var(--color-brand-ivory);
+    color: var(--color-brand-charcoal);
+    border: 1px solid var(--color-border);
+  }
+}
+
+.zona-region__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-nav);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-brand-charcoal);
+  letter-spacing: -0.02em;
+}
+
+.zona-region__desc {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.zona-region__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.zona-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, #fff 0%, var(--color-brand-ivory) 100%);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+
+  &:hover,
+  &.is-active {
+    border-color: var(--color-brand-gold);
+    box-shadow: 0 14px 36px rgba(26, 26, 26, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.zona-card__head {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.zona-card__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.55rem;
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+}
+
+.zona-card__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-nav);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-brand-charcoal);
+  line-height: 1.3;
+}
+
+.zona-card__desc {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.zona-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.zona-card__time,
+.zona-card__service-type,
+.zona-card__payment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.zona-card__time,
+.zona-card__service-type {
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+  border: 1px solid rgba(184, 149, 46, 0.2);
+}
+
+.zona-card__payment {
+  color: var(--color-brand-charcoal);
+  background: #fff;
+  border: 1px solid var(--color-border);
+}
+
+.zona-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid #f0ebe0;
+}
+
+.zona-card__barrios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+
+  span {
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--color-brand-ivory);
+    border: 1px solid var(--color-border);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+}
+
+.zona-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-brand-champagne);
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.zona-card__arrow {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: rgba(184, 149, 46, 0.15);
+  color: var(--color-brand-gold-dark);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.zona-card:hover .zona-card__cta {
+  background: var(--color-brand-gold);
+  color: #fff;
+}
+
+.zona-card:hover .zona-card__arrow {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+// ─── Por qué ───
+.zonas-porque {
+  padding: 3.5rem 0;
+  background: var(--color-brand-champagne);
+}
+
+.zonas-porque__header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.zonas-porque__label {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.zonas-porque__header h2 {
+  margin: 0;
+  font-family: var(--font-nav);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--color-brand-charcoal);
+  letter-spacing: -0.02em;
+}
+
+.zonas-porque__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.zonas-porque__card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 1.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.zonas-porque__number {
+  margin-bottom: 0.85rem;
+  font-family: var(--font-nav);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(184, 149, 46, 0.25);
+}
+
+.zonas-porque__content {
+  h3 {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-nav);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+}
+
+.zonas-porque__accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-gold-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.zonas-porque__card:hover .zonas-porque__accent {
+  transform: scaleX(1);
+}
+
+// ─── Nacional banner ───
+.zonas-nacional {
+  padding: 1.5rem 0;
+  background: var(--color-brand-champagne);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.zonas-nacional__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+}
+
+.zonas-nacional__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.65rem;
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+}
+
+.zonas-nacional__text {
+  flex: 1;
+  min-width: 12rem;
+
+  p {
+    margin: 0 0 0.2rem;
+    font-family: var(--font-nav);
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  span {
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+}
+
+.zonas-nacional__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-nav);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+
+  &:hover {
+    color: var(--color-brand-charcoal);
+  }
+}
+
+// ─── CTA final (como inicio) ───
+.zonas-cta {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 6vw, 4rem) 0 clamp(3.5rem, 7vw, 4.5rem);
+  background: var(--color-brand-charcoal);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 0% 100%, rgba(184, 149, 46, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 100% 0%, rgba(184, 149, 46, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.zonas-cta .container {
+  position: relative;
+  z-index: 1;
+}
+
+.zonas-cta__content {
+  max-width: 36rem;
+  margin-inline: auto;
+  text-align: center;
+  color: #fff;
+}
+
+.zonas-cta__badge {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(184, 149, 46, 0.2);
+  border: 1px solid rgba(184, 149, 46, 0.35);
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-light);
+}
+
+.zonas-cta__content h2 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-nav);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.zonas-cta__content p {
+  margin: 0 0 1.5rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.75;
+  font-size: 0.98rem;
+}
+
+.zonas-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.zonas-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.5rem;
+  border-radius: 0.35rem;
+  font-family: var(--font-nav);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.zonas-cta__btn--wa {
+  color: var(--color-brand-charcoal);
+  background: var(--color-brand-gold);
+  box-shadow: var(--shadow-gold);
+
+  &:hover {
+    background: var(--color-brand-gold-light);
+  }
+}
+
+.zonas-cta__btn--call {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// ─── Responsive ───
+@media (max-width: 960px) {
+  .hero-zonas__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-zonas__visual {
+    width: 100%;
+    padding: 0.5rem 0 0;
+  }
+
+  .hero-zonas__map-image {
+    max-width: min(100%, 28rem);
+  }
+
+  .zonas-trust__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zonas-politica__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .zonas-main__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .zonas-main__map {
+    position: static;
+  }
+
+  .zonas-porque__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-zonas {
+    padding: 1.25rem 0 1.75rem;
+  }
+
+  .hero-zonas__grid {
+    gap: 1.25rem;
+  }
+
+  .hero-zonas__actions {
+    flex-direction: column;
+  }
+
+  .hero-zonas__cta {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-zonas__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .zonas-trust__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .zonas-trust__card {
+    padding: 0.85rem 0.5rem;
+  }
+
+  .zonas-politica {
+    padding: 2rem 0;
+  }
+
+  .zonas-politica__card {
+    padding: 1.25rem 1rem;
+  }
+
+  .zonas-main {
+    padding: 2rem 0;
+  }
+
+  .zonas-main__chips {
+    justify-content: center;
+  }
+
+  .zona-region {
+    padding: 1rem 0.85rem;
+  }
+
+  .zona-region__header {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .zona-card {
+    padding: 1rem;
+  }
+
+  .zona-card__head {
+    gap: 0.65rem;
+  }
+
+  .zona-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .zona-card__cta {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .zonas-nacional__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .zonas-cta__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .zonas-cta__btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .zonas-trust__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zonas__content,
+  .hero-zonas__visual {
+    animation: none;
+  }
+
+  .hero-zonas__map-image {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .hero-zonas__pulse-dot,
+  .zonas-main__map-live {
+    animation: none;
   }
 }

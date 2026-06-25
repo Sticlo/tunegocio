@@ -1,30 +1,527 @@
-<section class="page-hero">
+<section class="hero-zonas">
+  <div class="hero-zonas__bg" aria-hidden="true"></div>
   <div class="container">
     <app-breadcrumb [items]="breadcrumbs" />
-    <h1>Ubicaciones y cobertura nacional</h1>
-    <p class="page-hero__text">
-      Estamos en Bogotá y atendemos clientes en todo Colombia con envíos e instalación profesional.
-    </p>
+
+    <div class="hero-zonas__grid">
+      <div class="hero-zonas__content">
+        <div class="hero-zonas__badge">
+          <span class="hero-zonas__pulse-dot" aria-hidden="true"></span>
+          Sede en Bogotá · Cobertura nacional
+        </div>
+        <h1>
+          Estamos en Bogotá
+          <span>y llegamos a todo Colombia</span>
+        </h1>
+        <p class="hero-zonas__sub">
+          Planta y showroom en la capital. Entrega directa en Bogotá y Cundinamarca;
+          <strong>sin pago anticipado para despachar en la zona local.</strong>
+        </p>
+
+        <div class="hero-zonas__actions">
+          <a
+            class="hero-zonas__cta hero-zonas__cta--primary"
+            [href]="whatsappUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"
+              />
+            </svg>
+            Cotizar por WhatsApp
+          </a>
+          <a class="hero-zonas__cta hero-zonas__cta--secondary" [href]="'tel:' + contact.phoneFormatted">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            Llamar — {{ contact.phoneDisplay }}
+          </a>
+        </div>
+
+        <div class="hero-zonas__metrics">
+          <div class="hero-zonas__metric">
+            <div class="hero-zonas__metric-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <strong>{{ googleReviews.rating }} ★</strong>
+              <span>{{ googleReviews.totalReviews }} reseñas</span>
+            </div>
+          </div>
+          <div class="hero-zonas__metric">
+            <div class="hero-zonas__metric-icon" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div>
+              <strong>Sede Bogotá</strong>
+              <span>planta y showroom</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-zonas__visual">
+        <div class="hero-zonas__visual-glow" aria-hidden="true"></div>
+        <img
+          class="hero-zonas__map-image"
+          src="/assets/categorias/mapacolombia.png"
+          alt="Mapa de Colombia con la marca TUNEGOCIO.COM — cobertura nacional de equipos industriales"
+          width="640"
+          height="640"
+          loading="eager"
+          decoding="async"
+        />
+      </aside>
+    </div>
   </div>
 </section>
 
-<section class="section">
+<section class="zonas-trust">
   <div class="container">
-    <div class="locations">
-      @for (location of locations; track location.city) {
-        <article class="location-card">
-          <h2>{{ location.city }}</h2>
-          <p>{{ location.detail }}</p>
-          <span class="location-card__coverage">{{ location.coverage }}</span>
-        </article>
-      }
+    <div class="zonas-trust__grid">
+      <article class="zonas-trust__card">
+        <div class="zonas-trust__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </div>
+        <strong>{{ coverageStats.regiones }}</strong>
+        <span>regiones del país</span>
+      </article>
+      <article class="zonas-trust__card">
+        <div class="zonas-trust__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <strong>Fabricación</strong>
+        <span>propia en acero</span>
+      </article>
+      <article class="zonas-trust__card">
+        <div class="zonas-trust__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <strong>Garantía</strong>
+        <span>y soporte posventa</span>
+      </article>
+      <article class="zonas-trust__card">
+        <div class="zonas-trust__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+        </div>
+        <strong>Asesoría</strong>
+        <span>personalizada</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="zonas-politica">
+  <div class="container">
+    <header class="zonas-politica__header">
+      <span class="zonas-politica__eyebrow">Modalidades de entrega</span>
+      <h2>Dos formas de trabajar según tu ubicación</h2>
+    </header>
+
+    <div class="zonas-politica__grid">
+      <article class="zonas-politica__card zonas-politica__card--local">
+        <div class="zonas-politica__card-top">
+          <div class="zonas-politica__icon zonas-politica__icon--local" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </div>
+          <span class="zonas-politica__tag">Bogotá y Cundinamarca</span>
+        </div>
+        <h3>Entrega local sin pago anticipado</h3>
+        <p>Visita, cotización y despacho con la modalidad habitual en la zona metropolitana.</p>
+        <ul class="zonas-politica__features">
+          <li><span aria-hidden="true">✓</span> Visita a planta y asesoría en persona</li>
+          <li><span aria-hidden="true">✓</span> Entrega e instalación en capital y sabana</li>
+          <li><span aria-hidden="true">✓</span> Cotización el mismo día</li>
+        </ul>
+      </article>
+
+      <article class="zonas-politica__card zonas-politica__card--nacional">
+        <div class="zonas-politica__card-top">
+          <div class="zonas-politica__icon zonas-politica__icon--nacional" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+          </div>
+          <span class="zonas-politica__tag">Resto de Colombia</span>
+        </div>
+        <h3>Envío nacional con pago confirmado</h3>
+        <p>Llegamos a las principales regiones. El flete se programa cuando el pago queda confirmado.</p>
+        <ul class="zonas-politica__features">
+          <li><span aria-hidden="true">✓</span> Cotización por WhatsApp o llamada</li>
+          <li><span aria-hidden="true">✓</span> Flete e instalación coordinados</li>
+          <li><span aria-hidden="true">✓</span> Despacho tras confirmar el pago</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="zonas-main">
+  <div class="container">
+    <header class="zonas-main__header">
+      <span class="zonas-main__eyebrow">Mapa de cobertura</span>
+      <h2>Cobertura <span>por región</span></h2>
+      <p>Base operativa en Bogotá. Selecciona tu zona y cotiza por WhatsApp.</p>
+      <div class="zonas-main__chips">
+        <span class="zonas-main__chip zonas-main__chip--local">{{ coverageStats.locales }} regiones locales</span>
+        <span class="zonas-main__chip zonas-main__chip--nacional">{{ coverageStats.nacionales }} regiones nacionales</span>
+        <span class="zonas-main__chip">{{ coverageStats.zonas }} zonas activas</span>
+      </div>
+    </header>
+
+    <div class="zonas-main__layout">
+      <div class="zonas-main__map">
+        <div class="zonas-main__map-header">
+          <h3 class="zonas-main__map-title">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            Sede en Bogotá, D.C.
+          </h3>
+          <span class="zonas-main__map-status">
+            <span class="zonas-main__map-live" aria-hidden="true"></span>
+            En operación
+          </span>
+        </div>
+        <div class="zonas-main__map-frame">
+          <iframe
+            [src]="mapEmbedUrl"
+            title="Mapa de ubicación TUNEGOCIO.COM en Bogotá"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="zonas-main__cards">
+        @for (region of regiones; track region.slug) {
+          <section
+            class="zona-region"
+            [class.zona-region--local]="region.modalidad === 'local'"
+            [class.zona-region--nacional]="region.modalidad === 'nacional'"
+          >
+            <header class="zona-region__header">
+              <div class="zona-region__number" aria-hidden="true"></div>
+              <div class="zona-region__intro">
+                <span
+                  class="zona-region__badge"
+                  [class.zona-region__badge--local]="region.modalidad === 'local'"
+                  [class.zona-region__badge--nacional]="region.modalidad === 'nacional'"
+                >
+                  {{ modalityLabel(region.modalidad) }}
+                </span>
+                <h3 class="zona-region__title">{{ region.nombre }}</h3>
+                <p class="zona-region__desc">{{ region.descripcion }}</p>
+              </div>
+            </header>
+
+            <div class="zona-region__list">
+              @for (zona of region.zonas; track zona.slug) {
+                <a
+                  class="zona-card"
+                  [class.is-active]="hoveredSlug === zona.slug"
+                  [href]="zoneWhatsappUrl(zona, region)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (mouseenter)="setHovered(zona.slug)"
+                  (mouseleave)="setHovered(null)"
+                  [attr.aria-label]="'Cotizar equipos en ' + zona.nombre"
+                >
+                  <div class="zona-card__head">
+                    <div class="zona-card__icon" aria-hidden="true">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 class="zona-card__title">Equipos en {{ zona.nombre }}</h2>
+                      <p class="zona-card__desc">{{ zona.destacado }}</p>
+                    </div>
+                  </div>
+
+                  <div class="zona-card__meta">
+                    <div class="zona-card__time">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      {{ zona.tiempoRespuesta }}
+                    </div>
+                    <div class="zona-card__service-type">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      {{ zona.servicios }}
+                    </div>
+                    @if (region.modalidad === 'nacional') {
+                      <div class="zona-card__payment">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                          <line x1="1" y1="10" x2="23" y2="10" />
+                        </svg>
+                        Pago antes de envío
+                      </div>
+                    }
+                  </div>
+
+                  <div class="zona-card__footer">
+                    <div class="zona-card__barrios">
+                      @for (barrio of zona.barrios; track barrio) {
+                        <span>{{ barrio }}</span>
+                      }
+                    </div>
+                    <span class="zona-card__cta">
+                      Cotizar
+                      <span class="zona-card__arrow" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </a>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="zonas-porque">
+  <div class="container">
+    <div class="zonas-porque__header">
+      <span class="zonas-porque__label">¿Por qué TUNEGOCIO.COM?</span>
+      <h2>Lo que nos diferencia en equipos industriales</h2>
     </div>
 
-    <div class="locations-cta">
-      <p>¿Necesitas confirmar cobertura para tu ciudad?</p>
-      <a class="btn btn--gold" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
-        Consultar por WhatsApp
+    <div class="zonas-porque__grid">
+      <article class="zonas-porque__card">
+        <div class="zonas-porque__number">01</div>
+        <div class="zonas-porque__content">
+          <h3>Fabricación propia en acero inoxidable</h3>
+          <p>
+            Diseñamos y fabricamos hornos, estufas, vitrinas y mesones con control total de calidad y
+            acabados industriales.
+          </p>
+        </div>
+        <div class="zonas-porque__accent" aria-hidden="true"></div>
+      </article>
+
+      <article class="zonas-porque__card">
+        <div class="zonas-porque__number">02</div>
+        <div class="zonas-porque__content">
+          <h3>Cotización clara antes de comprar</h3>
+          <p>
+            Te damos precio, tiempos de entrega e instalación sin sorpresas. Asesoría técnica para
+            elegir el equipo ideal.
+          </p>
+        </div>
+        <div class="zonas-porque__accent" aria-hidden="true"></div>
+      </article>
+
+      <article class="zonas-porque__card">
+        <div class="zonas-porque__number">03</div>
+        <div class="zonas-porque__content">
+          <h3>Envío e instalación en todo Colombia</h3>
+          <p>
+            Desde Bogotá llegamos a las principales regiones. En la capital atendemos con entrega
+            directa; al resto del país enviamos con pago confirmado antes del despacho.
+          </p>
+        </div>
+        <div class="zonas-porque__accent" aria-hidden="true"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="zonas-nacional">
+  <div class="container">
+    <div class="zonas-nacional__inner">
+      <div class="zonas-nacional__icon" aria-hidden="true">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+      </div>
+      <div class="zonas-nacional__text">
+        <p>¿Tu ciudad no aparece en la lista?</p>
+        <span
+          >Cotizamos envío a cualquier municipio de Colombia. Fuera de Bogotá, el despacho se
+          programa con el pago confirmado.</span
+        >
+      </div>
+      <a class="zonas-nacional__link" routerLink="/contacto">
+        Ir a contacto
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="zonas-cta">
+  <div class="container">
+    <div class="zonas-cta__content">
+      <div class="zonas-cta__badge">Equipos industriales · Bogotá y Colombia</div>
+      <h2>¿Listo para equipar tu negocio?<br />Cotiza hoy mismo</h2>
+      <p>
+        Hornos, asadores, estufas y maquinaria en acero inoxidable. Envío nacional, instalación
+        profesional y respuesta rápida por WhatsApp.
+      </p>
+      <div class="zonas-cta__actions">
+        <a
+          class="zonas-cta__btn zonas-cta__btn--wa"
+          [href]="whatsappUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"
+            />
+          </svg>
+          Escribir por WhatsApp
+        </a>
+        <a class="zonas-cta__btn zonas-cta__btn--call" [href]="'tel:' + contact.phoneFormatted">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+            />
+          </svg>
+          Llamar ahora
+        </a>
+      </div>
     </div>
   </div>
 </section>
