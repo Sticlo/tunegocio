@@ -1,6 +1,23 @@
 <section class="reviews" aria-labelledby="reviews-title">
   <div class="container">
-    <div class="reviews__header">
+    <header class="reviews__intro">
+      <div class="reviews__google-badge">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.88-6.88C35.9 2.7 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l8.02 6.22C12.9 13.16 17.98 9.5 24 9.5z" />
+          <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.74H24v9.01h12.68c-.55 2.96-2.21 5.47-4.7 7.15l7.27 5.64C43.98 37.13 46.5 31.3 46.5 24.5z" />
+          <path fill="#FBBC05" d="M10.58 28.58A14.5 14.5 0 0 1 9.5 24c0-1.59.27-3.12.76-4.55l-8.02-6.22A24 24 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l8.02-6.2z" />
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.27-5.64c-2.02 1.36-4.62 2.17-8.63 2.17-6.02 0-11.1-3.66-12.9-8.78l-8.02 6.22C6.51 42.62 14.62 48 24 48z" />
+        </svg>
+        Reseñas de Google
+      </div>
+      <h2 id="reviews-title">Lo que dicen nuestros clientes</h2>
+      <p>
+        Opiniones reales de panaderías, restaurantes y negocios gastronómicos que confían en
+        TUNEGOCIO.COM.
+      </p>
+    </header>
+
+    <div class="reviews__body">
       <div class="reviews__score-card">
         <div class="reviews__google-brand" aria-label="Google">
           <svg class="reviews__google-logo" viewBox="0 0 48 48" aria-hidden="true">
@@ -29,61 +46,44 @@
         </a>
       </div>
 
-      <div class="reviews__intro">
-        <div class="reviews__google-badge">
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.88-6.88C35.9 2.7 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l8.02 6.22C12.9 13.16 17.98 9.5 24 9.5z" />
-            <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.74H24v9.01h12.68c-.55 2.96-2.21 5.47-4.7 7.15l7.27 5.64C43.98 37.13 46.5 31.3 46.5 24.5z" />
-            <path fill="#FBBC05" d="M10.58 28.58A14.5 14.5 0 0 1 9.5 24c0-1.59.27-3.12.76-4.55l-8.02-6.22A24 24 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l8.02-6.2z" />
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.27-5.64c-2.02 1.36-4.62 2.17-8.63 2.17-6.02 0-11.1-3.66-12.9-8.78l-8.02 6.22C6.51 42.62 14.62 48 24 48z" />
-          </svg>
-          Reseñas de Google
-        </div>
-        <h2 id="reviews-title">Lo que dicen nuestros clientes</h2>
-        <p>
-          Opiniones reales de panaderías, restaurantes y negocios gastronómicos que confían en
-          TUNEGOCIO.COM.
-        </p>
-      </div>
-    </div>
-
-    <div class="reviews__grid">
-      @for (review of reviews; track review.author) {
-        <article class="review-card">
-          <div class="review-card__top">
-            <div class="review-card__avatar">
-              @if (showAvatar(review.author)) {
-                <img
-                  [src]="review.avatarUrl"
-                  [alt]="'Foto de perfil de ' + review.author"
-                  width="40"
-                  height="40"
-                  loading="lazy"
-                  (error)="onAvatarError(review.author)"
-                />
-              } @else {
-                <span aria-hidden="true">{{ review.author.charAt(0) }}</span>
-              }
-            </div>
-            <div>
-              <h3 class="review-card__author">{{ review.author }}</h3>
-              <p class="review-card__stars" aria-label="{{ review.rating }} de 5 estrellas">
-                {{ stars(review.rating) }}
+      <div class="reviews__carousel" aria-label="Carrusel de reseñas de clientes">
+        <div class="reviews__track" aria-hidden="true">
+          @for (review of carouselReviews; track trackReview($index, review)) {
+            <article class="review-card">
+              <div class="review-card__top">
+                <div class="review-card__avatar">
+                  @if (showAvatar(review.author)) {
+                    <img
+                      [src]="review.avatarUrl"
+                      [alt]=""
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                      (error)="onAvatarError(review.author)"
+                    />
+                  } @else {
+                    <span aria-hidden="true">{{ review.author.charAt(0) }}</span>
+                  }
+                </div>
+                <div>
+                  <h3 class="review-card__author">{{ review.author }}</h3>
+                  <p class="review-card__stars" aria-hidden="true">{{ stars(review.rating) }}</p>
+                </div>
+              </div>
+              <blockquote class="review-card__text">“{{ review.text }}”</blockquote>
+              <p class="review-card__verified">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.88-6.88C35.9 2.7 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l8.02 6.22C12.9 13.16 17.98 9.5 24 9.5z" />
+                  <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.74H24v9.01h12.68c-.55 2.96-2.21 5.47-4.7 7.15l7.27 5.64C43.98 37.13 46.5 31.3 46.5 24.5z" />
+                  <path fill="#FBBC05" d="M10.58 28.58A14.5 14.5 0 0 1 9.5 24c0-1.59.27-3.12.76-4.55l-8.02-6.22A24 24 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l8.02-6.2z" />
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.27-5.64c-2.02 1.36-4.62 2.17-8.63 2.17-6.02 0-11.1-3.66-12.9-8.78l-8.02 6.22C6.51 42.62 14.62 48 24 48z" />
+                </svg>
+                Reseña en Google
               </p>
-            </div>
-          </div>
-          <blockquote class="review-card__text">“{{ review.text }}”</blockquote>
-          <p class="review-card__verified">
-            <svg viewBox="0 0 48 48" aria-hidden="true">
-              <path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.88-6.88C35.9 2.7 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l8.02 6.22C12.9 13.16 17.98 9.5 24 9.5z" />
-              <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.74H24v9.01h12.68c-.55 2.96-2.21 5.47-4.7 7.15l7.27 5.64C43.98 37.13 46.5 31.3 46.5 24.5z" />
-              <path fill="#FBBC05" d="M10.58 28.58A14.5 14.5 0 0 1 9.5 24c0-1.59.27-3.12.76-4.55l-8.02-6.22A24 24 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l8.02-6.2z" />
-              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.27-5.64c-2.02 1.36-4.62 2.17-8.63 2.17-6.02 0-11.1-3.66-12.9-8.78l-8.02 6.22C6.51 42.62 14.62 48 24 48z" />
-            </svg>
-            Reseña en Google
-          </p>
-        </article>
-      }
+            </article>
+          }
+        </div>
+      </div>
     </div>
   </div>
 </section>

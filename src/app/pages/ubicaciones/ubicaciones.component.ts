@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import {
@@ -13,9 +13,8 @@ import {
   CoverageRegion,
   CoverageZone,
 } from '../../core/constants/coverage-zones';
-import { GOOGLE_REVIEWS_SUMMARY } from '../../core/constants/reviews';
-import { BreadcrumbItem } from '../../core/models/breadcrumb.model';
 import { BUSINESS_INFO } from '../../core/constants/site';
+import { BreadcrumbItem } from '../../core/models/breadcrumb.model';
 import { buildBreadcrumbJsonLd, combineJsonLd } from '../../core/constants/seo-schemas';
 import { SeoService } from '../../core/services/seo.service';
 import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.component';
@@ -26,11 +25,13 @@ import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.componen
   templateUrl: './ubicaciones.component.html',
   styleUrl: './ubicaciones.component.scss',
 })
-export class UbicacionesComponent implements OnInit {
+export class UbicacionesComponent implements OnInit, OnDestroy {
   private readonly seo = inject(SeoService);
   private readonly sanitizer = inject(DomSanitizer);
+  private heroAutoplayId?: ReturnType<typeof setInterval>;
 
   protected hoveredSlug: string | null = null;
+  protected activeHeroSlide = 0;
   protected readonly regiones = COVERAGE_REGIONS;
   protected readonly coverageStats = {
     regiones: COVERAGE_REGIONS.length,
@@ -38,8 +39,22 @@ export class UbicacionesComponent implements OnInit {
     nacionales: COVERAGE_REGIONS.filter((r) => r.modalidad === 'nacional').length,
     zonas: COVERAGE_ZONES.length,
   };
-  protected readonly googleReviews = GOOGLE_REVIEWS_SUMMARY;
   protected readonly mapEmbedUrl: SafeResourceUrl;
+
+  protected readonly heroSlides = [
+    {
+      src: '/assets/categorias/equipamiento-profesional.png',
+      alt: 'TUNEGOCIO equipamiento profesional — maquinaria industrial en acero inoxidable',
+    },
+    {
+      src: '/assets/hero-banner.png',
+      alt: 'TUNEGOCIO equipamiento profesional de cocina industrial en acero inoxidable',
+    },
+    {
+      src: '/assets/categorias/maquinariaespecial.png',
+      alt: 'Maquinaria industrial especializada TUNEGOCIO en acero inoxidable',
+    },
+  ];
 
   protected readonly contact = {
     phoneFormatted: `+${PHONE_NUMBER}`,
@@ -68,6 +83,27 @@ export class UbicacionesComponent implements OnInit {
       canonicalPath: '/ubicaciones',
       jsonLd: combineJsonLd(buildBreadcrumbJsonLd(this.breadcrumbs)),
     });
+
+    this.heroAutoplayId = setInterval(() => this.nextHeroSlide(), 5500);
+  }
+
+  ngOnDestroy(): void {
+    if (this.heroAutoplayId) {
+      clearInterval(this.heroAutoplayId);
+    }
+  }
+
+  protected goToHeroSlide(index: number): void {
+    this.activeHeroSlide = index;
+  }
+
+  protected prevHeroSlide(): void {
+    this.activeHeroSlide =
+      (this.activeHeroSlide - 1 + this.heroSlides.length) % this.heroSlides.length;
+  }
+
+  protected nextHeroSlide(): void {
+    this.activeHeroSlide = (this.activeHeroSlide + 1) % this.heroSlides.length;
   }
 
   zoneWhatsappUrl(zona: CoverageZone, region: CoverageRegion): string {

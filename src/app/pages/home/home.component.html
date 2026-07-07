@@ -1,62 +1,152 @@
 <section class="hero-banner" aria-label="Equipamiento profesional TUNEGOCIO">
-  <div class="container hero-banner__inner">
-    <div class="hero-banner__visual">
-      <img
-        class="hero-banner__image"
-        src="assets/hero-banner.png"
-        alt="TUNEGOCIO equipamiento profesional de cocina industrial en acero inoxidable"
-        width="1920"
-        height="1080"
-        fetchpriority="high"
-      />
-    </div>
+  <h1 class="hero-banner__sr-title">
+    TUNEGOCIO — Equipos industriales y equipamiento profesional en Colombia
+  </h1>
 
-    <div class="hero-banner__footer">
-      <h1 class="hero-banner__sr-title">
-        TUNEGOCIO — Equipos industriales y equipamiento profesional en Colombia
-      </h1>
+  <div class="hero-carousel">
+    <div class="hero-carousel__stage">
+      @for (slide of heroSlides; track slide.src; let i = $index) {
+        <figure
+          class="hero-carousel__slide"
+          [class.is-active]="activeHeroSlide === i"
+          [attr.aria-hidden]="activeHeroSlide !== i"
+        >
+          <img
+            class="hero-carousel__image"
+            [src]="assetUrl(slide.src)"
+            [alt]="slide.alt"
+            width="1920"
+            height="1080"
+            [attr.fetchpriority]="i === 0 ? 'high' : null"
+            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+            decoding="async"
+          />
+        </figure>
+      }
 
-      <ul class="hero-banner__badges">
-        <li class="hero-banner__badge">★ {{ reviewSummary.rating }} Google · {{ reviewSummary.totalReviews }} reseñas</li>
-        <li class="hero-banner__badge">Envío nacional</li>
-        <li class="hero-banner__badge">Respuesta en minutos</li>
-      </ul>
+      <button
+        type="button"
+        class="hero-carousel__arrow hero-carousel__arrow--prev"
+        aria-label="Imagen anterior"
+        (click)="prevHeroSlide()"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
 
-      <div class="hero-banner__actions">
-        <a class="btn btn--hero-primary" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
-          Cotizar por WhatsApp
-        </a>
-        <a class="btn btn--hero-secondary" routerLink="/productos">Ver catálogo</a>
+      <button
+        type="button"
+        class="hero-carousel__arrow hero-carousel__arrow--next"
+        aria-label="Siguiente imagen"
+        (click)="nextHeroSlide()"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+
+      <div class="hero-carousel__dots" role="tablist" aria-label="Galería principal">
+        @for (slide of heroSlides; track slide.src; let i = $index) {
+          <button
+            type="button"
+            class="hero-carousel__dot"
+            role="tab"
+            [class.is-active]="activeHeroSlide === i"
+            [attr.aria-selected]="activeHeroSlide === i"
+            [attr.aria-label]="'Imagen ' + (i + 1) + ' de ' + heroSlides.length"
+            (click)="goToHeroSlide(i)"
+          ></button>
+        }
       </div>
     </div>
   </div>
 </section>
 
-<section class="categories-showcase" aria-labelledby="categories-title">
-  <div class="container">
-    <header class="categories-showcase__header">
-      <p class="categories-showcase__eyebrow">Nuestras categorías</p>
-      <h2 id="categories-title">Maquinaria industrial para tu negocio</h2>
-      <p class="categories-showcase__lead">
-        Hornos, asadores, estufas, vitrinas y equipos en acero inoxidable. Elige tu categoría y
-        cotiza hoy.
-      </p>
-      <a class="categories-showcase__catalog" routerLink="/productos">Ver catálogo completo</a>
-    </header>
+<section class="models-carousel" aria-label="Categorías de equipos industriales">
+  <div class="container models-carousel__promo">
+    <a class="models-carousel__studio" routerLink="/cotizador">
+      <span>Nuevo</span>
+      <strong>Configura tu maquinaria en el cotizador</strong>
+      <span class="models-carousel__studio-cta">Armar cotización</span>
+    </a>
+  </div>
+  <div class="models-carousel__wrap">
+    <button
+      type="button"
+      class="models-carousel__arrow models-carousel__arrow--prev"
+      aria-label="Categoría anterior"
+      [disabled]="!canScrollModelsPrev"
+      (click)="scrollModels('prev')"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
 
-    <div class="categories-showcase__grid">
-      @for (category of categories; track category.slug; let i = $index) {
-        <app-category-card
-          [category]="category"
-          [animationDelay]="i * 70 + 'ms'"
-          variant="showcase"
-        />
+    <div #modelsTrack class="models-carousel__track" (scroll)="onModelsScroll()">
+      @for (category of categories; track category.slug) {
+        <article class="model-card">
+          <div class="model-card__media">
+            <p class="model-card__eyebrow">{{ category.intro }}</p>
+            <img
+              class="model-card__image"
+              [src]="assetUrl(category.image)"
+              [alt]="category.heading"
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+          </div>
+          <div class="model-card__footer">
+            <h2 class="model-card__title">{{ category.heading }}</h2>
+            <div class="model-card__actions">
+              <a
+                class="btn-tesla btn-tesla--primary"
+                [href]="categoryWhatsappUrl(category)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cotizar
+              </a>
+              <a class="btn-tesla btn-tesla--secondary" [routerLink]="['/', category.slug]">
+                Más información
+              </a>
+            </div>
+          </div>
+        </article>
       }
+
+      <article class="model-card model-card--catalog">
+        <div class="model-card__media model-card__media--catalog">
+          <div class="model-card__catalog-bg" aria-hidden="true"></div>
+          <p class="model-card__eyebrow">Catálogo completo</p>
+        </div>
+        <div class="model-card__footer">
+          <h2 class="model-card__title">Todos los equipos</h2>
+          <div class="model-card__actions">
+            <a class="btn-tesla btn-tesla--primary" routerLink="/productos">Ver productos</a>
+            <a class="btn-tesla btn-tesla--secondary" routerLink="/ubicaciones">Cobertura</a>
+          </div>
+        </div>
+      </article>
     </div>
+
+    <button
+      type="button"
+      class="models-carousel__arrow models-carousel__arrow--next"
+      aria-label="Siguiente categoría"
+      [disabled]="!canScrollModelsNext"
+      (click)="scrollModels('next')"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
   </div>
 </section>
 
-<section class="home-seo" aria-labelledby="home-seo-title">
+<section class="home-seo home-seo--minimal" aria-labelledby="home-seo-title">
   <div class="container home-seo__inner">
     <h2 id="home-seo-title">Equipos industriales en Bogotá y todo Colombia</h2>
     <p>
@@ -74,18 +164,18 @@
       <a routerLink="/hornos-industriales">Hornos industriales</a>
       <a routerLink="/asadores-de-pollos">Asadores de pollos</a>
       <a routerLink="/estufas-industriales">Estufas industriales</a>
-      <a routerLink="/instalacion-extraccion-industrial">Instalación industrial</a>
+      <a routerLink="/sistemas-de-extraccion">Sistemas de extracción</a>
+      <a routerLink="/instalacion-extraccion-industrial">Instalación y envío</a>
       <a routerLink="/contacto">Contacto y cotización</a>
     </div>
   </div>
 </section>
 
-<section class="featured-products" aria-labelledby="featured-title">
+<section class="featured-products featured-products--tesla" aria-labelledby="featured-title">
   <div class="container">
     <header class="featured-products__header">
-      <p class="featured-products__eyebrow">Más solicitados</p>
-      <h2 id="featured-title">Equipos industriales destacados</h2>
-      <p>Conoce algunos de los equipos que más cotizan nuestros clientes en Colombia.</p>
+      <h2 id="featured-title">Equipos destacados</h2>
+      <p>Los más cotizados por nuestros clientes en Colombia.</p>
     </header>
 
     <div class="featured-products__grid">
@@ -122,37 +212,63 @@
 
 <app-reviews-section />
 
-<section class="section section--warm">
-  <div class="container split">
-    <div>
-      <p class="section__eyebrow">Servicio integral</p>
-      <h2>Instalación de ductos y sistemas de extracción</h2>
+<section class="home-instalacion" aria-labelledby="home-instalacion-title">
+  <div class="container home-instalacion__grid">
+    <figure class="home-instalacion__visual">
+      <img
+        [src]="assetUrl(instalacionImage)"
+        alt="Instalación de maquinaria industrial TUNEGOCIO.COM"
+        width="720"
+        height="540"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="home-instalacion__copy">
+      <span class="home-instalacion__eyebrow">Instalación y envío</span>
+      <h2 id="home-instalacion-title">Te instalamos tu maquinaria, sin sorpresas</h2>
       <p>
-        Diseñamos e instalamos extractores industriales y campanas en acero inoxidable para
-        mantener higiene, seguridad y eficiencia en tu cocina.
+        Hornos, estufas, asadores y maquinaria especializada: cotizamos el equipo, el envío a tu
+        zona y la instalación por separado, para que sepas exactamente en qué inviertes.
       </p>
-      <a class="btn btn--gold" routerLink="/instalacion-extraccion-industrial">Conocer servicio</a>
-    </div>
-    <div class="highlight-box highlight-box--gold">
-      <h3>¿Por qué elegirnos?</h3>
-      <ul>
-        <li>Fabricación propia en acero inoxidable</li>
-        <li>Asesoría técnica personalizada</li>
-        <li>Instalación y soporte posventa</li>
-        <li>Cotización rápida por WhatsApp</li>
+
+      <ul class="home-instalacion__highlights">
+        <li>
+          <strong>Equipo</strong>
+          <span>Precio visible en el catálogo</span>
+        </li>
+        <li>
+          <strong>Envío</strong>
+          <span>Según zona en Bogotá y sabana</span>
+        </li>
+        <li>
+          <strong>Instalación</strong>
+          <span>Cotizada según tu proyecto</span>
+        </li>
       </ul>
+
+      <div class="home-instalacion__actions">
+        <a class="btn btn--gold" routerLink="/instalacion-extraccion-industrial">
+          Conocer servicio
+        </a>
+        <a class="home-instalacion__link" routerLink="/ubicaciones">Ver cobertura y envíos</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section section--cta">
-  <div class="container cta-panel">
-    <h2>¿Listo para equipar tu negocio?</h2>
-    <p>
-      Cotiza hoy mismo y recibe asesoría personalizada para elegir el equipo ideal.
-    </p>
-    <a class="btn btn--cta" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
-      Quiero cotizar ahora
+<section class="tesla-cta">
+  <h2>¿Listo para equipar tu negocio?</h2>
+  <p>Cotiza hoy y recibe asesoría personalizada para elegir el equipo ideal.</p>
+  <div class="tesla-panel__actions">
+    <a
+      class="btn-tesla btn-tesla--primary"
+      [href]="whatsappUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Cotizar ahora
     </a>
+    <a class="btn-tesla btn-tesla--outline-light" routerLink="/productos">Ver catálogo</a>
   </div>
 </section>

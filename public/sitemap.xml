@@ -2,110 +2,404 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tunegocio.com.co</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/productos</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tunegocio.com.co/cotizador</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
     <loc>https://tunegocio.com.co/hornos-industriales</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/asadores-de-pollos</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/estufas-industriales</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tunegocio.com.co/vitrinas-industriales</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tunegocio.com.co/mesones-acero-inoxidable</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tunegocio.com.co/maquinaria-especializada</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/carros-de-comidas</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/maquinaria</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/maquinaria-especializada</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/mesones-acero-inoxidable</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/vitrinas-industriales</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/sistemas-de-extraccion</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/instalacion-extraccion-industrial</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/ubicaciones</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/nosotros</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/contacto</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tunegocio.com.co/ubicaciones</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://tunegocio.com.co/productos/horno-multifuncional-con-bandejas</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://tunegocio.com.co/contacto</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://tunegocio.com.co/productos/horno-4-camaras-con-termometro-acero</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://tunegocio.com.co/productos/horno-industrial-rotativo</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://tunegocio.com.co/productos/horno-panadero-2-camaras</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://tunegocio.com.co/productos/asador-de-pollos-industrial</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://tunegocio.com.co/productos/freidora-industrial-de-3-tuneles</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-rotatorio-12-bandejas</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-3-camaras-con-visor</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-3-camaras-lata-de-65-cm</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/imgi-56-1774288396038</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://tunegocio.com.co/productos/estufa-industrial-con-horno</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://tunegocio.com.co/productos/vitrina-refrigerada-industrial</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://tunegocio.com.co/productos/campana-extractora-en-acero-inoxidable</loc>
+    <lastmod>2026-07-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-multiusos-de-mesa-en-acero</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-industrial-multiusos-casero</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-para-panaderia-4-camaras</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/horno-para-pizza-1-camara-de-acero</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-para-24-pollos-premium-a-gas</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-para-pollos-a-carbon-ecologico</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/instalacion-de-ductos-y-equipos-de-cocina</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/barra-para-picar-pollo-150-cm</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/freidora-industrial-de-3-tuneles-2</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/freidor-de-alto-rendimiento-valvula-americana</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-de-pollos-estandar</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-de-pollos</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/exclusiva-estufa-con-plancha-y-freidora</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-de-gas-4-puestos</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/freidora-industrial-de-3-tuneles-3</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-industrial-6-puestos-con-plancha-y-freidor</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-giratorio-para-arepas-boyacenses</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-industrial-con-horno-2</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/imgi-54-1774392983932</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/freidora-industrial-en-acero-inoxidable-304-alto-rendimiento-30l</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-industrial-para-restaurante</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-de-4-puestos</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-a-gas-para-restaurante</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estufa-industrial-4-puestos</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/plancha-con-freidores-ambulante</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/estacion-de-comidas-rapidas-4-puestos</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/carrito-de-comidas-mixto</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/carro-de-comidas-rapidas</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/carro-personalizado-para-comidas</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/carro-para-comidas-rapidas-en-acero</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/puesto-de-comidas-3-servicios</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/freidora-industrial-en-acero-inoxidable-304-alto-rendimiento-30l-2</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/amasadora-para-panaderia</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/maquina-granizadora-industrial-2-tanques</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/amasadora-para-panaderia-2</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/laminadora-con-rodillo-de-corte</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/asador-de-arepas-tipo-tunel</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/meson-en-acero-100-cm</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/meson-en-acero-doble-entrepano</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/lavatraperos-en-acero-inoxidable</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://tunegocio.com.co/productos/vitrina-mostradora-refrigerada-120cm</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
   </url>
 </urlset>

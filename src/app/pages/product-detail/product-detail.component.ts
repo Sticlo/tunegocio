@@ -40,7 +40,7 @@ export class ProductDetailComponent implements OnInit {
     const category = CATEGORY_LIST.find((item) => item.slug === this.product?.categorySlug);
     this.breadcrumbs = [
       { label: 'Inicio', path: '/' },
-      { label: 'Productos', path: '/productos' },
+      { label: 'Categorías', path: '/productos' },
       ...(category
         ? [{ label: category.heading, path: `/${category.slug}` }]
         : []),
@@ -59,6 +59,7 @@ export class ProductDetailComponent implements OnInit {
       canonicalPath: `/productos/${slug}`,
       ogType: 'product',
       ogImage: this.product ? `${SITE_URL}/${this.product.image}` : undefined,
+      noIndex: !this.product,
       jsonLd: combineJsonLd(
         buildBreadcrumbJsonLd(this.breadcrumbs),
         this.product ? buildProductJsonLd(this.product, this.title) : undefined,

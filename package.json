@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "catalog:generate": "node scripts/generate-products-catalog.mjs",
+    "seo:generate": "npm run catalog:generate",
     "build": "ng build",
     "deploy": "npm run build && wrangler deploy",
     "preview:cf": "npm run build && wrangler dev",

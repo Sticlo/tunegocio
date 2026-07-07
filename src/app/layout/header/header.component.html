@@ -20,6 +20,7 @@
           class="header__link"
           [routerLink]="item.path"
           routerLinkActive="header__link--active"
+          [routerLinkActiveOptions]="item.path === '/' ? { exact: true } : { exact: false }"
           (click)="closeMenu()"
         >
           {{ item.label }}

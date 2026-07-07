@@ -1,0 +1,321 @@
+<section class="cotizador-hero">
+  <div class="container">
+    <app-breadcrumb [items]="breadcrumbs" />
+    <div class="cotizador-hero__intro">
+      <span class="cotizador-hero__eyebrow">Cotizador a medida</span>
+      <h1>Configura tu maquinaria y cotiza</h1>
+      <p>
+        Elige un equipo de referencia del catálogo y personalízalo: más túneles en la freidora, más
+        cámaras en el horno, medidas especiales y más. Envía tu configuración por WhatsApp.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="cotizador-page">
+  <div class="container cotizador-page__layout">
+    <div class="cotizador-page__main">
+      <div class="cotizador-presets">
+        <span class="cotizador-presets__label">Tipo de negocio</span>
+        <div class="cotizador-presets__chips">
+          @for (preset of presets; track preset.id) {
+            <button
+              type="button"
+              class="cotizador-presets__chip"
+              [class.is-active]="activePreset().id === preset.id"
+              (click)="selectPreset(preset)"
+            >
+              {{ preset.name }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="cotizador-categories">
+        <button
+          type="button"
+          class="cotizador-categories__chip"
+          [class.is-active]="activeCategory() === 'all'"
+          (click)="selectCategory('all')"
+        >
+          Todas
+        </button>
+        @for (category of visibleCategories(); track category.slug) {
+          <button
+            type="button"
+            class="cotizador-categories__chip"
+            [class.is-active]="activeCategory() === category.slug"
+            (click)="selectCategory(category.slug)"
+          >
+            {{ category.heading }}
+          </button>
+        }
+      </div>
+
+      <div class="cotizador-catalog">
+        @for (product of filteredProducts(); track product.slug) {
+          <article
+            class="cotizador-product"
+            [class.cotizador-product--in-quote]="unitsInQuote(product.slug) > 0"
+          >
+            @if (unitsInQuote(product.slug) > 0) {
+              <span class="cotizador-product__badge">
+                {{ unitsInQuote(product.slug) }} en tu cotización
+              </span>
+            }
+            <button type="button" class="cotizador-product__body" (click)="openConfigurator(product)">
+              <img
+                [src]="assetUrl(product.image)"
+                [alt]="product.name"
+                width="160"
+                height="120"
+                loading="lazy"
+              />
+              <div class="cotizador-product__info">
+                <span class="cotizador-product__category">{{ categoryLabel(product.categorySlug) }}</span>
+                <h3>{{ product.name }}</h3>
+                <span class="cotizador-product__price">{{ product.priceLabel }}</span>
+              </div>
+            </button>
+            <button type="button" class="cotizador-product__configure" (click)="openConfigurator(product)">
+              Configurar
+            </button>
+          </article>
+        }
+      </div>
+    </div>
+
+    <aside class="cotizador-summary" [class.cotizador-summary--active]="lineItems().length > 0">
+      <div class="cotizador-summary__head">
+        <h2>Tu cotización</h2>
+        @if (lineItems().length > 0) {
+          <span class="cotizador-summary__count">{{ totalUnits() }} equipos</span>
+        }
+      </div>
+
+      <div class="cotizador-progress">
+        <div class="cotizador-progress__bar">
+          <span class="cotizador-progress__fill" [style.width.%]="quoteProgress().percent"></span>
+        </div>
+        <ul class="cotizador-progress__steps">
+          <li [class.is-done]="quoteProgress().hasItems">Equipos</li>
+          <li [class.is-done]="quoteProgress().hasZone">Zona</li>
+          <li [class.is-done]="quoteProgress().ready">Listo</li>
+        </ul>
+      </div>
+
+      @if (lineItems().length > 0) {
+        <div class="cotizador-summary__strip" aria-label="Vista previa de equipos">
+          @for (item of lineItems(); track item.key) {
+            <figure
+              class="cotizador-summary__thumb"
+              [class.is-new]="isJustAdded(item.key)"
+              [title]="item.product.name"
+            >
+              <img [src]="assetUrl(item.product.image)" [alt]="" width="40" height="40" />
+              @if (item.quantity > 1) {
+                <span>{{ item.quantity }}</span>
+              }
+            </figure>
+          }
+        </div>
+      }
+
+      <label class="cotizador-summary__field">
+        <span>Nombre del negocio (opcional)</span>
+        <input
+          type="text"
+          placeholder="Ej. Panadería La Espiga"
+          [value]="businessName()"
+          (input)="businessName.set($any($event.target).value)"
+        />
+      </label>
+
+      <label class="cotizador-summary__field">
+        <span>Ciudad o zona</span>
+        <input
+          type="text"
+          placeholder="Ej. Kennedy, Bogotá"
+          [value]="city()"
+          (input)="city.set($any($event.target).value)"
+        />
+      </label>
+
+      @if (lineItems().length === 0) {
+        <p class="cotizador-summary__empty">
+          Selecciona un equipo y configúralo. Puedes agregar varias versiones del mismo producto con
+          distintas especificaciones.
+        </p>
+      } @else {
+        <ul class="cotizador-summary__list">
+          @for (item of lineItems(); track item.key) {
+            <li class="cotizador-summary__item" [class.is-new]="isJustAdded(item.key)">
+              <div class="cotizador-summary__item-top">
+                <img
+                  [src]="assetUrl(item.product.image)"
+                  [alt]="item.product.name"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+                <div>
+                  <strong>{{ item.product.name }}</strong>
+                  <span>{{ item.product.priceLabel }}</span>
+                  @if (configSummary(item)) {
+                    <p class="cotizador-summary__config">{{ configSummary(item) }}</p>
+                  }
+                </div>
+              </div>
+              <div class="cotizador-summary__item-actions">
+                <div class="cotizador-qty">
+                  <button type="button" aria-label="Reducir cantidad" (click)="changeQuantity(item.key, -1)">
+                    −
+                  </button>
+                  <span>{{ item.quantity }}</span>
+                  <button type="button" aria-label="Aumentar cantidad" (click)="changeQuantity(item.key, 1)">
+                    +
+                  </button>
+                </div>
+                <button type="button" class="cotizador-summary__remove" (click)="removeItem(item.key)">
+                  Quitar
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <div class="cotizador-summary__totals">
+          @if (pricedSubtotal() > 0) {
+            <div class="cotizador-summary__row">
+              <span>Subtotal referencia</span>
+              <strong>{{ formatPrice(pricedSubtotal()) }}</strong>
+            </div>
+            <div class="cotizador-summary__row cotizador-summary__row--muted">
+              <span>Desde {{ addiMonths }} cuotas con Addi</span>
+              <span>~{{ formatPrice(monthlyEstimate()) }}/mes</span>
+            </div>
+          }
+          @if (cotizarItems().length > 0) {
+            <p class="cotizador-summary__note">
+              Los equipos a medida se cotizan según tu configuración, envío e instalación.
+            </p>
+          }
+          <div class="cotizador-summary__row cotizador-summary__row--muted">
+            <span>Envío e instalación</span>
+            <span>Según zona</span>
+          </div>
+        </div>
+      }
+
+      <a
+        class="btn btn--gold cotizador-summary__whatsapp"
+        [href]="whatsappUrl()"
+        target="_blank"
+        rel="noopener noreferrer"
+        [class.cotizador-summary__whatsapp--disabled]="lineItems().length === 0"
+        (click)="lineItems().length === 0 ? $event.preventDefault() : null"
+      >
+        Enviar cotización por WhatsApp
+      </a>
+      <a class="cotizador-summary__link" routerLink="/instalacion-extraccion-industrial">
+        Cómo cotizamos envío e instalación
+      </a>
+    </aside>
+  </div>
+</section>
+
+@if (configuringProduct(); as product) {
+  <div class="cotizador-modal-backdrop" role="presentation" (click)="closeConfigurator()"></div>
+  <aside class="cotizador-modal" role="dialog" aria-labelledby="config-title">
+    <header class="cotizador-modal__header">
+      <div>
+        <span class="cotizador-modal__category">{{ categoryLabel(product.categorySlug) }}</span>
+        <h2 id="config-title">Configurar {{ product.name }}</h2>
+        <p>Base de referencia: {{ product.priceLabel }}. Ajusta las especificaciones a tu necesidad.</p>
+      </div>
+      <button type="button" class="cotizador-modal__close" (click)="closeConfigurator()" aria-label="Cerrar">
+        ×
+      </button>
+    </header>
+
+    <div class="cotizador-modal__live">
+      <p class="cotizador-modal__live-label">Vista previa en vivo</p>
+      <div class="cotizador-modal__live-card">
+        <img [src]="assetUrl(product.image)" [alt]="product.name" width="88" height="66" />
+        <div>
+          <strong>{{ product.name }}</strong>
+          @if (draftPreviewChips().length > 0) {
+            <ul class="cotizador-modal__chips">
+              @for (chip of draftPreviewChips(); track chip.label + chip.value) {
+                <li><span>{{ chip.label }}:</span> {{ chip.value }}</li>
+              }
+            </ul>
+          } @else {
+            <p class="cotizador-modal__live-empty">Ajusta las opciones para ver cómo queda.</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="cotizador-modal__fields">
+      @for (field of configFields(); track field.id) {
+        <label class="cotizador-modal__field">
+          <span>{{ field.label }}</span>
+          @if (field.type === 'select' && field.options) {
+            <select
+              [value]="draftConfig()[field.id] ?? ''"
+              (change)="updateDraftConfig(field.id, $any($event.target).value)"
+            >
+              @for (option of field.options; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          } @else {
+            <input
+              type="text"
+              [placeholder]="field.placeholder ?? ''"
+              [value]="draftConfig()[field.id] ?? ''"
+              (input)="updateDraftConfig(field.id, $any($event.target).value)"
+            />
+          }
+        </label>
+      }
+
+      <label class="cotizador-modal__field">
+        <span>Notas adicionales</span>
+        <textarea
+          rows="3"
+          placeholder="Ej. necesito 4 túneles en lugar de 3, con válvula americana"
+          [value]="draftNotes()"
+          (input)="draftNotes.set($any($event.target).value)"
+        ></textarea>
+      </label>
+
+      <div class="cotizador-modal__qty">
+        <span>Cantidad de unidades</span>
+        <div class="cotizador-qty">
+          <button type="button" aria-label="Reducir" (click)="updateDraftQuantity(-1)">−</button>
+          <span>{{ draftQuantity() }}</span>
+          <button type="button" aria-label="Aumentar" (click)="updateDraftQuantity(1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="cotizador-modal__footer">
+      <button type="button" class="cotizador-modal__cancel" (click)="closeConfigurator()">Cancelar</button>
+      <button type="button" class="btn btn--gold" (click)="confirmConfiguration()">
+        Agregar a la cotización
+      </button>
+    </footer>
+  </aside>
+}
+
+@if (toastMessage(); as message) {
+  <div class="cotizador-toast" role="status" aria-live="polite">{{ message }}</div>
+}
+
+@if (lineItems().length > 0) {
+  <div class="cotizador-mobile-bar" aria-hidden="true">
+    <span>{{ totalUnits() }} equipos · {{ pricedSubtotal() > 0 ? formatPrice(pricedSubtotal()) : 'A cotizar' }}</span>
+  </div>
+}

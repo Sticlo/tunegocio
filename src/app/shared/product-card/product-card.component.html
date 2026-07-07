@@ -17,9 +17,15 @@
     <div class="product-card__footer">
       <span class="product-card__price">{{ product().priceLabel }}</span>
       <div class="product-card__actions">
-        <button type="button" class="btn btn--gold btn--sm" (click)="onAddToCart()">
-          Añadir al carrito
-        </button>
+        @if (product().price > 0) {
+          <button type="button" class="btn btn--gold btn--sm" (click)="onAddToCart()">
+            Añadir al carrito
+          </button>
+        } @else {
+          <a class="btn btn--gold btn--sm" [routerLink]="['/productos', product().slug]">
+            Leer más
+          </a>
+        }
         <a class="product-card__link" [routerLink]="['/productos', product().slug]">Ver ficha</a>
       </div>
     </div>

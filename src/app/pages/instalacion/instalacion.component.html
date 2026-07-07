@@ -1,39 +1,178 @@
-<section class="page-hero">
-  <div class="container">
+<section class="instal-hero">
+  <div class="container instal-hero__top">
     <app-breadcrumb [items]="breadcrumbs" />
-    <h1>Instalación de ductos y sistemas de extracción</h1>
-    <p class="page-hero__text">
-      Diseñamos e instalamos sistemas de extracción industrial para mantener higiene, seguridad y
-      eficiencia en tu cocina.
-    </p>
+  </div>
+
+  <div class="container instal-hero__grid">
+    <div class="instal-hero__copy">
+      <span class="instal-hero__eyebrow">Servicio profesional</span>
+      <h1>Instalación de maquinaria industrial</h1>
+      <p class="instal-hero__lead">
+        Hornos, estufas, asadores, vitrinas y maquinaria especializada: te acompañamos desde la
+        cotización hasta el montaje, con precios claros en equipo, envío e instalación.
+      </p>
+      <div class="instal-hero__actions">
+        <a class="btn btn--gold" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+          Cotizar instalación
+        </a>
+        <a class="instal-hero__link" routerLink="/ubicaciones">Ver cobertura y envíos</a>
+      </div>
+    </div>
+
+    <figure class="instal-hero__visual">
+      <img
+        [src]="heroImage"
+        alt="Instalación de maquinaria y equipos industriales TUNEGOCIO.COM"
+        width="720"
+        height="540"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
   </div>
 </section>
 
-<section class="section">
-  <div class="container split">
-    <div>
-      <h2>Servicio integral</h2>
+<section class="instal-trust" aria-label="Ventajas del servicio">
+  <div class="container instal-trust__grid">
+    @for (pillar of pillars; track pillar.title) {
+      <article class="instal-trust__card">
+        <div class="instal-trust__icon" aria-hidden="true">
+          @switch (pillar.icon) {
+            @case ('quote') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+              </svg>
+            }
+            @case ('shield') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            }
+            @default {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            }
+          }
+        </div>
+        <h3>{{ pillar.title }}</h3>
+        <p>{{ pillar.description }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="instal-pricing">
+  <div class="container">
+    <header class="instal-pricing__header">
+      <span class="instal-pricing__eyebrow">Precios transparentes</span>
+      <h2>Cada proyecto es distinto, y te lo explicamos con claridad</h2>
       <p>
-        Nuestro equipo se encarga del diseño, montaje y puesta en marcha de extractores industriales,
-        campanas y ductos en acero inoxidable.
+        En TUNEGOCIO.COM invertir en tu negocio debe sentirse seguro. Por eso separamos el precio
+        del equipo, el envío y la instalación: así sabes en qué inviertes y recibes una propuesta
+        ajustada a tu negocio, sin sorpresas al final.
       </p>
-      <ul>
-        <li>Evaluación del espacio</li>
-        <li>Diseño de extracción</li>
-        <li>Instalación y pruebas</li>
-        <li>Mantenimiento preventivo</li>
+    </header>
+
+    <div class="instal-pricing__grid">
+      @for (card of pricingCards; track card.title) {
+        <article class="instal-pricing__card" [class]="'instal-pricing__card--' + card.variant">
+          <span class="instal-pricing__tag">{{ card.tag }}</span>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.description }}</p>
+          <ul>
+            @for (point of card.points; track point) {
+              <li><span aria-hidden="true">✓</span> {{ point }}</li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+
+    <aside class="instal-pricing__note">
+      <strong>¿Ves "Cotizar precio" en un producto?</strong>
+      <p>
+        No significa que no tengamos el equipo. Significa que necesitamos conocer tu espacio para
+        darte el valor real de envío e instalación. Escríbenos y te respondemos el mismo día.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<section class="instal-process">
+  <div class="container">
+    <header class="instal-process__header">
+      <span class="instal-process__eyebrow">Cómo trabajamos</span>
+      <h2>De la visita técnica a tu primera producción</h2>
+    </header>
+
+    <ol class="instal-process__steps">
+      @for (step of steps; track step.number) {
+        <li class="instal-process__step">
+          <span class="instal-process__number">{{ step.number }}</span>
+          <div>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.description }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="instal-services">
+  <div class="container instal-services__grid">
+    <figure class="instal-services__visual">
+      <img
+        [src]="galleryImage"
+        alt="Equipo industrial en acero inoxidable instalado por TUNEGOCIO.COM"
+        width="640"
+        height="480"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="instal-services__copy">
+      <span class="instal-services__eyebrow">Qué instalamos</span>
+      <h2>Equipos para cocina, panadería y restaurante</h2>
+      <p>
+        Montamos y conectamos la maquinaria que tu negocio necesita: desde un horno o estufa hasta
+        sistemas completos de extracción. Cada instalación se adapta a tu espacio, tus conexiones
+        y la forma en que produces.
+      </p>
+      <ul class="instal-services__categories" aria-label="Tipos de equipo">
+        @for (category of equipmentCategories; track category) {
+          <li>{{ category }}</li>
+        }
       </ul>
-      <a class="btn btn--primary" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+      <ul class="instal-services__list">
+        @for (service of services; track service) {
+          <li><span aria-hidden="true">✓</span> {{ service }}</li>
+        }
+      </ul>
+      <a class="btn btn--gold" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
         Agendar visita técnica
       </a>
     </div>
+  </div>
+</section>
 
-    <div class="highlight-box">
-      <h3>Cumplimiento y seguridad</h3>
+<section class="instal-cta">
+  <div class="container instal-cta__inner">
+    <div>
+      <h2>¿Listo para cotizar tu proyecto?</h2>
       <p>
-        Reducimos acumulación de calor y grasa, mejorando las condiciones de trabajo y el cumplimiento
-        de estándares de bioseguridad.
+        Cuéntanos qué equipo necesitas y en qué zona estás. Te enviamos precio de producto,
+        envío e instalación en una sola propuesta.
       </p>
+    </div>
+    <div class="instal-cta__actions">
+      <a class="btn btn--gold" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+        Escribir por WhatsApp
+      </a>
+      <a class="instal-cta__secondary" routerLink="/contacto">Otras formas de contacto</a>
     </div>
   </div>
 </section>

@@ -23,10 +23,25 @@ const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
 
 function loadOverrides() {
   if (!fs.existsSync(OVERRIDES_PATH)) {
-    return { names: {}, exclude: [] };
+    return { names: {}, prices: {}, descriptions: {}, categories: {}, exclude: [] };
   }
 
-  return JSON.parse(fs.readFileSync(OVERRIDES_PATH, 'utf8'));
+  const data = JSON.parse(fs.readFileSync(OVERRIDES_PATH, 'utf8'));
+  return {
+    names: data.names ?? {},
+    prices: data.prices ?? {},
+    descriptions: data.descriptions ?? {},
+    categories: data.categories ?? {},
+    exclude: data.exclude ?? [],
+  };
+}
+
+function formatPriceCOP(value) {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 function shouldExclude(filename) {
@@ -47,6 +62,7 @@ const CATEGORY_LABELS = {
   'maquinaria-especializada': 'Maquinaria especializada',
   'mesones-acero-inoxidable': 'Mesón en acero inoxidable',
   'vitrinas-industriales': 'Vitrina industrial',
+  'sistemas-de-extraccion': 'Sistema de extracción',
 };
 
 /** Misma foto exportada varias veces (imgi_12_foo.png ≈ imgi_99_foo.png). */
@@ -180,9 +196,49 @@ function pickUniqueFiles(categorySlug) {
 
 const overrides = loadOverrides();
 const products = [];
-const slugCounts = new Map();
+const usedSlugs = new Set();
 const categoryCounters = new Map();
 let skippedDuplicates = 0;
+
+function uniqueSlug(base) {
+  const normalized = slugify(base);
+  if (!normalized) return `producto-${usedSlugs.size + 1}`;
+
+  let slug = normalized;
+  let index = 2;
+  while (usedSlugs.has(slug)) {
+    slug = `${normalized}-${index}`;
+    index += 1;
+  }
+
+  usedSlugs.add(slug);
+  return slug;
+}
+
+function buildShortDescription(name, categorySlug) {
+  const categoryLabels = {
+    'hornos-industriales': 'hornos industriales',
+    'asadores-de-pollos': 'asadores de pollos',
+    'estufas-industriales': 'estufas industriales',
+    'carros-de-comidas': 'carros de comidas',
+    maquinaria: 'maquinaria industrial',
+    'maquinaria-especializada': 'maquinaria especializada',
+    'mesones-acero-inoxidable': 'mesones en acero inoxidable',
+    'vitrinas-industriales': 'vitrinas industriales',
+    'sistemas-de-extraccion': 'sistemas de extracción industrial',
+  };
+
+  if (categorySlug === 'sistemas-de-extraccion') {
+    return `${name}. Cotiza diseño, medidas e instalación según tu cocina.`;
+  }
+
+  if (/acero inoxidable/i.test(name)) {
+    return `${name}. Cotiza envío e instalación en Bogotá y todo Colombia.`;
+  }
+
+  const categoryLabel = categoryLabels[categorySlug] ?? 'equipos industriales';
+  return `${name} en acero inoxidable. Cotiza envío e instalación en Bogotá y todo Colombia.`;
+}
 
 for (const categorySlug of new Set(Object.values(FOLDER_TO_CATEGORY))) {
   const { unique, skipped } = pickUniqueFiles(categorySlug);
@@ -192,11 +248,6 @@ for (const categorySlug of new Set(Object.values(FOLDER_TO_CATEGORY))) {
     if (overrides.exclude?.includes(entry.image)) continue;
 
     const ext = path.extname(entry.file).toLowerCase();
-    const baseSlug = slugify(entry.file.replace(ext, ''));
-    const count = slugCounts.get(baseSlug) ?? 0;
-    slugCounts.set(baseSlug, count + 1);
-    const slug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
-
     const parsedName = humanize(entry.file);
     let name = overrides.names?.[entry.image] ?? parsedName;
 
@@ -207,22 +258,34 @@ for (const categorySlug of new Set(Object.values(FOLDER_TO_CATEGORY))) {
       name = `${label} ${index}`;
     }
 
+    const slugBase = overrides.names?.[entry.image]
+      ? name
+      : entry.file.replace(ext, '');
+    const slug = uniqueSlug(slugBase);
+
+    const price = overrides.prices?.[entry.image] ?? 0;
+    const priceLabel = price > 0 ? formatPriceCOP(price) : 'Cotizar precio';
+    const resolvedCategorySlug = overrides.categories?.[entry.image] ?? categorySlug;
+    const shortDescription =
+      overrides.descriptions?.[entry.image] ??
+      buildShortDescription(name, resolvedCategorySlug);
+
     products.push({
       id: slug,
       slug,
       name,
-      categorySlug,
+      categorySlug: resolvedCategorySlug,
       image: entry.image,
-      price: 0,
-      priceLabel: 'Cotizar precio',
-      shortDescription: 'Equipo industrial en acero inoxidable. Cotiza disponibilidad e instalación.',
+      price,
+      priceLabel,
+      shortDescription,
     });
   }
 }
 
 const content = `/* eslint-disable */
 // Archivo generado automáticamente. Ejecuta: npm run catalog:generate
-// Nombres manuales: scripts/product-overrides.json
+// Nombres y precios manuales: scripts/product-overrides.json
 
 export interface CatalogProduct {
   id: string;
@@ -239,6 +302,58 @@ export const PRODUCT_CATALOG: CatalogProduct[] = ${JSON.stringify(products, null
 `;
 
 fs.writeFileSync(OUTPUT, content);
+
+const SITEMAP_PATH = path.resolve('public/sitemap.xml');
+const SITE_URL = 'https://tunegocio.com.co';
+const today = new Date().toISOString().slice(0, 10);
+
+const categorySlugs = [
+  ...new Set([...Object.values(FOLDER_TO_CATEGORY), 'sistemas-de-extraccion']),
+];
+const staticPages = [
+  { loc: SITE_URL, priority: '1.0', changefreq: 'weekly' },
+  { loc: `${SITE_URL}/productos`, priority: '0.9', changefreq: 'weekly' },
+  { loc: `${SITE_URL}/cotizador`, priority: '0.88', changefreq: 'weekly' },
+  ...categorySlugs.map((slug) => ({
+    loc: `${SITE_URL}/${slug}`,
+    priority: '0.85',
+    changefreq: 'weekly',
+  })),
+  {
+    loc: `${SITE_URL}/instalacion-extraccion-industrial`,
+    priority: '0.8',
+    changefreq: 'monthly',
+  },
+  { loc: `${SITE_URL}/ubicaciones`, priority: '0.8', changefreq: 'monthly' },
+  { loc: `${SITE_URL}/nosotros`, priority: '0.6', changefreq: 'monthly' },
+  { loc: `${SITE_URL}/contacto`, priority: '0.7', changefreq: 'monthly' },
+];
+
+const productPages = products.map((product) => ({
+  loc: `${SITE_URL}/productos/${product.slug}`,
+  priority: '0.75',
+  changefreq: 'weekly',
+}));
+
+const allUrls = [...staticPages, ...productPages];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls
+  .map(
+    (url) => `  <url>
+    <loc>${url.loc}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${url.changefreq}</changefreq>
+    <priority>${url.priority}</priority>
+  </url>`,
+  )
+  .join('\n')}
+</urlset>
+`;
+
+fs.writeFileSync(SITEMAP_PATH, sitemap);
+
 console.log(
   `Generated ${products.length} products (${skippedDuplicates} duplicados omitidos) -> ${OUTPUT}`,
 );
+console.log(`Generated sitemap with ${allUrls.length} URLs -> ${SITEMAP_PATH}`);

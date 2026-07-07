@@ -5,6 +5,7 @@ import { CatalogProduct } from '../../core/constants/products.catalog';
 import {
   buildBreadcrumbJsonLd,
   buildCategoryJsonLd,
+  buildCategoryProductsJsonLd,
   combineJsonLd,
 } from '../../core/constants/seo-schemas';
 import { CartService } from '../../core/services/cart.service';
@@ -35,7 +36,7 @@ export class CategoryComponent implements OnInit {
     const data = this.category();
     this.breadcrumbs = [
       { label: 'Inicio', path: '/' },
-      { label: 'Productos', path: '/productos' },
+      { label: 'Categorías', path: '/productos' },
       { label: data.heading, path: `/${data.slug}` },
     ];
 
@@ -44,7 +45,11 @@ export class CategoryComponent implements OnInit {
       description: data.description,
       keywords: `${data.heading}, equipos industriales, acero inoxidable, Bogotá, Colombia`,
       canonicalPath: `/${data.slug}`,
-      jsonLd: combineJsonLd(buildBreadcrumbJsonLd(this.breadcrumbs), buildCategoryJsonLd(data)),
+      jsonLd: combineJsonLd(
+        buildBreadcrumbJsonLd(this.breadcrumbs),
+        buildCategoryJsonLd(data),
+        buildCategoryProductsJsonLd(data, this.products()),
+      ),
     });
   }
 

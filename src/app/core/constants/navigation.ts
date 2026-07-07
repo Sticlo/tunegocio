@@ -2,11 +2,11 @@ import { NavItem } from '../models/nav-item.model';
 
 /** Navegación principal del header — simple y clara */
 export const HEADER_NAV: NavItem[] = [
-  { label: 'Productos', path: '/productos' },
+  { label: 'Inicio', path: '/' },
+  { label: 'Categorías', path: '/productos' },
+  { label: 'Cotizador', path: '/cotizador' },
   { label: 'Instalación', path: '/instalacion-extraccion-industrial' },
-  { label: 'Nosotros', path: '/nosotros' },
   { label: 'Ubicaciones', path: '/ubicaciones' },
-  { label: 'Contacto', path: '/contacto' },
 ];
 
 /** Categorías para footer y página de productos */
@@ -17,12 +17,13 @@ export const PRIMARY_NAV: NavItem[] = [
   { label: 'Vitrinas', path: '/vitrinas-industriales' },
   { label: 'Mesones en acero', path: '/mesones-acero-inoxidable' },
   { label: 'Maquinaria especializada', path: '/maquinaria-especializada' },
+  { label: 'Sistemas de extracción', path: '/sistemas-de-extraccion' },
   { label: 'Carros de comidas', path: '/carros-de-comidas' },
   { label: 'Maquinaria', path: '/maquinaria' },
 ];
 
 export const FOOTER_NAV: NavItem[] = [
-  { label: 'Productos', path: '/productos' },
+  { label: 'Categorías', path: '/productos' },
   { label: 'Nosotros', path: '/nosotros' },
   { label: 'Ubicaciones', path: '/ubicaciones' },
   { label: 'Contacto', path: '/contacto' },

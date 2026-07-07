@@ -58,6 +58,16 @@ export const CATEGORY_LIST: CategoryPageData[] = [
     image: categoryImage('maquinariaespecial.png'),
   },
   {
+    slug: 'sistemas-de-extraccion',
+    title: 'Sistemas de extracción industrial',
+    description:
+      'Campanas extractoras, ductos y ventilación industrial en acero inoxidable. Cotiza diseño e instalación a tu medida.',
+    heading: 'Sistemas de extracción',
+    intro: 'Campanas, ductos y extracción para cocinas industriales.',
+    image:
+      'assets/categorias/HORNOS - TUNEGOCIO.COM/imgi_70_IMG-20260325-WA0075.jpg',
+  },
+  {
     slug: 'carros-de-comidas',
     title: 'Carros de comidas industriales',
     description:

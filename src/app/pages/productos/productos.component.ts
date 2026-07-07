@@ -19,12 +19,12 @@ export class ProductosComponent implements OnInit {
   protected readonly categories = CATEGORY_LIST;
   protected readonly breadcrumbs: BreadcrumbItem[] = [
     { label: 'Inicio', path: '/' },
-    { label: 'Productos', path: '/productos' },
+    { label: 'Categorías', path: '/productos' },
   ];
 
   ngOnInit(): void {
     this.seo.updatePageMeta({
-      title: 'Catálogo de equipos industriales en Colombia',
+      title: 'Categorías de equipos industriales en Colombia',
       description:
         SITE_DESCRIPTION +
         '. Hornos, asadores, estufas, vitrinas, mesones y maquinaria en acero inoxidable con envío nacional.',

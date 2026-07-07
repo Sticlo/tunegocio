@@ -47,28 +47,54 @@ export function buildCategoryJsonLd(category: CategoryPageData): Record<string, 
 }
 
 export function buildProductJsonLd(
-  product: FeaturedProduct | CatalogProduct,
+  product: CatalogProduct,
   title: string,
 ): Record<string, unknown> {
+  const offer: Record<string, unknown> = {
+    '@type': 'Offer',
+    url: `${SITE_URL}/productos/${product.slug}`,
+    priceCurrency: 'COP',
+    availability: 'https://schema.org/InStock',
+    seller: {
+      '@id': `${SITE_URL}/#localbusiness`,
+    },
+  };
+
+  if (product.price > 0) {
+    offer['price'] = product.price;
+  }
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: title,
     description: product.shortDescription,
     image: `${SITE_URL}/${product.image}`,
+    category: product.categorySlug,
     brand: {
       '@type': 'Brand',
       name: SITE_NAME,
     },
-    offers: {
-      '@type': 'Offer',
+    offers: offer,
+  };
+}
+
+export function buildCategoryProductsJsonLd(
+  category: CategoryPageData,
+  products: CatalogProduct[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Catálogo de ${category.heading}`,
+    url: `${SITE_URL}/${category.slug}`,
+    numberOfItems: products.length,
+    itemListElement: products.map((product, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: product.name,
       url: `${SITE_URL}/productos/${product.slug}`,
-      priceCurrency: 'COP',
-      availability: 'https://schema.org/InStock',
-      seller: {
-        '@id': `${SITE_URL}/#localbusiness`,
-      },
-    },
+    })),
   };
 }
 

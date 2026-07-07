@@ -1,1 +1,518 @@
+// ─── Hero ───
+.instal-hero {
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 0%, rgba(245, 241, 232, 0.95) 0%, transparent 65%),
+    #fff;
+  border-bottom: 1px solid var(--color-border);
+}
 
+.instal-hero__top {
+  padding-top: 1rem;
+}
+
+.instal-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding: 1.25rem 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.instal-hero__eyebrow,
+.instal-pricing__eyebrow,
+.instal-process__eyebrow,
+.instal-services__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #e5d9c0;
+  background: var(--color-brand-champagne);
+  font-family: var(--font-nav);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.instal-hero__copy h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-nav);
+  font-size: clamp(1.85rem, 4vw, 2.65rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-brand-charcoal);
+}
+
+.instal-hero__lead {
+  margin: 0 0 1.5rem;
+  max-width: 42ch;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--color-brand-warm-gray);
+}
+
+.instal-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.instal-hero__link {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--color-brand-gold-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    color: var(--color-brand-charcoal);
+  }
+}
+
+.instal-hero__visual {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(26, 26, 26, 0.08);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+// ─── Trust strip ───
+.instal-trust {
+  padding: 1.25rem 0 1.5rem;
+  background: var(--color-brand-champagne);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.instal-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.instal-trust__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.15rem 1rem;
+  border-radius: 0.85rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(184, 149, 46, 0.45);
+  }
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-nav);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+}
+
+.instal-trust__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
+  background: var(--color-brand-champagne);
+  color: var(--color-brand-gold-dark);
+
+  svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+}
+
+// ─── Pricing ───
+.instal-pricing {
+  padding: clamp(2.5rem, 5vw, 3.75rem) 0;
+  background: #fff;
+}
+
+.instal-pricing__header {
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-nav);
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-charcoal);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+}
+
+.instal-pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.instal-pricing__card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.25rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(26, 26, 26, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 48px rgba(26, 26, 26, 0.08);
+  }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-nav);
+    font-size: 1.08rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--color-brand-charcoal);
+  }
+
+  > p {
+    margin: 0 0 1rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  ul {
+    margin: auto 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      margin-bottom: 0.45rem;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: var(--color-brand-charcoal);
+
+      span {
+        flex-shrink: 0;
+        color: var(--color-brand-gold-dark);
+        font-weight: 700;
+      }
+    }
+  }
+
+  &--equipment {
+    border-top: 3px solid #d4c4a0;
+  }
+
+  &--shipping {
+    border-top: 3px solid var(--color-brand-gold);
+  }
+
+  &--install {
+    border-top: 3px solid var(--color-brand-gold-dark);
+  }
+}
+
+.instal-pricing__tag {
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 0.85rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--color-brand-ivory);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+}
+
+.instal-pricing__note {
+  padding: 1.15rem 1.25rem;
+  border-radius: 0.85rem;
+  border: 1px solid #e8dcc4;
+  background: linear-gradient(135deg, #fdfbf7 0%, var(--color-brand-champagne) 100%);
+
+  strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-family: var(--font-nav);
+    font-size: 0.95rem;
+    color: var(--color-brand-charcoal);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+}
+
+// ─── Process ───
+.instal-process {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(245, 241, 232, 0.7) 0%, transparent 70%),
+    #fff;
+  border-top: 1px solid var(--color-border);
+}
+
+.instal-process__header {
+  max-width: 32rem;
+  margin-bottom: 1.75rem;
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-nav);
+    font-size: clamp(1.35rem, 3vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--color-brand-charcoal);
+  }
+}
+
+.instal-process__steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.instal-process__step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.15rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--color-border);
+  background: #fff;
+
+  h3 {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-nav);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--color-brand-charcoal);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+}
+
+.instal-process__number {
+  font-family: var(--font-nav);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-brand-gold);
+}
+
+// ─── Services ───
+.instal-services {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+  background: #fff;
+  border-top: 1px solid var(--color-border);
+}
+
+.instal-services__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: center;
+}
+
+.instal-services__visual {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+.instal-services__copy {
+  h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-nav);
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--color-brand-charcoal);
+  }
+
+  > p {
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+}
+
+.instal-services__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #e5d9c0;
+    background: var(--color-brand-champagne);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-brand-gold-dark);
+  }
+}
+
+.instal-services__list {
+  margin: 0 0 1.35rem;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--color-brand-charcoal);
+
+    span {
+      flex-shrink: 0;
+      color: var(--color-brand-gold-dark);
+      font-weight: 700;
+    }
+  }
+}
+
+// ─── CTA ───
+.instal-cta {
+  padding: clamp(2rem, 4vw, 2.75rem) 0;
+  background: var(--color-brand-charcoal);
+}
+
+.instal-cta__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+
+  h2 {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-nav);
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    font-weight: 800;
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+    max-width: 46ch;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+  }
+}
+
+.instal-cta__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.instal-cta__secondary {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+// ─── Responsive ───
+@media (max-width: 960px) {
+  .instal-hero__grid,
+  .instal-services__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .instal-hero__visual {
+    order: -1;
+  }
+
+  .instal-trust__grid,
+  .instal-pricing__grid,
+  .instal-process__steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .instal-cta__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
