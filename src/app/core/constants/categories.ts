@@ -55,7 +55,8 @@ export const CATEGORY_LIST: CategoryPageData[] = [
       'Equipos especializados para líneas de producción, procesamiento y operación gastronómica.',
     heading: 'Maquinaria especializada',
     intro: 'Soluciones a medida para procesos específicos.',
-    image: categoryImage('maquinariaespecial.png'),
+    image:
+      'assets/categorias/MAQUINARIA ESPECIALIZADA - TUNEGOCIO.COM/imgi_45_WhatsApp-Image-2026-05-27-at-3.24.15-PM-1.jpg',
   },
   {
     slug: 'sistemas-de-extraccion',

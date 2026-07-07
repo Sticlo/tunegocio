@@ -43,16 +43,16 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
 
   protected readonly heroSlides = [
     {
-      src: '/assets/categorias/equipamiento-profesional.png',
-      alt: 'TUNEGOCIO equipamiento profesional — maquinaria industrial en acero inoxidable',
+      src: '/assets/banners/banner-01-equipamiento-profesional.png',
+      alt: 'TUNEGOCIO equipamiento profesional — tu solución integral de cocina',
     },
     {
-      src: '/assets/hero-banner.png',
-      alt: 'TUNEGOCIO equipamiento profesional de cocina industrial en acero inoxidable',
+      src: '/assets/banners/banner-02-maquinaria.jpeg',
+      alt: 'TUNEGOCIO maquinaria industrial en acero inoxidable',
     },
     {
-      src: '/assets/categorias/maquinariaespecial.png',
-      alt: 'Maquinaria industrial especializada TUNEGOCIO en acero inoxidable',
+      src: '/assets/banners/banner-03-asadores.png',
+      alt: 'Asadores de pollos industriales TUNEGOCIO en acero inoxidable',
     },
   ];
 
