@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # www → dominio canónico
+  RewriteCond %{HTTP_HOST} ^www\.tunegocio\.com\.co [NC]
+  RewriteRule ^ https://tunegocio.com.co%{REQUEST_URI} [R=301,L]
+
+  # Rutas legacy de WordPress / WooCommerce
+  RewriteRule ^nuestras-categorias/?$ /productos [R=301,L]
+  RewriteRule ^carrito/?$ /productos [R=301,L]
+  RewriteRule ^shop/?$ /productos [R=301,L]
+  RewriteRule ^tienda/?$ /productos [R=301,L]
+
+  RewriteRule ^product-category/hornos/?$ /hornos-industriales [R=301,L]
+  RewriteRule ^product-category/asadores-de-pollos/?$ /asadores-de-pollos [R=301,L]
+  RewriteRule ^product-category/estufas-industriales/?$ /estufas-industriales [R=301,L]
+  RewriteRule ^product-category/vitrinas/?$ /vitrinas-industriales [R=301,L]
+  RewriteRule ^product-category/carros-de-comidas/?$ /carros-de-comidas [R=301,L]
+  RewriteRule ^product-category/maquinaria/?$ /maquinaria [R=301,L]
+  RewriteRule ^product-category/maquinaria-especializada/?$ /maquinaria-especializada [R=301,L]
+  RewriteRule ^product-category/mesones-en-acero/?$ /mesones-acero-inoxidable [R=301,L]
+  RewriteRule ^product-category/uncategorized/?$ /productos [R=301,L]
+
+  # Slug con typo en el sitio viejo
+  RewriteRule ^product/asador-giratorio-para-arepas-boyacences/?$ /productos/asador-giratorio-para-arepas-boyacenses [R=301,L]
+  RewriteRule ^producto/asador-giratorio-para-arepas-boyacences/?$ /productos/asador-giratorio-para-arepas-boyacenses [R=301,L]
+
+  # Productos WooCommerce → catálogo nuevo
+  RewriteRule ^product/([^/]+)/?$ /productos/$1 [R=301,L]
+  RewriteRule ^producto/([^/]+)/?$ /productos/$1 [R=301,L]
+
+  # Angular: archivos reales primero, luego index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>

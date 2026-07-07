@@ -6,7 +6,7 @@
     "start": "ng serve",
     "catalog:generate": "node scripts/generate-products-catalog.mjs",
     "seo:generate": "npm run catalog:generate",
-    "build": "ng build",
+    "build": "ng build && cp public/.htaccess dist/tunegocio-web/browser/.htaccess",
     "deploy": "npm run build && wrangler deploy",
     "preview:cf": "npm run build && wrangler dev",
     "watch": "ng build --watch --configuration development",
