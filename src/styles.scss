@@ -652,6 +652,7 @@ img {
 
 .section__header {
   margin-bottom: 1.75rem;
+  text-align: center;
 
   h2 {
     margin: 0 0 0.5rem;
@@ -663,7 +664,7 @@ img {
   }
 
   p {
-    margin: 0;
+    margin: 0 auto;
     color: var(--color-muted);
     max-width: 60ch;
     line-height: 1.7;
@@ -673,10 +674,15 @@ img {
 .page-hero {
   background: #fff;
   border-bottom: 1px solid var(--color-border);
+  text-align: center;
 }
 
 .page-hero .container {
   padding: 2.5rem 0;
+}
+
+.page-hero .breadcrumb__list {
+  justify-content: center;
 }
 
 .page-hero h1 {
@@ -698,7 +704,7 @@ img {
 }
 
 .page-hero__text {
-  margin: 0;
+  margin: 0 auto;
   max-width: 65ch;
   color: var(--color-brand-warm-gray);
   line-height: 1.7;

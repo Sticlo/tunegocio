@@ -11,6 +11,12 @@
 
 .cotizador-hero__intro {
   max-width: 42rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.cotizador-hero .breadcrumb__list {
+  justify-content: center;
 }
 
 .cotizador-hero__eyebrow {
