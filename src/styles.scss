@@ -1,18 +1,70 @@
 :root {
-  --color-brand-gold: #b8952e;
-  --color-brand-gold-dark: #8a6d1f;
-  --color-brand-gold-light: #d4b85a;
-  --color-brand-champagne: #f5f1e8;
-  --color-brand-ivory: #fafaf8;
-  --color-brand-charcoal: #1a1a1a;
-  --color-brand-warm-gray: #5c5c5c;
-  --color-brand-red: #9e2a2f;
-  --color-brand-blue: #2c5282;
-  --color-text: #1a1a1a;
-  --color-muted: #5c5c5c;
-  --color-border: #e5e0d6;
-  --shadow-soft: 0 8px 30px rgba(26, 26, 26, 0.06);
-  --shadow-gold: 0 8px 24px rgba(184, 149, 46, 0.18);
+  --color-metal-blue-1: #8ec8f5;
+  --color-metal-blue-2: #3d8fd4;
+  --color-metal-blue-3: #1a5a9e;
+  --color-metal-blue-4: #0f3d73;
+  --color-metal-orange-1: #ffd080;
+  --color-metal-orange-2: #f59a30;
+  --color-metal-orange-3: #e06810;
+  --color-metal-orange-4: #b84a08;
+  --gradient-metal-blue: linear-gradient(
+    145deg,
+    #9ed4ff 0%,
+    #5aadf0 16%,
+    #1e5a9e 40%,
+    #0f3d73 48%,
+    #4a9de0 52%,
+    #1a5a9e 76%,
+    #0d3560 100%
+  );
+  --gradient-metal-blue-hover: linear-gradient(
+    145deg,
+    #b0e0ff 0%,
+    #6bb8f5 16%,
+    #2568ad 40%,
+    #154880 48%,
+    #5aadf0 52%,
+    #2060a8 76%,
+    #0f3f78 100%
+  );
+  --gradient-metal-orange: linear-gradient(
+    145deg,
+    #ffe8b8 0%,
+    #ffc04d 18%,
+    #f07820 42%,
+    #c85008 50%,
+    #ffbc50 56%,
+    #e06810 78%,
+    #a04006 100%
+  );
+  --gradient-metal-flame: linear-gradient(
+    100deg,
+    #1a5a9e 0%,
+    #3d8fd4 32%,
+    #f07820 68%,
+    #ffd080 100%
+  );
+  --color-brand-accent: var(--color-metal-blue-3);
+  --color-brand-accent-hover: var(--color-metal-blue-4);
+  --color-brand-accent-muted: #3d6a9e;
+  --color-brand-flame: var(--color-metal-orange-2);
+  --color-brand-flame-dark: var(--color-metal-orange-3);
+  --color-brand-gold: var(--color-metal-blue-3);
+  --color-brand-gold-dark: var(--color-metal-blue-4);
+  --color-brand-gold-light: var(--color-metal-blue-2);
+  --color-brand-champagne: #f2f6fb;
+  --color-brand-ivory: #fafbfd;
+  --color-brand-charcoal: #0f1419;
+  --color-brand-warm-gray: #4a5568;
+  --color-brand-red: #dc2626;
+  --color-brand-blue: var(--color-metal-blue-3);
+  --color-text: #0f1419;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --shadow-soft: 0 8px 30px rgba(15, 61, 115, 0.08);
+  --shadow-metal-blue: 0 6px 22px rgba(26, 90, 158, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  --shadow-metal-orange: 0 6px 22px rgba(224, 104, 16, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --shadow-gold: var(--shadow-metal-blue);
   --font-nav: 'Montserrat', system-ui, sans-serif;
   --font-script: 'Great Vibes', cursive;
   --font-body: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -354,7 +406,7 @@ img {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 80% 20%, rgba(184, 149, 46, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 45%),
     linear-gradient(160deg, #3a3a3a 0%, #1a1a1a 100%);
 }
 
@@ -505,12 +557,14 @@ img {
 
 .btn-tesla--primary {
   color: #fff;
-  background: var(--color-brand-gold);
-  border: 1px solid var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
+  border: 1px solid var(--color-metal-blue-4);
+  box-shadow: var(--shadow-metal-blue);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
 
   &:hover {
-    background: var(--color-brand-gold-dark);
-    border-color: var(--color-brand-gold-dark);
+    background: var(--gradient-metal-blue-hover);
+    border-color: var(--color-metal-blue-3);
   }
 }
 
@@ -639,7 +693,7 @@ img {
   font-size: 0.9rem;
 
   a:hover {
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 }
 
@@ -679,7 +733,7 @@ img {
 
   &:hover {
     transform: translateY(-3px);
-    border-color: #d9cdb8;
+    border-color: #d4d4d8;
     box-shadow: var(--shadow-soft);
   }
 }
@@ -687,11 +741,14 @@ img {
 .card__link {
   display: inline-block;
   margin-top: 1rem;
-  color: var(--color-brand-gold-dark);
+  background: var(--gradient-metal-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-weight: 600;
   font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .btn {
@@ -699,24 +756,39 @@ img {
   align-items: center;
   justify-content: center;
   padding: 0.8rem 1.35rem;
-  border-radius: 0.35rem;
+  border-radius: 0.5rem;
   border: 1px solid transparent;
   font-family: var(--font-nav);
   font-weight: 600;
-  font-size: 0.82rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn--gold {
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
+  border: 1px solid var(--color-metal-blue-4);
   color: #fff;
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-metal-blue);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
 
   &:hover {
-    background: var(--color-brand-gold-dark);
+    background: var(--gradient-metal-blue-hover);
+    transform: translateY(-1px);
+  }
+}
+
+.btn--flame {
+  background: var(--gradient-metal-orange);
+  border: 1px solid var(--color-metal-orange-4);
+  color: #fff;
+  box-shadow: var(--shadow-metal-orange);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    filter: brightness(1.06);
     transform: translateY(-1px);
   }
 }
@@ -733,11 +805,14 @@ img {
 }
 
 .btn--primary {
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
+  border: 1px solid var(--color-metal-blue-4);
   color: #fff;
+  box-shadow: var(--shadow-metal-blue);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
 
   &:hover {
-    background: var(--color-brand-gold-dark);
+    background: var(--gradient-metal-blue-hover);
   }
 }
 
@@ -747,7 +822,7 @@ img {
   border-color: var(--color-border);
 
   &:hover {
-    border-color: #d9cdb8;
+    border-color: #d4d4d8;
     background: var(--color-brand-champagne);
   }
 }

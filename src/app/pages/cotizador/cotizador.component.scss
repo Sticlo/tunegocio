@@ -1,6 +1,6 @@
 .cotizador-hero {
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245, 241, 232, 0.95) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242, 246, 251, 0.95) 0%, transparent 70%),
     #fff;
   border-bottom: 1px solid var(--color-border);
 }
@@ -18,7 +18,7 @@
   margin-bottom: 0.75rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   background: var(--color-brand-champagne);
   font-family: var(--font-nav);
   font-size: 0.68rem;
@@ -125,13 +125,13 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    border-color: rgba(184, 149, 46, 0.45);
+    border-color: rgba(26, 90, 158, 0.45);
     box-shadow: var(--shadow-soft);
   }
 
   &--in-quote {
-    border-color: rgba(184, 149, 46, 0.55);
-    box-shadow: 0 0 0 1px rgba(184, 149, 46, 0.12);
+    border-color: rgba(26, 90, 158, 0.55);
+    box-shadow: 0 0 0 1px rgba(26, 90, 158, 0.12);
   }
 }
 
@@ -142,11 +142,14 @@
   z-index: 1;
   padding: 0.2rem 0.5rem;
   border-radius: 999px;
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-orange);
+  border: 1px solid var(--color-metal-orange-4);
+  box-shadow: var(--shadow-metal-orange);
   font-size: 0.62rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
 }
 
 .cotizador-product__body {
@@ -212,7 +215,7 @@
   transition: background 0.2s ease;
 
   &:hover {
-    background: var(--color-brand-gold);
+    background: var(--gradient-metal-blue);
     color: #fff;
   }
 }
@@ -229,8 +232,8 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &--active {
-    border-color: rgba(184, 149, 46, 0.45);
-    box-shadow: var(--shadow-gold);
+    border-color: rgba(26, 90, 158, 0.35);
+    box-shadow: var(--shadow-metal-blue);
   }
 
   h2 {
@@ -275,7 +278,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-gold-dark));
+  background: var(--gradient-metal-flame);
   transition: width 0.45s ease;
 }
 
@@ -340,7 +343,7 @@
     height: 1rem;
     padding: 0 0.2rem;
     border-radius: 999px;
-    background: var(--color-brand-gold);
+    background: var(--gradient-metal-blue);
     font-size: 0.58rem;
     font-weight: 800;
     line-height: 1rem;
@@ -369,7 +372,7 @@
 
 @keyframes cotizador-highlight {
   0% {
-    background: rgba(245, 241, 232, 0.9);
+    background: rgba(244, 244, 245, 0.9);
   }
 
   100% {
@@ -397,7 +400,7 @@
     font-family: inherit;
 
     &:focus {
-      outline: 2px solid rgba(184, 149, 46, 0.35);
+      outline: 2px solid rgba(26, 90, 158, 0.35);
       border-color: var(--color-brand-gold);
     }
   }
@@ -839,7 +842,7 @@
     font-family: inherit;
 
     &:focus {
-      outline: 2px solid rgba(184, 149, 46, 0.35);
+      outline: 2px solid rgba(26, 90, 158, 0.35);
       border-color: var(--color-brand-gold);
     }
   }

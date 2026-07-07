@@ -61,7 +61,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(184, 149, 46, 0.45);
+    border-color: rgba(26, 90, 158, 0.45);
   }
 
   strong {
@@ -85,14 +85,14 @@
   height: 2.5rem;
   border-radius: 0.6rem;
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 // ─── Política local vs nacional ───
 .zonas-politica {
   padding: clamp(2.5rem, 5vw, 3.5rem) 0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245, 241, 232, 0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(244, 244, 245, 0.9) 0%, transparent 70%),
     #fff;
 }
 
@@ -107,14 +107,14 @@
   margin-bottom: 0.75rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   background: var(--color-brand-champagne);
   font-family: var(--font-nav);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zonas-politica__header h2 {
@@ -182,7 +182,7 @@
 
   &--local {
     background: var(--color-brand-champagne);
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 
   &--nacional {
@@ -213,7 +213,7 @@
 
 .zonas-politica__card--local .zonas-politica__tag {
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zonas-politica__card--nacional .zonas-politica__tag {
@@ -247,7 +247,7 @@
       background: var(--color-brand-champagne);
       font-size: 0.65rem;
       font-weight: 800;
-      color: var(--color-brand-gold-dark);
+      color: var(--color-brand-accent-muted);
     }
   }
 }
@@ -273,9 +273,9 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      var(--color-brand-gold) 20%,
-      var(--color-brand-gold-light) 50%,
-      var(--color-brand-gold) 80%,
+      var(--color-metal-blue-2) 20%,
+      var(--color-metal-orange-2) 50%,
+      var(--color-metal-blue-2) 80%,
       transparent 100%
     );
   }
@@ -292,14 +292,14 @@
   margin-bottom: 0.75rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   background: var(--color-brand-champagne);
   font-family: var(--font-nav);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zonas-main__header h2 {
@@ -312,7 +312,7 @@
   color: var(--color-brand-charcoal);
 
   span {
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 }
 
@@ -342,9 +342,9 @@
   color: var(--color-muted);
 
   &--local {
-    border-color: rgba(184, 149, 46, 0.35);
+    border-color: rgba(26, 90, 158, 0.35);
     background: var(--color-brand-champagne);
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 
   &--nacional {
@@ -376,7 +376,7 @@
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    box-shadow: inset 0 0 0 1px rgba(184, 149, 46, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(26, 90, 158, 0.15);
   }
 }
 
@@ -401,7 +401,7 @@
   color: var(--color-brand-charcoal);
 
   svg {
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 }
 
@@ -411,7 +411,7 @@
   gap: 0.4rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -420,7 +420,7 @@
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 50%;
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
   animation: zonas-live 1.8s ease-in-out infinite;
 }
 
@@ -459,7 +459,7 @@
     left: 0;
     bottom: 0;
     width: 4px;
-    background: var(--color-brand-gold);
+    background: var(--gradient-metal-blue);
   }
 
   &--nacional::before {
@@ -483,11 +483,11 @@
   height: 2.5rem;
   border-radius: 0.65rem;
   background: var(--color-brand-champagne);
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   font-family: var(--font-nav);
   font-size: 0.85rem;
   font-weight: 800;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
   counter-increment: zona-region;
 
   &::before {
@@ -514,7 +514,7 @@
 
   &--local {
     background: var(--color-brand-champagne);
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 
   &--nacional {
@@ -584,7 +584,7 @@
   height: 2.5rem;
   border-radius: 0.55rem;
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zona-card__title {
@@ -625,8 +625,8 @@
 .zona-card__time,
 .zona-card__service-type {
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
-  border: 1px solid rgba(184, 149, 46, 0.2);
+  color: var(--color-brand-accent-muted);
+  border: 1px solid rgba(26, 90, 158, 0.2);
 }
 
 .zona-card__payment {
@@ -673,7 +673,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -683,13 +683,13 @@
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 50%;
-  background: rgba(184, 149, 46, 0.15);
-  color: var(--color-brand-gold-dark);
+  background: rgba(26, 90, 158, 0.15);
+  color: var(--color-brand-accent-muted);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .zona-card:hover .zona-card__cta {
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
   color: #fff;
 }
 
@@ -717,7 +717,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zonas-porque__header h2 {
@@ -751,7 +751,7 @@
   font-size: 2rem;
   font-weight: 800;
   line-height: 1;
-  color: rgba(184, 149, 46, 0.25);
+  color: rgba(26, 90, 158, 0.25);
 }
 
 .zonas-porque__content {
@@ -777,7 +777,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-gold-light));
+  background: var(--gradient-metal-flame);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -813,7 +813,7 @@
   height: 3rem;
   border-radius: 0.65rem;
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .zonas-nacional__text {
@@ -842,7 +842,7 @@
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 
   &:hover {
     color: var(--color-brand-charcoal);
@@ -861,8 +861,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 80% at 0% 100%, rgba(184, 149, 46, 0.15) 0%, transparent 55%),
-      radial-gradient(ellipse 50% 60% at 100% 0%, rgba(184, 149, 46, 0.1) 0%, transparent 50%);
+      radial-gradient(ellipse 60% 80% at 0% 100%, rgba(26, 90, 158, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 100% 0%, rgba(26, 90, 158, 0.1) 0%, transparent 50%);
     pointer-events: none;
   }
 }
@@ -884,8 +884,8 @@
   margin-bottom: 1rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  background: rgba(184, 149, 46, 0.2);
-  border: 1px solid rgba(184, 149, 46, 0.35);
+  background: rgba(26, 90, 158, 0.2);
+  border: 1px solid rgba(26, 90, 158, 0.35);
   font-family: var(--font-nav);
   font-size: 0.72rem;
   font-weight: 600;
@@ -937,11 +937,11 @@
 
 .zonas-cta__btn--wa {
   color: var(--color-brand-charcoal);
-  background: var(--color-brand-gold);
+  background: var(--gradient-metal-blue);
   box-shadow: var(--shadow-gold);
 
   &:hover {
-    background: var(--color-brand-gold-light);
+    background: var(--gradient-metal-blue-hover);
   }
 }
 

@@ -1,7 +1,7 @@
 // ─── Hero ───
 .instal-hero {
   background:
-    radial-gradient(ellipse 70% 60% at 80% 0%, rgba(245, 241, 232, 0.95) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 0%, rgba(244, 244, 245, 0.95) 0%, transparent 65%),
     #fff;
   border-bottom: 1px solid var(--color-border);
 }
@@ -26,14 +26,14 @@
   margin-bottom: 0.85rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   background: var(--color-brand-champagne);
   font-family: var(--font-nav);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .instal-hero__copy h1 {
@@ -64,7 +64,7 @@
 .instal-hero__link {
   font-weight: 600;
   font-size: 0.88rem;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 
@@ -116,7 +116,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(184, 149, 46, 0.45);
+    border-color: rgba(26, 90, 158, 0.45);
   }
 
   h3 {
@@ -142,7 +142,7 @@
   height: 2.5rem;
   border-radius: 0.6rem;
   background: var(--color-brand-champagne);
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 
   svg {
     width: 1.15rem;
@@ -233,7 +233,7 @@
 
       span {
         flex-shrink: 0;
-        color: var(--color-brand-gold-dark);
+        color: var(--color-brand-accent-muted);
         font-weight: 700;
       }
     }
@@ -248,7 +248,7 @@
   }
 
   &--install {
-    border-top: 3px solid var(--color-brand-gold-dark);
+    border-top: 3px solid var(--color-brand-accent-muted);
   }
 }
 
@@ -263,14 +263,14 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .instal-pricing__note {
   padding: 1.15rem 1.25rem;
   border-radius: 0.85rem;
   border: 1px solid #e8dcc4;
-  background: linear-gradient(135deg, #fdfbf7 0%, var(--color-brand-champagne) 100%);
+  background: linear-gradient(135deg, #fff 0%, var(--color-brand-champagne) 100%);
 
   strong {
     display: block;
@@ -292,7 +292,7 @@
 .instal-process {
   padding: clamp(2.5rem, 5vw, 3.5rem) 0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(245, 241, 232, 0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(244, 244, 245, 0.7) 0%, transparent 70%),
     #fff;
   border-top: 1px solid var(--color-border);
 }
@@ -413,11 +413,11 @@
   li {
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
-    border: 1px solid #e5d9c0;
+    border: 1px solid var(--color-border);
     background: var(--color-brand-champagne);
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 }
 
@@ -437,7 +437,7 @@
 
     span {
       flex-shrink: 0;
-      color: var(--color-brand-gold-dark);
+      color: var(--color-brand-accent-muted);
       font-weight: 700;
     }
   }

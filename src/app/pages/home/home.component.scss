@@ -14,26 +14,29 @@
   align-items: center;
   gap: 0.5rem 1rem;
   padding: 0.85rem 1.15rem;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
-  background: linear-gradient(135deg, #fdfbf7 0%, var(--color-brand-champagne) 100%);
+  background: linear-gradient(135deg, #fff 0%, var(--color-brand-champagne) 100%);
   text-decoration: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    border-color: var(--color-brand-gold);
-    box-shadow: var(--shadow-gold);
+    border-color: #d4d4d8;
+    box-shadow: var(--shadow-soft);
   }
 
   > span:first-child {
     padding: 0.2rem 0.5rem;
     border-radius: 999px;
-    background: var(--color-brand-gold);
+    background: var(--gradient-metal-orange);
+    border: 1px solid var(--color-metal-orange-4);
+    box-shadow: var(--shadow-metal-orange);
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   }
 
   strong {
@@ -48,7 +51,10 @@
 .models-carousel__studio-cta {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--color-brand-gold-dark);
+  background: var(--gradient-metal-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .hero-banner__sr-title {
@@ -66,7 +72,7 @@
 .home-instalacion {
   padding: clamp(2.5rem, 5vw, 3.75rem) 0;
   background:
-    radial-gradient(ellipse 70% 55% at 0% 50%, rgba(245, 241, 232, 0.85) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 0% 50%, rgba(244, 244, 245, 0.85) 0%, transparent 60%),
     #fff;
   border-top: 1px solid #ebebeb;
 }
@@ -100,14 +106,14 @@
   margin-bottom: 0.85rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid #e5d9c0;
+  border: 1px solid var(--color-border);
   background: var(--color-brand-champagne);
   font-family: var(--font-nav);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .home-instalacion__copy h2 {
@@ -171,7 +177,7 @@
 .home-instalacion__link {
   font-weight: 600;
   font-size: 0.88rem;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 
@@ -315,7 +321,7 @@
     color: var(--color-brand-charcoal);
 
     a:hover {
-      color: var(--color-brand-gold-dark);
+      color: var(--color-brand-accent-muted);
     }
   }
 
@@ -339,7 +345,7 @@
 .featured-product-card__price {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--color-brand-gold-dark);
+  color: var(--color-brand-accent-muted);
 }
 
 .featured-product-card__link {
@@ -348,7 +354,7 @@
   color: #393c41;
 
   &:hover {
-    color: var(--color-brand-gold-dark);
+    color: var(--color-brand-accent-muted);
   }
 }
 

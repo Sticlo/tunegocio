@@ -110,7 +110,7 @@
   height: 72px;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: linear-gradient(145deg, #f7d96d, #c8941f);
+  background: var(--gradient-metal-blue);
   display: grid;
   place-items: center;
   color: #1a1a1a;
