@@ -35,9 +35,19 @@ export const SOCIAL_LINKS = [
   { label: 'Instagram', href: 'https://instagram.com/', icon: 'instagram' },
 ] as const;
 
-export const WHATSAPP_NUMBER = '573001234567';
-export const PHONE_NUMBER = '573001234567';
+export const WHATSAPP_NUMBER = '573503333970';
+export const PHONE_NUMBER = '573503333970';
 export const WHATSAPP_MESSAGE = 'Hola, me interesa cotizar un equipo industrial.';
+
+export function formatPhoneDisplay(phone: string = PHONE_NUMBER): string {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 12 && digits.startsWith('57')) {
+    return `+57 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
+  }
+  return phone;
+}
+
+export const PHONE_DISPLAY = formatPhoneDisplay(PHONE_NUMBER);
 
 export const SITE_NAME = 'TUNEGOCIO.COM';
 export const SITE_TAGLINE = 'Equipos Industriales';

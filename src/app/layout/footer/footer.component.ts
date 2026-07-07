@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   FOOTER_NAV,
+  PHONE_DISPLAY,
   PRIMARY_NAV,
   SITE_NAME,
   SITE_TAGLINE,
@@ -24,4 +25,5 @@ export class FooterComponent {
   protected readonly socialLinks = SOCIAL_LINKS;
   protected readonly currentYear = new Date().getFullYear();
   protected readonly whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+  protected readonly phoneDisplay = PHONE_DISPLAY;
 }

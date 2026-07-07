@@ -5,6 +5,7 @@ import {
   PHONE_NUMBER,
   WHATSAPP_MESSAGE,
   WHATSAPP_NUMBER,
+  formatPhoneDisplay,
 } from '../../core/constants/navigation';
 import {
   COVERAGE_REGIONS,
@@ -122,12 +123,4 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   setHovered(slug: string | null): void {
     this.hoveredSlug = slug;
   }
-}
-
-function formatPhoneDisplay(phone: string): string {
-  const digits = phone.replace(/\D/g, '');
-  if (digits.length === 12 && digits.startsWith('57')) {
-    return `+57 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
-  }
-  return phone;
 }
