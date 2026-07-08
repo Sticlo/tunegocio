@@ -21,4 +21,14 @@ export const LEGACY_EXACT_REDIRECTS: Record<string, string> = {
   '/shop/': '/productos',
   '/tienda': '/productos',
   '/tienda/': '/productos',
+  '/catalogo': '/productos',
+  '/catalogo/': '/productos',
+};
+
+/** Slugs de productos WordPress que cambiaron o ya no existen en el catálogo */
+export const LEGACY_PRODUCT_SLUGS: Record<string, string> = {
+  'carro-para-comidas-rapidas': 'carro-para-comidas-rapidas-en-acero',
+  'carro-de-perros-y-comidas-rapidas': 'carro-de-comidas-rapidas',
+  'asador-giratorio-para-arepas-boyacences': 'asador-giratorio-para-arepas-boyacenses',
+  'horno-lechonero-con-termometro': 'horno-4-camaras-con-termometro-acero',
 };

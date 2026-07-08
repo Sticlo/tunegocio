@@ -11,6 +11,7 @@
   RewriteRule ^carrito/?$ /productos [R=301,L]
   RewriteRule ^shop/?$ /productos [R=301,L]
   RewriteRule ^tienda/?$ /productos [R=301,L]
+  RewriteRule ^catalogo/?$ /productos [R=301,L]
 
   RewriteRule ^product-category/hornos/?$ /hornos-industriales [R=301,L]
   RewriteRule ^product-category/asadores-de-pollos/?$ /asadores-de-pollos [R=301,L]
@@ -21,6 +22,17 @@
   RewriteRule ^product-category/maquinaria-especializada/?$ /maquinaria-especializada [R=301,L]
   RewriteRule ^product-category/mesones-en-acero/?$ /mesones-acero-inoxidable [R=301,L]
   RewriteRule ^product-category/uncategorized/?$ /productos [R=301,L]
+
+  # Slugs de productos que cambiaron (tráfico Search Console)
+  RewriteRule ^product/carro-para-comidas-rapidas/?$ /productos/carro-para-comidas-rapidas-en-acero [R=301,L]
+  RewriteRule ^producto/carro-para-comidas-rapidas/?$ /productos/carro-para-comidas-rapidas-en-acero [R=301,L]
+  RewriteRule ^productos/carro-para-comidas-rapidas/?$ /productos/carro-para-comidas-rapidas-en-acero [R=301,L]
+  RewriteRule ^product/carro-de-perros-y-comidas-rapidas/?$ /productos/carro-de-comidas-rapidas [R=301,L]
+  RewriteRule ^producto/carro-de-perros-y-comidas-rapidas/?$ /productos/carro-de-comidas-rapidas [R=301,L]
+  RewriteRule ^productos/carro-de-perros-y-comidas-rapidas/?$ /productos/carro-de-comidas-rapidas [R=301,L]
+  RewriteRule ^product/horno-lechonero-con-termometro/?$ /productos/horno-4-camaras-con-termometro-acero [R=301,L]
+  RewriteRule ^producto/horno-lechonero-con-termometro/?$ /productos/horno-4-camaras-con-termometro-acero [R=301,L]
+  RewriteRule ^productos/horno-lechonero-con-termometro/?$ /productos/horno-4-camaras-con-termometro-acero [R=301,L]
 
   # Slug con typo en el sitio viejo
   RewriteRule ^product/asador-giratorio-para-arepas-boyacences/?$ /productos/asador-giratorio-para-arepas-boyacenses [R=301,L]
