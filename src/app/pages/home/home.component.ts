@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CATEGORY_LIST } from '../../core/constants/categories';
+import { CategoryCatalogService } from '../../core/services/category-catalog.service';
 import { FEATURED_PRODUCTS } from '../../core/constants/featured-products';
 import {
   SITE_NAME,
@@ -21,11 +21,12 @@ import { ReviewsSectionComponent } from '../../shared/reviews-section/reviews-se
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly seo = inject(SeoService);
+  private readonly categoryCatalog = inject(CategoryCatalogService);
   private heroAutoplayId?: ReturnType<typeof setInterval>;
 
   @ViewChild('modelsTrack') private modelsTrack?: ElementRef<HTMLDivElement>;
 
-  protected readonly categories = CATEGORY_LIST;
+  protected readonly categories = this.categoryCatalog.categories;
   protected readonly featuredProducts = FEATURED_PRODUCTS;
   protected readonly siteName = SITE_NAME;
   protected readonly whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;

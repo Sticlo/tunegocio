@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogProduct } from '../../core/constants/products.catalog';
+import { resolveAssetUrl } from '../../core/utils/resolve-asset-url';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +14,7 @@ export class ProductCardComponent {
   readonly addToCart = output<CatalogProduct>();
 
   protected assetUrl(path: string): string {
-    return encodeURI(path);
+    return resolveAssetUrl(path);
   }
 
   onAddToCart(): void {

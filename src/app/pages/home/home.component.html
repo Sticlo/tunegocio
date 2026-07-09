@@ -85,7 +85,7 @@
     </button>
 
     <div #modelsTrack class="models-carousel__track" (scroll)="onModelsScroll()">
-      @for (category of categories; track category.slug) {
+      @for (category of categories(); track category.slug) {
         <article class="model-card">
           <div class="model-card__media">
             <p class="model-card__eyebrow">{{ category.intro }}</p>

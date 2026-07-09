@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CATEGORY_LIST } from '../../core/constants/categories';
 import { SITE_DESCRIPTION } from '../../core/constants/navigation';
 import { BreadcrumbItem } from '../../core/models/breadcrumb.model';
 import { buildBreadcrumbJsonLd, combineJsonLd } from '../../core/constants/seo-schemas';
+import { CategoryCatalogService } from '../../core/services/category-catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.component';
 import { CategoryCardComponent } from '../../shared/category-card/category-card.component';
@@ -15,8 +15,9 @@ import { CategoryCardComponent } from '../../shared/category-card/category-card.
 })
 export class ProductosComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly categoryCatalog = inject(CategoryCatalogService);
 
-  protected readonly categories = CATEGORY_LIST;
+  protected readonly categories = this.categoryCatalog.categories;
   protected readonly breadcrumbs: BreadcrumbItem[] = [
     { label: 'Inicio', path: '/' },
     { label: 'Categorías', path: '/productos' },

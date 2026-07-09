@@ -1,0 +1,60 @@
+<div class="admin-page-header">
+  <h1>Categorías</h1>
+  <a class="btn btn--gold" routerLink="/admin/categorias/nueva">Nueva categoría</a>
+</div>
+
+@if (loading()) {
+  <p class="admin-loading">Cargando categorías...</p>
+} @else if (error()) {
+  <p class="admin-error">{{ error() }}</p>
+} @else if (categories().length === 0) {
+  <div class="admin-empty">
+    <p>No hay categorías todavía.</p>
+    <a class="btn btn--gold" routerLink="/admin/categorias/nueva">Crear la primera</a>
+  </div>
+} @else {
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Orden</th>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of categories(); track category.id) {
+          <tr>
+            <td data-label="Orden">{{ category.order }}</td>
+            <td data-label="Foto">
+              @if (category.imageUrl) {
+                <div class="admin-thumb-wrap">
+                  <img class="admin-thumb" [src]="category.imageUrl" [alt]="category.name" />
+                </div>
+              }
+            </td>
+            <td data-label="Nombre">{{ category.heading }}</td>
+            <td data-label="Estado">
+              <span class="admin-badge" [class.admin-badge--on]="category.active" [class.admin-badge--off]="!category.active">
+                {{ category.active ? 'Activa' : 'Oculta' }}
+              </span>
+            </td>
+            <td class="admin-table__actions" data-label="Acciones">
+              <a [routerLink]="['/admin/categorias', category.id]">Editar</a>
+              <button
+                type="button"
+                class="admin-link-danger"
+                [disabled]="isDeleting(category.id)"
+                (click)="remove(category)"
+              >
+                {{ isDeleting(category.id) ? 'Eliminando...' : 'Eliminar' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

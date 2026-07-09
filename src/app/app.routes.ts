@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CATEGORIES } from './core/constants/categories';
+import { categoryExistsGuard, categoryResolver } from './core/guards/category-page.guard';
 import { LEGACY_CATEGORY_SLUGS, LEGACY_EXACT_REDIRECTS } from './core/constants/legacy-redirects';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { CategoryComponent } from './pages/category/category.component';
@@ -31,11 +31,12 @@ const legacyCategoryRoutes: Routes = Object.entries(LEGACY_CATEGORY_SLUGS).map(
   }),
 );
 
-const categoryRoutes: Routes = Object.values(CATEGORIES).map((category) => ({
-  path: category.slug,
+const categoryRoute = {
+  path: ':categorySlug',
   component: CategoryComponent,
-  data: { category },
-}));
+  resolve: { category: categoryResolver },
+  canActivate: [categoryExistsGuard],
+};
 
 export const routes: Routes = [
   ...legacyExactRoutes,
@@ -43,21 +44,22 @@ export const routes: Routes = [
   { path: 'product/:slug', redirectTo: 'productos/:slug' },
   { path: 'producto/:slug', redirectTo: 'productos/:slug' },
   {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then((m) => m.adminRoutes),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
-      ...categoryRoutes,
-      {
-        path: 'instalacion-extraccion-industrial',
-        component: InstalacionComponent,
-      },
+      { path: 'instalacion-extraccion-industrial', component: InstalacionComponent },
       { path: 'productos', component: ProductosComponent },
       { path: 'cotizador', component: CotizadorComponent },
       { path: 'productos/:slug', component: ProductDetailComponent },
       { path: 'ubicaciones', component: UbicacionesComponent },
       { path: 'contacto', component: ContactoComponent },
       { path: 'nosotros', component: NosotrosComponent },
+      categoryRoute,
       { path: '**', component: NotFoundComponent },
     ],
   },

@@ -1,0 +1,48 @@
+<div class="admin-shell" [class.admin-shell--menu-open]="menuOpen()">
+  @if (menuOpen()) {
+    <button
+      type="button"
+      class="admin-backdrop"
+      (click)="closeMenu()"
+      aria-label="Cerrar menú"
+    ></button>
+  }
+
+  <header class="admin-topbar">
+    <button
+      type="button"
+      class="admin-topbar__menu"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Abrir menú"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="admin-topbar__brand">
+      <strong>TUNEGOCIO</strong>
+      <span>Panel admin</span>
+    </div>
+    <a class="admin-topbar__site" routerLink="/" target="_blank" rel="noopener noreferrer">Ver sitio</a>
+  </header>
+
+  <aside class="admin-sidebar" [class.is-open]="menuOpen()">
+    <div class="admin-sidebar__brand">
+      <strong>TUNEGOCIO</strong>
+      <span>Panel admin</span>
+    </div>
+
+    <nav class="admin-nav">
+      <a routerLink="/admin/productos" routerLinkActive="is-active" (click)="closeMenu()">Productos</a>
+      <a routerLink="/admin/categorias" routerLinkActive="is-active" (click)="closeMenu()">Categorías</a>
+      <a routerLink="/" target="_blank" rel="noopener noreferrer" (click)="closeMenu()">Ver sitio</a>
+    </nav>
+
+    <button type="button" class="admin-sidebar__logout" (click)="logout()">Cerrar sesión</button>
+  </aside>
+
+  <main class="admin-main">
+    <router-outlet />
+  </main>
+</div>

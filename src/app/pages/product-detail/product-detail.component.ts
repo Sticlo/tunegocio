@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CATEGORY_LIST } from '../../core/constants/categories';
+import { CategoryCatalogService } from '../../core/services/category-catalog.service';
 import { CatalogProduct } from '../../core/constants/products.catalog';
 import { WHATSAPP_MESSAGE, WHATSAPP_NUMBER } from '../../core/constants/navigation';
 import { BreadcrumbItem } from '../../core/models/breadcrumb.model';
@@ -10,6 +10,7 @@ import {
   buildProductJsonLd,
   combineJsonLd,
 } from '../../core/constants/seo-schemas';
+import { resolveAssetUrl } from '../../core/utils/resolve-asset-url';
 import { CartService } from '../../core/services/cart.service';
 import { ProductCatalogService } from '../../core/services/product-catalog.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -26,18 +27,31 @@ export class ProductDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly cart = inject(CartService);
   private readonly catalog = inject(ProductCatalogService);
+  private readonly categoryCatalog = inject(CategoryCatalogService);
 
   protected product: CatalogProduct | undefined;
   protected title = 'Producto';
   protected breadcrumbs: BreadcrumbItem[] = [];
   protected whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
+  constructor() {
+    effect(() => {
+      this.catalog.getAll();
+      const slug = this.route.snapshot.paramMap.get('slug') ?? 'producto';
+      this.applyProduct(slug);
+    });
+  }
+
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug') ?? 'producto';
+    this.applyProduct(slug);
+  }
+
+  private applyProduct(slug: string): void {
     this.product = this.catalog.getBySlug(slug);
     this.title = this.product?.name ?? this.formatTitle(slug);
 
-    const category = CATEGORY_LIST.find((item) => item.slug === this.product?.categorySlug);
+    const category = this.categoryCatalog.getBySlug(this.product?.categorySlug ?? '');
     this.breadcrumbs = [
       { label: 'Inicio', path: '/' },
       { label: 'Categorías', path: '/productos' },
@@ -51,9 +65,10 @@ export class ProductDetailComponent implements OnInit {
     this.whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappText)}`;
 
     this.seo.updatePageMeta({
-      title: `${this.title} | Cotiza en Colombia`,
+      title: this.product?.seoTitle?.trim() || `${this.title} | Cotiza en Colombia`,
       description:
-        this.product?.shortDescription ??
+        this.product?.metaDescription?.trim() ||
+        this.product?.shortDescription ||
         `Cotiza ${this.title} con fabricación en acero inoxidable, envío nacional e instalación.`,
       keywords: `${this.title}, equipos industriales, acero inoxidable, Bogotá, Colombia`,
       canonicalPath: `/productos/${slug}`,
@@ -80,7 +95,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   assetUrl(path: string): string {
-    return encodeURI(path);
+    return resolveAssetUrl(path);
   }
 
   private formatTitle(slug: string): string {

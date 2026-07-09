@@ -1,0 +1,75 @@
+.seo-meter {
+  margin-top: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+
+  &__bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #94a3b8;
+    transition: width 0.2s ease;
+  }
+
+  &__count {
+    margin: 0.45rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+
+  &__hint {
+    margin: 0.2rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: #64748b;
+  }
+
+  &--ok {
+    background: #f0fdf4;
+
+    .seo-meter__fill {
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+    }
+
+    .seo-meter__count,
+    .seo-meter__hint {
+      color: #166534;
+    }
+  }
+
+  &--short,
+  &--empty {
+    background: #fffbeb;
+
+    .seo-meter__fill {
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    }
+
+    .seo-meter__count,
+    .seo-meter__hint {
+      color: #b45309;
+    }
+  }
+
+  &--long {
+    background: #fef2f2;
+
+    .seo-meter__fill {
+      background: linear-gradient(90deg, #f87171, #dc2626);
+    }
+
+    .seo-meter__count,
+    .seo-meter__hint {
+      color: #b91c1c;
+    }
+  }
+}

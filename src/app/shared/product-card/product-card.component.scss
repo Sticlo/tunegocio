@@ -24,13 +24,14 @@
   display: block;
   flex-shrink: 0;
   aspect-ratio: 4 / 3;
-  background: #fff;
+  max-height: 240px;
+  background: #f4f7fb;
   overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     transition: transform 0.35s ease;
   }

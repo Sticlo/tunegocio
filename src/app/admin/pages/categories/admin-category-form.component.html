@@ -1,0 +1,193 @@
+<div class="admin-page-header">
+  <h1>{{ isEdit() ? 'Editar categoría' : 'Nueva categoría' }}</h1>
+  <a routerLink="/admin/categorias">Volver</a>
+</div>
+
+<form #adminForm class="admin-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="admin-form__hero">
+    <p class="admin-form__intro">
+      Completa estos datos. Nosotros organizamos el enlace y la parte técnica por ti.
+    </p>
+  </div>
+
+  <div class="admin-form__body">
+    <div class="admin-form__block">
+      <div class="admin-field">
+        <label class="admin-field__label" for="category-heading">
+          <span class="admin-field__icon" aria-hidden="true">🏷️</span>
+          Nombre de la categoría
+        </label>
+        <input
+          id="category-heading"
+          type="text"
+          formControlName="heading"
+          placeholder="Ej: Asadores de pollos, Hornos, Mesones..."
+          (input)="onHeadingChange()"
+          (blur)="onHeadingBlur()"
+        />
+        <span class="admin-field-hint">
+          Escribe el nombre con espacios, como lo verán los clientes. Nosotros creamos el enlace automáticamente.
+        </span>
+        @if (fieldError('heading')) {
+          <span class="admin-field-error">{{ fieldError('heading') }}</span>
+        }
+        @if (showRunOnNameHint()) {
+          <span class="admin-field-warn">
+            Parece que todo está pegado. Separa las palabras: <strong>Asadores de pollos</strong>
+          </span>
+        }
+        @if (previewUrl()) {
+          <div class="admin-url-preview">
+            @if (previewDisplayName()) {
+              <p class="admin-url-preview__name">
+                Nombre en el sitio: <strong>{{ previewDisplayName() }}</strong>
+              </p>
+            }
+            <span class="admin-url-preview__label">Enlace de la página</span>
+            <code class="admin-url-preview__value">{{ previewUrl() }}</code>
+            @if (previewUrlLocked()) {
+              <span class="admin-url-preview__hint">
+                Este enlace ya está creado. Puedes cambiar el nombre visible sin cambiar la URL.
+              </span>
+            } @else {
+              <span class="admin-url-preview__hint">
+                El enlace no lleva espacios: <strong>{{ previewSlug() }}</strong> (los espacios del nombre se convierten en guiones).
+              </span>
+            }
+          </div>
+        }
+      </div>
+
+      <label class="admin-field">
+        <span class="admin-field__label">
+          <span class="admin-field__icon" aria-hidden="true">👀</span>
+          Texto que verán los clientes en la página
+        </span>
+        <textarea
+          formControlName="intro"
+          rows="3"
+          placeholder="Ej: Hornos para trabajo pesado con respaldo técnico e instalación."
+          (input)="onIntroChange()"
+          (blur)="onIntroBlur()"
+        ></textarea>
+        @if (fieldError('intro')) {
+          <span class="admin-field-error">{{ fieldError('intro') }}</span>
+        }
+        <span class="admin-field-hint">Frase corta y clara sobre qué vendes en esta categoría.</span>
+      </label>
+    </div>
+
+    <div class="admin-form__section admin-form__section--seo">
+      <h2>Texto que aparece en Google</h2>
+      <p class="admin-form__section-intro">
+        Cuando alguien busca en Google, este texto puede salir debajo del título. Si la barra está verde, vas bien.
+      </p>
+      <label class="admin-field">
+        <textarea
+          formControlName="description"
+          rows="3"
+          maxlength="160"
+          placeholder="Ej: Hornos industriales en acero inoxidable. Fabricación en Colombia, envío nacional y cotización por WhatsApp."
+          (blur)="form.controls.description.markAsTouched()"
+        ></textarea>
+        @if (fieldError('description')) {
+          <span class="admin-field-error">{{ fieldError('description') }}</span>
+        }
+        <app-seo-field-meter
+          [length]="fieldLen('description')"
+          [min]="seoLimits.metaDescription.min"
+          [max]="seoLimits.metaDescription.max"
+        />
+      </label>
+    </div>
+
+    <div class="admin-form__block">
+      <div class="admin-field admin-file">
+        <span class="admin-field__label">
+          <span class="admin-field__icon" aria-hidden="true">📷</span>
+          Foto de la categoría
+        </span>
+
+        <input
+          #fileInput
+          class="admin-file__input"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          (change)="onFileSelected($event)"
+        />
+
+        @if (imagePreview() || form.controls.imageUrl.value) {
+          <div class="admin-file__preview-card">
+            <img
+              class="admin-file__preview-img"
+              [src]="imagePreview() || form.controls.imageUrl.value"
+              alt="Vista previa de la categoría"
+            />
+            <div class="admin-file__preview-meta">
+              <p class="admin-file__preview-name">
+                {{ selectedFileName() || 'Foto actual de la categoría' }}
+              </p>
+              <p class="admin-file__preview-hint">
+                {{ imagePreview() ? 'Así se verá al guardar.' : 'Esta es la foto que ya tiene la categoría.' }}
+              </p>
+              <div class="admin-file__preview-actions">
+                <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="openFilePicker()">
+                  Cambiar foto
+                </button>
+                @if (imagePreview()) {
+                  <button type="button" class="admin-link-danger" (click)="removeSelectedPhoto()">
+                    Quitar
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        } @else {
+          <button type="button" class="admin-file__zone" (click)="openFilePicker()">
+            <span class="admin-file__icon" aria-hidden="true">⬆️</span>
+            <span class="admin-file__text">Toca para elegir una foto</span>
+            <span class="admin-file__sub">JPG o PNG, imagen clara del tipo de equipo</span>
+          </button>
+        }
+
+        @if (imagePreviewError()) {
+          <p class="admin-error">{{ imagePreviewError() }}</p>
+        }
+      </div>
+    </div>
+
+    <details class="admin-advanced">
+      <summary>Opciones adicionales</summary>
+      <label class="admin-field">
+        <span class="admin-field__label">Orden en el catálogo</span>
+        <input type="number" formControlName="order" min="0" step="1" />
+        <span class="admin-field-hint">Número más bajo = aparece primero. Si dos tienen el mismo número, se ordenan por nombre. Las categorías nuevas van al final solas.</span>
+      </label>
+    </details>
+
+    <label class="admin-toggle">
+      <span class="admin-toggle__text">
+        Mostrar esta categoría en el sitio
+        <span class="admin-toggle__hint">Si la apagas, los clientes no la verán en el catálogo.</span>
+      </span>
+      <input type="checkbox" formControlName="active" />
+      <span class="admin-toggle__switch" aria-hidden="true"></span>
+    </label>
+
+    @if (error()) {
+      <p class="admin-error">{{ error() }}</p>
+    }
+  </div>
+
+  <div class="admin-form__footer">
+    @if (error()) {
+      <p class="admin-error admin-error--footer">{{ error() }}</p>
+    }
+    <div class="admin-form__actions">
+      <button class="btn btn--gold" type="submit" [disabled]="saving()">
+        {{ saving() ? (uploading() ? 'Subiendo foto...' : 'Guardando...') : 'Guardar categoría' }}
+      </button>
+      <a class="btn btn--ghost" routerLink="/admin/categorias">Cancelar</a>
+    </div>
+  </div>
+</form>

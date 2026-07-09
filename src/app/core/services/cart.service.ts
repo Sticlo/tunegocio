@@ -2,6 +2,8 @@ import { computed, Injectable, signal } from '@angular/core';
 import { CartItem, Product } from '../models/cart-item.model';
 import { WHATSAPP_MESSAGE, WHATSAPP_NUMBER } from '../constants/navigation';
 
+const IVA_RATE = 0.19;
+
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private readonly items = signal<CartItem[]>([]);
@@ -16,6 +18,10 @@ export class CartService {
   readonly subtotal = computed(() =>
     this.items().reduce((total, item) => total + item.price * item.quantity, 0),
   );
+
+  readonly iva = computed(() => Math.round(this.subtotal() * IVA_RATE));
+
+  readonly total = computed(() => this.subtotal() + this.iva());
 
   readonly isEmpty = computed(() => this.items().length === 0);
 
@@ -93,7 +99,9 @@ export class CartService {
       '',
       ...lines,
       '',
-      `Total estimado: ${this.formatPrice(this.subtotal())}`,
+      `Subtotal: ${this.formatPrice(this.subtotal())}`,
+      `IVA (19%): ${this.formatPrice(this.iva())}`,
+      `Total estimado: ${this.formatPrice(this.total())}`,
     ].join('\n');
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

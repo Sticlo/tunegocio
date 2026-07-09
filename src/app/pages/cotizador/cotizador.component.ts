@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CATEGORY_LIST } from '../../core/constants/categories';
+import { CategoryCatalogService } from '../../core/services/category-catalog.service';
 import {
   ADDI_MONTHS,
   ConfigField,
@@ -36,10 +36,11 @@ export interface CotizadorLineItem {
 export class CotizadorComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly catalog = inject(ProductCatalogService);
+  private readonly categoryCatalog = inject(CategoryCatalogService);
   private itemCounter = 0;
 
   protected readonly presets = COTIZADOR_PRESETS;
-  protected readonly categories = CATEGORY_LIST;
+  protected readonly categories = this.categoryCatalog.categories;
   protected readonly addiMonths = ADDI_MONTHS;
   protected readonly breadcrumbs: BreadcrumbItem[] = [
     { label: 'Inicio', path: '/' },
@@ -83,8 +84,8 @@ export class CotizadorComponent implements OnInit {
 
   protected readonly visibleCategories = computed(() => {
     const preset = this.activePreset();
-    if (preset.categories.length === 0) return this.categories;
-    return this.categories.filter((category) => preset.categories.includes(category.slug));
+    if (preset.categories.length === 0) return this.categories();
+    return this.categories().filter((category) => preset.categories.includes(category.slug));
   });
 
   protected readonly pricedSubtotal = computed(() =>
@@ -260,7 +261,7 @@ export class CotizadorComponent implements OnInit {
   }
 
   protected categoryLabel(categorySlug: string): string {
-    return this.categories.find((category) => category.slug === categorySlug)?.heading ?? categorySlug;
+    return this.categories().find((category) => category.slug === categorySlug)?.heading ?? categorySlug;
   }
 
   protected formatPrice(value: number): string {

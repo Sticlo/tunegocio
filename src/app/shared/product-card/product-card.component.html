@@ -2,10 +2,11 @@
   <a class="product-card__media" [routerLink]="['/productos', product().slug]">
     <img
       [src]="assetUrl(product().image)"
-      [alt]="product().name + ' - equipos industriales TUNEGOCIO.COM'"
+      [alt]="product().imageAlt || product().name + ' - equipos industriales TUNEGOCIO.COM'"
       width="400"
       height="300"
       loading="lazy"
+      decoding="async"
     />
   </a>
 

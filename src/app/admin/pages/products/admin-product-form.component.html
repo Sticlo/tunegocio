@@ -1,0 +1,255 @@
+<div class="admin-page-header">
+  <h1>{{ isEdit() ? 'Editar producto' : 'Nuevo producto' }}</h1>
+  <a routerLink="/admin/productos">Volver</a>
+</div>
+
+<form #adminForm class="admin-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="admin-form__hero">
+    <p class="admin-form__intro">
+      Llena la información del equipo. El sitio y Google se actualizan solos.
+    </p>
+  </div>
+
+  <div class="admin-form__body">
+    <div class="admin-form__block">
+      <div class="admin-field">
+        <label class="admin-field__label" for="product-name">
+          <span class="admin-field__icon" aria-hidden="true">📦</span>
+          Nombre del producto
+        </label>
+        <input
+          id="product-name"
+          type="text"
+          formControlName="name"
+          placeholder="Ej: Asadero de pollos"
+          (input)="onNameChange()"
+          (blur)="onNameBlur()"
+        />
+        <span class="admin-field-hint">
+          Escribe el nombre con espacios, como lo verán los clientes. Nosotros creamos el enlace automáticamente.
+        </span>
+        @if (fieldError('name')) {
+          <span class="admin-field-error">{{ fieldError('name') }}</span>
+        }
+        @if (showRunOnNameHint()) {
+          <span class="admin-field-warn">
+            Parece que todo está pegado. Separa las palabras: <strong>Asadero de pollos</strong>
+          </span>
+        }
+        @if (previewUrl()) {
+          <div class="admin-url-preview">
+            @if (previewDisplayName()) {
+              <p class="admin-url-preview__name">
+                Nombre en el sitio: <strong>{{ previewDisplayName() }}</strong>
+              </p>
+            }
+            <span class="admin-url-preview__label">Enlace de la página</span>
+            <code class="admin-url-preview__value">{{ previewUrl() }}</code>
+            @if (previewUrlLocked()) {
+              <span class="admin-url-preview__hint">
+                Este enlace ya está creado. Puedes cambiar el nombre visible sin cambiar la URL.
+              </span>
+            } @else {
+              <span class="admin-url-preview__hint">
+                El enlace no lleva espacios: <strong>{{ previewSlug() }}</strong> (los espacios del nombre se convierten en guiones).
+              </span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="admin-form__row">
+        <label class="admin-field">
+          <span class="admin-field__label">
+            <span class="admin-field__icon" aria-hidden="true">🗂️</span>
+            Categoría
+          </span>
+          <select formControlName="categorySlug" (blur)="form.controls.categorySlug.markAsTouched()">
+            <option value="">Elige una categoría...</option>
+            @for (category of categories(); track category.id) {
+              <option [value]="category.slug">{{ category.heading }}</option>
+            }
+          </select>
+          @if (fieldError('categorySlug')) {
+            <span class="admin-field-error">{{ fieldError('categorySlug') }}</span>
+          }
+        </label>
+        <label class="admin-field">
+          <span class="admin-field__label">
+            <span class="admin-field__icon" aria-hidden="true">💰</span>
+            Precio en pesos
+          </span>
+          <input type="number" formControlName="price" min="0" step="1000" placeholder="500000" />
+        </label>
+      </div>
+
+      <label class="admin-field">
+        <span class="admin-field__label">
+          <span class="admin-field__icon" aria-hidden="true">📝</span>
+          Descripción del producto
+        </span>
+        <textarea
+          formControlName="shortDescription"
+          rows="4"
+          placeholder="Ej: Horno en acero inoxidable para panadería. Cotiza envío e instalación en todo Colombia."
+          (input)="onShortDescriptionChange()"
+          (blur)="onShortDescriptionBlur()"
+        ></textarea>
+        @if (fieldError('shortDescription')) {
+          <span class="admin-field-error">{{ fieldError('shortDescription') }}</span>
+        }
+        <span class="admin-field-hint">Esta descripción la ve el cliente en la ficha del producto.</span>
+        <app-seo-field-meter
+          [length]="fieldLen('shortDescription')"
+          [min]="seoLimits.shortDescription.min"
+          [max]="seoLimits.shortDescription.max"
+        />
+      </label>
+    </div>
+
+    <div class="admin-form__block">
+      <div class="admin-field admin-file">
+        <span class="admin-field__label">
+          <span class="admin-field__icon" aria-hidden="true">📷</span>
+          Foto del producto
+        </span>
+
+        <input
+          #fileInput
+          class="admin-file__input"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          (change)="onFileSelected($event)"
+        />
+
+        @if (imagePreview() || form.controls.imageUrl.value) {
+          <div class="admin-file__preview-card">
+            <img
+              class="admin-file__preview-img"
+              [src]="imagePreview() || form.controls.imageUrl.value"
+              [alt]="form.controls.imageAlt.value || 'Vista previa del producto'"
+            />
+            <div class="admin-file__preview-meta">
+              <p class="admin-file__preview-name">
+                {{ selectedFileName() || 'Foto actual del producto' }}
+              </p>
+              <p class="admin-file__preview-hint">
+                {{ imagePreview() ? 'Así se verá en el catálogo (recortada para que se vea bien).' : 'Esta es la foto que ya tiene el producto.' }}
+              </p>
+              <div class="admin-file__preview-actions">
+                <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="openFilePicker()">
+                  Cambiar foto
+                </button>
+                @if (imagePreview()) {
+                  <button type="button" class="admin-link-danger" (click)="removeSelectedPhoto()">
+                    Quitar
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        } @else {
+          <button type="button" class="admin-file__zone" (click)="openFilePicker()">
+            <span class="admin-file__icon" aria-hidden="true">⬆️</span>
+            <span class="admin-file__text">Toca para elegir una foto</span>
+            <span class="admin-file__sub">Foto del equipo en JPG o PNG. No uses captura de pantalla; mejor foto horizontal del producto.</span>
+          </button>
+        }
+
+        @if (imagePreviewError()) {
+          <p class="admin-error">{{ imagePreviewError() }}</p>
+        }
+      </div>
+    </div>
+
+    <section class="admin-form__section admin-form__section--seo">
+      <h2>Cómo aparece en Google</h2>
+      <p class="admin-form__section-intro">
+        Estos textos salen cuando alguien busca en Google o comparte el enlace. Si la barra está verde, vas bien.
+      </p>
+
+      <label class="admin-field">
+        <span class="admin-field__label">Título en Google</span>
+        <input
+          type="text"
+          formControlName="seoTitle"
+          maxlength="60"
+          placeholder="Ej: Horno multifuncional con bandejas | Cotiza en Colombia"
+          (blur)="form.controls.seoTitle.markAsTouched()"
+        />
+        @if (fieldError('seoTitle')) {
+          <span class="admin-field-error">{{ fieldError('seoTitle') }}</span>
+        }
+        <app-seo-field-meter
+          [length]="fieldLen('seoTitle')"
+          [min]="seoLimits.title.min"
+          [max]="seoLimits.title.max"
+        />
+      </label>
+
+      <label class="admin-field">
+        <span class="admin-field__label">Texto que sale en Google</span>
+        <textarea
+          formControlName="metaDescription"
+          rows="3"
+          maxlength="160"
+          placeholder="Ej: Horno multifuncional en acero inoxidable. Fabricación en Colombia, envío nacional y cotización por WhatsApp."
+          (blur)="form.controls.metaDescription.markAsTouched()"
+        ></textarea>
+        @if (fieldError('metaDescription')) {
+          <span class="admin-field-error">{{ fieldError('metaDescription') }}</span>
+        }
+        <app-seo-field-meter
+          [length]="fieldLen('metaDescription')"
+          [min]="seoLimits.metaDescription.min"
+          [max]="seoLimits.metaDescription.max"
+        />
+      </label>
+
+      <label class="admin-field">
+        <span class="admin-field__label">Descripción de la foto (para Google)</span>
+        <input
+          type="text"
+          formControlName="imageAlt"
+          maxlength="125"
+          placeholder="Ej: Horno multifuncional con bandejas en acero inoxidable"
+          (blur)="form.controls.imageAlt.markAsTouched()"
+        />
+        @if (fieldError('imageAlt')) {
+          <span class="admin-field-error">{{ fieldError('imageAlt') }}</span>
+        }
+        <span class="admin-field-hint">Explica qué se ve en la imagen. Ayuda a que Google entienda el producto.</span>
+        <app-seo-field-meter
+          [length]="fieldLen('imageAlt')"
+          [min]="seoLimits.imageAlt.min"
+          [max]="seoLimits.imageAlt.max"
+        />
+      </label>
+    </section>
+
+    <label class="admin-toggle">
+      <span class="admin-toggle__text">
+        Mostrar este producto en el sitio
+        <span class="admin-toggle__hint">Si lo apagas, los clientes no lo verán en el catálogo.</span>
+      </span>
+      <input type="checkbox" formControlName="active" />
+      <span class="admin-toggle__switch" aria-hidden="true"></span>
+    </label>
+
+    @if (error()) {
+      <p class="admin-error">{{ error() }}</p>
+    }
+  </div>
+
+  <div class="admin-form__footer">
+    @if (error()) {
+      <p class="admin-error admin-error--footer">{{ error() }}</p>
+    }
+    <div class="admin-form__actions">
+      <button class="btn btn--gold" type="submit" [disabled]="saving()">
+        {{ saving() ? (uploading() ? 'Subiendo foto...' : 'Guardando...') : 'Guardar producto' }}
+      </button>
+      <a class="btn btn--ghost" routerLink="/admin/productos">Cancelar</a>
+    </div>
+  </div>
+</form>

@@ -11,6 +11,9 @@ export interface CatalogProduct {
   price: number;
   priceLabel: string;
   shortDescription: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  imageAlt?: string;
 }
 
 export const PRODUCT_CATALOG: CatalogProduct[] = [

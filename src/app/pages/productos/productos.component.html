@@ -11,7 +11,7 @@
 <section class="section">
   <div class="container">
     <div class="grid grid--categories grid--categories-showcase">
-      @for (category of categories; track category.slug; let i = $index) {
+      @for (category of categories(); track category.slug; let i = $index) {
         <app-category-card
           [category]="category"
           [animationDelay]="i * 60 + 'ms'"

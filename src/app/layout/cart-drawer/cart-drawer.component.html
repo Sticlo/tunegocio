@@ -82,10 +82,20 @@
         </ul>
 
         <footer class="cart-drawer__footer">
-          <div class="cart-drawer__total">
-            <span>Subtotal estimado</span>
-            <strong>{{ cart.formatPrice(cart.subtotal()) }}</strong>
-          </div>
+          <dl class="cart-drawer__summary">
+            <div class="cart-drawer__summary-row">
+              <dt>Subtotal</dt>
+              <dd>{{ cart.formatPrice(cart.subtotal()) }}</dd>
+            </div>
+            <div class="cart-drawer__summary-row">
+              <dt>IVA (19%)</dt>
+              <dd>{{ cart.formatPrice(cart.iva()) }}</dd>
+            </div>
+            <div class="cart-drawer__summary-row cart-drawer__summary-row--total">
+              <dt>Total estimado</dt>
+              <dd>{{ cart.formatPrice(cart.total()) }}</dd>
+            </div>
+          </dl>
           <p class="cart-drawer__note">
             Los precios pueden ajustarse según especificaciones. Cotiza por WhatsApp para confirmar.
           </p>

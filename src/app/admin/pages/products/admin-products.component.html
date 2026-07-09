@@ -1,0 +1,55 @@
+<div class="admin-page-header">
+  <h1>Productos</h1>
+  <a class="btn btn--gold" routerLink="/admin/productos/nuevo">Nuevo producto</a>
+</div>
+
+@if (loading()) {
+  <p class="admin-loading">Cargando productos...</p>
+} @else if (error()) {
+  <p class="admin-error">{{ error() }}</p>
+} @else if (products().length === 0) {
+  <div class="admin-empty">
+    <p>No hay productos todavía.</p>
+    <a class="btn btn--gold" routerLink="/admin/productos/nuevo">Crear el primero</a>
+  </div>
+} @else {
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.id) {
+          <tr>
+            <td data-label="Foto">
+              @if (product.imageUrl) {
+                <div class="admin-thumb-wrap">
+                  <img class="admin-thumb" [src]="product.imageUrl" [alt]="product.name" />
+                </div>
+              }
+            </td>
+            <td data-label="Nombre">{{ product.name }}</td>
+            <td data-label="Categoría">{{ categoryLabel(product.categorySlug) }}</td>
+            <td data-label="Precio">{{ formatCop(product.price) }}</td>
+            <td data-label="Estado">
+              <span class="admin-badge" [class.admin-badge--on]="product.active" [class.admin-badge--off]="!product.active">
+                {{ product.active ? 'Activo' : 'Oculto' }}
+              </span>
+            </td>
+            <td class="admin-table__actions" data-label="Acciones">
+              <a [routerLink]="['/admin/productos', product.id]">Editar</a>
+              <button type="button" class="admin-link-danger" (click)="remove(product)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

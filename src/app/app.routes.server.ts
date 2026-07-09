@@ -9,6 +9,10 @@ export const serverRoutes: ServerRoute[] = [
       PRODUCT_CATALOG.map((product) => ({ slug: product.slug })),
   },
   {
+    path: ':categorySlug',
+    renderMode: RenderMode.Server,
+  },
+  {
     path: 'product/:slug',
     renderMode: RenderMode.Server,
   },
@@ -19,6 +23,10 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'product-category/**',
     renderMode: RenderMode.Server,
+  },
+  {
+    path: 'admin/**',
+    renderMode: RenderMode.Client,
   },
   {
     path: '**',
