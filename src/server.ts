@@ -1,8 +1,12 @@
+import './server/payments/load-dev-vars';
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 import {
   LEGACY_CATEGORY_SLUGS,
   LEGACY_EXACT_REDIRECTS,
 } from './app/core/constants/legacy-redirects';
+import { handlePaymentApi } from './server/payments/api-handler';
+import { setPaymentServerEnv } from './server/payments/secrets';
+import type { PaymentServerEnv } from './server/payments/types';
 
 const CANONICAL_HOST = 'tunegocio.com.co';
 
@@ -42,6 +46,11 @@ function tryLegacyRedirect(request: Request): Response | null {
 }
 
 async function handleRequest(request: Request): Promise<Response> {
+  const paymentResponse = await handlePaymentApi(request);
+  if (paymentResponse) {
+    return paymentResponse;
+  }
+
   const legacyRedirect = tryLegacyRedirect(request);
   if (legacyRedirect) {
     return legacyRedirect;
@@ -59,4 +68,9 @@ export const reqHandler = createRequestHandler(handleRequest);
 /**
  * Entry point de Cloudflare Workers.
  */
-export default { fetch: reqHandler };
+export default {
+  fetch(request: Request, env: PaymentServerEnv = {}) {
+    setPaymentServerEnv(env);
+    return reqHandler(request);
+  },
+};

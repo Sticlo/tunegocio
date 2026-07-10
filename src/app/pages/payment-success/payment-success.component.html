@@ -1,0 +1,47 @@
+<section class="payment-success">
+  <div class="container payment-success__card">
+    @if (loading()) {
+      <p class="payment-success__lead">Validando su pago...</p>
+    } @else if (verified()) {
+      <div class="payment-success__icon" aria-hidden="true">✓</div>
+      <h1>¡Listo, muchas gracias por su compra!</h1>
+      <p class="payment-success__lead">
+        Recibimos su pago correctamente. Para validar y coordinar su pedido, envíenos el
+        <strong>comprobante de pago</strong> por WhatsApp.
+      </p>
+    } @else if (pendingVerification()) {
+      <h1>Validando pago...</h1>
+    } @else if (reference) {
+      <h1>No pudimos confirmar el pago aún</h1>
+      <p class="payment-success__lead">
+        Si ya completó el pago, envíenos el comprobante por WhatsApp y lo validamos manualmente.
+      </p>
+    } @else {
+      <h1>Gracias por visitarnos</h1>
+      <p class="payment-success__lead">
+        Si realizó un pago, escríbanos por WhatsApp con su comprobante para coordinar el pedido.
+      </p>
+    }
+
+    @if (reference) {
+      <p class="payment-success__ref">
+        Referencia: <strong>{{ reference }}</strong>
+      </p>
+    }
+
+    <a
+      class="btn btn--gold payment-success__whatsapp"
+      [href]="whatsappUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Enviar comprobante por WhatsApp
+    </a>
+
+    <p class="payment-success__hint">
+      También puede escribirnos al <strong>{{ phoneDisplay }}</strong> y adjuntar la captura o PDF del pago.
+    </p>
+
+    <a class="payment-success__home" routerLink="/">Volver al inicio</a>
+  </div>
+</section>

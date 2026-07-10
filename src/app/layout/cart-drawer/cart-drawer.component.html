@@ -30,6 +30,7 @@
           <button type="button" class="btn btn--gold" (click)="close()">Seguir comprando</button>
         </div>
       } @else {
+        <div class="cart-drawer__body">
         <ul class="cart-drawer__list">
           @for (item of cart.cartItems(); track item.id) {
             <li class="cart-item">
@@ -97,8 +98,17 @@
             </div>
           </dl>
           <p class="cart-drawer__note">
-            Los precios pueden ajustarse según especificaciones. Cotiza por WhatsApp para confirmar.
+            Los precios pueden ajustarse según especificaciones. Confirma el monto antes de pagar en
+            línea o cotiza por WhatsApp.
           </p>
+
+          <app-payment-options
+            [amountCop]="cart.total()"
+            productId="cart"
+            [showInCart]="true"
+            [checkoutPayload]="cart.getCheckoutPayload()"
+          />
+
           <a
             class="btn btn--gold cart-drawer__cta"
             [href]="cart.getWhatsAppUrl()"
@@ -112,6 +122,7 @@
           </button>
           <button type="button" class="cart-drawer__clear" (click)="cart.clear()">Vaciar carrito</button>
         </footer>
+        </div>
       }
     </aside>
   </div>

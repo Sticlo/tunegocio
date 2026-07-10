@@ -1,0 +1,27 @@
+# ── Desarrollo local (.dev.vars) ─────────────────────────────────────
+WOMPI_PUBLIC_KEY=pub_test_XXXXXXXXXXXX
+WOMPI_INTEGRITY_SECRET=test_integrity_XXXXXXXXXXXX
+# Secreto de eventos (webhook) — distinto al de integridad. Dashboard Wompi → Secretos.
+WOMPI_EVENTS_SECRET=prod_events_XXXXXXXXXXXX
+SITE_URL=http://localhost:4200
+
+ADDI_CLIENT_ID=tu-client-id
+ADDI_CLIENT_SECRET=tu-client-secret
+ADDI_SANDBOX=true
+# Slug del widget (portal Addi → Integraciones). NO es el Client ID.
+ADDI_ALLY_SLUG=tu-ally-slug-addi
+
+# ── Firebase (reglas) ───────────────────────────────────────────────
+# Edita firebase/firestore.rules y firebase/storage.rules:
+# reemplaza admin@tunegocio.com.co por el correo del panel /admin.
+
+# ── Producción (.dev.vars.production / Hostinger) ────────────────────
+# WOMPI_PUBLIC_KEY=pub_prod_XXXXXXXXXXXX
+# WOMPI_INTEGRITY_SECRET=prod_integrity_XXXXXXXXXXXX
+# WOMPI_EVENTS_SECRET=prod_events_XXXXXXXXXXXX
+# SITE_URL=https://tunegocio.com.co
+# ADDI_SANDBOX=false
+
+# Webhooks en producción:
+# Wompi → https://tunegocio.com.co/api/payments/wompi/webhook
+# Addi  → https://tunegocio.com.co/api/payments/addi/callback

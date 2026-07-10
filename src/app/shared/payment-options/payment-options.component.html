@@ -1,0 +1,193 @@
+@if (showSection()) {
+  <section
+    class="payment-options"
+    [class.payment-options--compact]="compact"
+    [class.payment-options--cart]="showInCart"
+    aria-label="Opciones de pago"
+  >
+    <h3 class="payment-options__title">Opciones de pago</h3>
+
+    @if (showInCart) {
+      <fieldset class="payment-options__methods">
+        <legend class="visually-hidden">Elige cómo pagar</legend>
+
+        <label
+          class="payment-options__method"
+          [class.payment-options__method--active]="selectedMethod() === 'wompi-card'"
+        >
+          <input
+            type="radio"
+            name="checkout-payment"
+            value="wompi-card"
+            [checked]="selectedMethod() === 'wompi-card'"
+            (change)="selectMethod('wompi-card')"
+          />
+          <span class="payment-options__method-label">Tarjeta de crédito o débito</span>
+          <span class="payment-options__method-icons" aria-hidden="true">
+            <span class="payment-options__icon payment-options__icon--card">💳</span>
+          </span>
+        </label>
+
+        @if (isWompiSelected() && selectedMethod() === 'wompi-card') {
+          <div class="payment-options__panel">
+            <p>Paga con <strong>Visa</strong> o <strong>Mastercard</strong> de forma segura con Wompi.</p>
+            <button
+              type="button"
+              class="payment-options__cta"
+              [disabled]="paying() || !checkoutPayload"
+              (click)="payWithWompi()"
+            >
+              {{ paying() ? 'Abriendo pago...' : 'Pagar con tarjeta' }}
+            </button>
+          </div>
+        }
+
+        <label
+          class="payment-options__method"
+          [class.payment-options__method--active]="selectedMethod() === 'wompi-pse'"
+        >
+          <input
+            type="radio"
+            name="checkout-payment"
+            value="wompi-pse"
+            [checked]="selectedMethod() === 'wompi-pse'"
+            (change)="selectMethod('wompi-pse')"
+          />
+          <span class="payment-options__method-label">PSE</span>
+          <span class="payment-options__method-icons" aria-hidden="true">
+            <span class="payment-options__icon payment-options__icon--pse">PSE</span>
+          </span>
+        </label>
+
+        @if (selectedMethod() === 'wompi-pse') {
+          <div class="payment-options__panel">
+            <p>Transfiere desde tu banco con <strong>PSE</strong> (también disponible dentro del checkout de Wompi).</p>
+            <button
+              type="button"
+              class="payment-options__cta"
+              [disabled]="paying() || !checkoutPayload"
+              (click)="payWithWompi()"
+            >
+              {{ paying() ? 'Abriendo pago...' : 'Pagar con PSE' }}
+            </button>
+          </div>
+        }
+
+        <label
+          class="payment-options__method"
+          [class.payment-options__method--active]="selectedMethod() === 'addi'"
+          [class.payment-options__method--disabled]="!addiEligible() || !addiConfigured()"
+        >
+          <input
+            type="radio"
+            name="checkout-payment"
+            value="addi"
+            [checked]="selectedMethod() === 'addi'"
+            [disabled]="!addiEligible() || !addiConfigured()"
+            (change)="selectMethod('addi')"
+          />
+          <span class="payment-options__method-label">Paga con Addi</span>
+          <span class="payment-options__method-icons" aria-hidden="true">
+            <span class="payment-options__icon payment-options__icon--addi">addi</span>
+          </span>
+        </label>
+
+        @if (addiEligible() && addiNeedsLocalServer()) {
+          <p class="payment-options__hint" role="status">
+            Addi está configurado, pero el servidor local no tiene credenciales. Detén
+            <strong>ng serve</strong> y ejecuta <strong>npm start</strong>.
+          </p>
+        }
+
+        @if (selectedMethod() === 'addi' && addiEligible()) {
+          <div class="payment-options__panel payment-options__panel--addi">
+            @if (addiNeedsLocalServer()) {
+              <p class="payment-options__error" role="alert">
+                Para probar Addi en local usa <strong>npm start</strong> (no <strong>ng serve</strong>).
+              </p>
+            } @else if (useAddiWidget()) {
+              @if (addiWidgetLoading()) {
+                <p class="payment-options__addi-status">Cargando Addi...</p>
+              }
+              <div #addiHostCart class="payment-options__addi-widget"></div>
+              @if (addiWidgetError()) {
+                <p class="payment-options__error" role="alert">
+                  No se pudo cargar el widget de Addi. Recarga la página o cotiza por WhatsApp.
+                </p>
+              }
+              <p class="payment-options__addi-cta">
+                Haz clic en <strong>«Paga con Addi»</strong> en el recuadro para finalizar el pago.
+              </p>
+            } @else {
+              <div class="payment-options__addi-promo">
+                <p class="payment-options__addi-promo-title">Compra como tú prefieres</p>
+                <p class="payment-options__addi-promo-sub">Con Addi tienes más formas de pagar</p>
+                <div class="payment-options__addi-cards">
+                  <article>
+                    <strong>Crédito</strong>
+                    <span>Solo necesitas tu cédula y WhatsApp para pagar en cuotas.</span>
+                  </article>
+                  <article>
+                    <strong>Débito con PSE</strong>
+                    <span>Cuenta bancaria, Nequi o Daviplata para comprar.</span>
+                  </article>
+                </div>
+              </div>
+
+              @if (useAddiApi()) {
+                @if (showAddiLocalNote()) {
+                  <p class="payment-options__addi-cta">
+                    En <strong>localhost</strong> Addi no permite el widget; aquí pruebas por
+                    redirección. En <strong>tunegocio.com.co</strong> verás el recuadro azul.
+                  </p>
+                }
+                <form class="payment-options__form" [formGroup]="addiForm" (ngSubmit)="payWithAddi()">
+                  <label>
+                    Cédula
+                    <input type="text" inputmode="numeric" formControlName="idNumber" autocomplete="off" />
+                  </label>
+                  <div class="payment-options__row">
+                    <label>
+                      Nombre
+                      <input type="text" formControlName="firstName" autocomplete="given-name" />
+                    </label>
+                    <label>
+                      Apellido
+                      <input type="text" formControlName="lastName" autocomplete="family-name" />
+                    </label>
+                  </div>
+                  <label>
+                    Correo
+                    <input type="email" formControlName="email" autocomplete="email" />
+                  </label>
+                  <label>
+                    Celular
+                    <input type="tel" formControlName="phone" autocomplete="tel" placeholder="3001234567" />
+                  </label>
+                  <button
+                    type="submit"
+                    class="payment-options__cta payment-options__cta--addi"
+                    [disabled]="paying() || !checkoutPayload"
+                  >
+                    {{ paying() ? 'Redirigiendo...' : 'Paga con Addi' }}
+                  </button>
+                </form>
+              }
+            }
+          </div>
+        }
+      </fieldset>
+    } @else {
+      @if (useAddiWidget() && addiEligible()) {
+        <div class="payment-options__block">
+          <p class="payment-options__label">Financia con Addi</p>
+          <div #addiHostCompact class="payment-options__addi-widget"></div>
+        </div>
+      }
+    }
+
+    @if (errorMessage()) {
+      <p class="payment-options__error" role="alert">{{ errorMessage() }}</p>
+    }
+  </section>
+}

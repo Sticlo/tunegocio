@@ -29,6 +29,14 @@
     <div class="product__info">
       @if (product) {
         <p class="product__price">{{ product.priceLabel }}</p>
+        @if (product.price > 0) {
+          <p class="product__price-note">Precio base · IVA 19% incluido al pagar</p>
+          <app-payment-options
+            [amountCop]="payableAmount()"
+            [productId]="product.id"
+            [compact]="true"
+          />
+        }
       }
       <p>
         Equipo industrial fabricado en acero inoxidable. Cotiza disponibilidad, medidas, capacidad,

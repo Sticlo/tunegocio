@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node scripts/run-with-dev-vars.mjs ng serve",
+    "serve": "node scripts/run-with-dev-vars.mjs ng serve",
     "catalog:generate": "node scripts/generate-products-catalog.mjs",
     "catalog:migrate-firestore": "node scripts/migrate-catalog-to-firestore.mjs",
     "seo:generate": "npm run catalog:generate",

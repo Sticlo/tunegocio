@@ -9,4 +9,13 @@ export const environment = {
     messagingSenderId: '219198785627',
     appId: '1:219198785627:web:72bafddd9633d50ff7977e',
   },
+  payments: {
+    addi: {
+      enabled: true,
+      allySlug: 'esiesas-ecommerce',
+    },
+    wompi: {
+      enabled: true,
+    },
+  },
 };

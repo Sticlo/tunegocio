@@ -12,6 +12,7 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail.co
 import { ProductosComponent } from './pages/productos/productos.component';
 import { UbicacionesComponent } from './pages/ubicaciones/ubicaciones.component';
 import { CotizadorComponent } from './pages/cotizador/cotizador.component';
+import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 
 const stripSlashes = (path: string): string => path.replace(/^\/+|\/+$/g, '');
 
@@ -58,6 +59,7 @@ export const routes: Routes = [
       { path: 'productos/:slug', component: ProductDetailComponent },
       { path: 'ubicaciones', component: UbicacionesComponent },
       { path: 'contacto', component: ContactoComponent },
+      { path: 'pago-exitoso', component: PaymentSuccessComponent },
       { path: 'nosotros', component: NosotrosComponent },
       categoryRoute,
       { path: '**', component: NotFoundComponent },

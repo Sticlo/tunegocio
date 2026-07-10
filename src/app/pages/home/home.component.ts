@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryCatalogService } from '../../core/services/category-catalog.service';
 import { FEATURED_PRODUCTS } from '../../core/constants/featured-products';
 import {
@@ -22,6 +22,8 @@ import { ReviewsSectionComponent } from '../../shared/reviews-section/reviews-se
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly seo = inject(SeoService);
   private readonly categoryCatalog = inject(CategoryCatalogService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private heroAutoplayId?: ReturnType<typeof setInterval>;
 
   @ViewChild('modelsTrack') private modelsTrack?: ElementRef<HTMLDivElement>;
@@ -57,6 +59,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    const payment = this.route.snapshot.queryParamMap.get('payment');
+    if (payment === 'wompi' || payment === 'addi-return') {
+      void this.router.navigate(['/pago-exitoso'], {
+        queryParams: {
+          origen: payment === 'wompi' ? 'wompi' : 'addi',
+          ref:
+            this.route.snapshot.queryParamMap.get('ref') ??
+            this.route.snapshot.queryParamMap.get('reference') ??
+            undefined,
+        },
+        replaceUrl: true,
+      });
+      return;
+    }
+
     this.seo.updatePageMeta({
       title: 'Equipos industriales Bogotá | Hornos, asadores y maquinaria',
       description:

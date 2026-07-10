@@ -11,14 +11,16 @@ import {
   combineJsonLd,
 } from '../../core/constants/seo-schemas';
 import { resolveAssetUrl } from '../../core/utils/resolve-asset-url';
+import { priceWithIva } from '../../core/utils/price-with-iva';
 import { CartService } from '../../core/services/cart.service';
 import { ProductCatalogService } from '../../core/services/product-catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.component';
+import { PaymentOptionsComponent } from '../../shared/payment-options/payment-options.component';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [BreadcrumbComponent, RouterLink],
+  imports: [BreadcrumbComponent, RouterLink, PaymentOptionsComponent],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
@@ -92,6 +94,11 @@ export class ProductDetailComponent implements OnInit {
       price: this.product.price,
       imageUrl: this.product.image,
     });
+  }
+
+  payableAmount(): number {
+    if (!this.product || this.product.price <= 0) return 0;
+    return priceWithIva(this.product.price);
   }
 
   assetUrl(path: string): string {

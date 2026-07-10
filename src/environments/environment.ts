@@ -9,4 +9,14 @@ export const environment = {
     messagingSenderId: '219198785627',
     appId: '1:219198785627:web:72bafddd9633d50ff7977e',
   },
+  payments: {
+    addi: {
+      enabled: true,
+      /** Slug público de aliado Addi (widget en producto / carrito). */
+      allySlug: 'esiesas-ecommerce',
+    },
+    wompi: {
+      enabled: true,
+    },
+  },
 };

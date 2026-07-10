@@ -1,4 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
+import { CartCheckoutPayload } from '../models/payment-checkout.model';
 import { CartItem, Product } from '../models/cart-item.model';
 import { WHATSAPP_MESSAGE, WHATSAPP_NUMBER } from '../constants/navigation';
 
@@ -105,5 +106,22 @@ export class CartService {
     ].join('\n');
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  }
+
+  getCheckoutPayload(): CartCheckoutPayload {
+    const items = this.items();
+
+    return {
+      reference: `TN-${Date.now()}`,
+      items: items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        unitPrice: item.price,
+      })),
+      subtotal: this.subtotal(),
+      iva: this.iva(),
+      total: this.total(),
+    };
   }
 }
