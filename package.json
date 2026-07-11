@@ -9,6 +9,7 @@
     "catalog:migrate-firestore": "node scripts/migrate-catalog-to-firestore.mjs",
     "seo:generate": "npm run catalog:generate",
     "build": "ng build && cp public/.htaccess dist/tunegocio-web/browser/.htaccess",
+    "build:hostinger": "npm run build && node scripts/package-hostinger.mjs",
     "test:smoke": "node scripts/smoke-test.mjs",
     "verify": "npm run build && npm run test && npm run test:smoke",
     "deploy": "npm run build && wrangler deploy",

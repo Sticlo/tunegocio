@@ -39,14 +39,19 @@ export class AdminProductsComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
     try {
-      const [products, categories] = await Promise.all([
-        this.catalog.listProducts(true),
-        this.catalog.listCategories(true),
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('timeout')), 15_000),
+      );
+      const [products, categories] = await Promise.race([
+        Promise.all([this.catalog.listProducts(true), this.catalog.listCategories(true)]),
+        timeout,
       ]);
       this.products.set(products);
       this.categories.set(categories);
     } catch {
-      this.error.set('No se pudieron cargar los productos.');
+      this.error.set(
+        'No se pudieron cargar los productos. Revisa la conexión e intenta de nuevo.',
+      );
     } finally {
       this.loading.set(false);
     }

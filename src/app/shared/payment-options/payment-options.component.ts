@@ -108,20 +108,26 @@ export class PaymentOptionsComponent implements OnInit, AfterViewInit, OnChanges
     return this.addiAllySlug().trim() || this.payments.addi.allySlug.trim();
   }
 
-  /** Widget Addi (ally slug) — solo en dominio publicado (Addi bloquea localhost). */
+  /** Widget Addi: solo si no hay API de servidor (fallback visual). Addi CDN suele bloquear dominios no registrados. */
   protected useAddiWidget(): boolean {
-    return Boolean(this.resolveAllySlug()) && this.addiEligible() && !isLocalDevHost();
+    if (isLocalDevHost() || this.addiWidgetError()) return false;
+    if (!this.addiEligible() || !this.resolveAllySlug()) return false;
+    // Con API lista preferimos formulario + redirect (funciona aunque el CDN bloquee el widget).
+    if (this.serverAddiReady()) return false;
+    return true;
   }
 
-  /** API Addi: en localhost para probar; en producción si no hay slug. */
+  /** API Addi (formulario + redirección): preferida en local y producción cuando hay credenciales. */
   protected useAddiApi(): boolean {
-    if (!this.serverAddiReady() || !this.addiEligible()) return false;
-    if (isLocalDevHost()) return true;
-    return !this.resolveAllySlug();
+    return this.serverAddiReady() && this.addiEligible();
   }
 
   protected showAddiLocalNote(): boolean {
     return isLocalDevHost() && this.useAddiApi();
+  }
+
+  protected showAddiApiNote(): boolean {
+    return !isLocalDevHost() && this.useAddiApi();
   }
 
   protected addiConfigured(): boolean {

@@ -29,9 +29,16 @@ export class AdminCategoriesComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
     try {
-      this.categories.set(await this.catalog.listCategories(true));
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('timeout')), 15_000),
+      );
+      this.categories.set(
+        await Promise.race([this.catalog.listCategories(true), timeout]),
+      );
     } catch {
-      this.error.set('No se pudieron cargar las categorías.');
+      this.error.set(
+        'No se pudieron cargar las categorías. Revisa la conexión e intenta de nuevo.',
+      );
     } finally {
       this.loading.set(false);
     }

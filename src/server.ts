@@ -1,17 +1,33 @@
 import './server/payments/load-dev-vars';
-import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
+import express from 'express';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   LEGACY_CATEGORY_SLUGS,
   LEGACY_EXACT_REDIRECTS,
 } from './app/core/constants/legacy-redirects';
 import { handlePaymentApi } from './server/payments/api-handler';
-import { setPaymentServerEnv } from './server/payments/secrets';
-import type { PaymentServerEnv } from './server/payments/types';
 
 const CANONICAL_HOST = 'tunegocio.com.co';
+const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+const browserDistFolder = resolve(serverDistFolder, '../browser');
 
-const angularApp = new AngularAppEngine({
-  allowedHosts: ['localhost', '127.0.0.1', CANONICAL_HOST, '.workers.dev'],
+const app = express();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: [
+    'tunegocio.com.co',
+    'www.tunegocio.com.co',
+    'localhost',
+    '*.hostingersite.com',
+  ],
+  // Hostinger va detrás de proxy.
+  trustProxyHeaders: ['x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-for'],
 });
 
 function permanentRedirect(target: string): Response {
@@ -45,32 +61,97 @@ function tryLegacyRedirect(request: Request): Response | null {
   return null;
 }
 
-async function handleRequest(request: Request): Promise<Response> {
-  const paymentResponse = await handlePaymentApi(request);
-  if (paymentResponse) {
-    return paymentResponse;
+async function toWebRequest(req: express.Request): Promise<Request> {
+  const protocol = req.protocol;
+  const host = req.get('host') ?? 'localhost';
+  const url = `${protocol}://${host}${req.originalUrl}`;
+
+  const headers = new Headers();
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (value === undefined) continue;
+    if (Array.isArray(value)) {
+      for (const item of value) headers.append(key, item);
+    } else {
+      headers.set(key, value);
+    }
   }
 
-  const legacyRedirect = tryLegacyRedirect(request);
-  if (legacyRedirect) {
-    return legacyRedirect;
+  const method = req.method.toUpperCase();
+  const init: RequestInit = { method, headers };
+
+  if (method !== 'GET' && method !== 'HEAD') {
+    const chunks: Buffer[] = [];
+    for await (const chunk of req) {
+      chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+    }
+    const body = Buffer.concat(chunks);
+    if (body.length > 0) {
+      init.body = body;
+      // @ts-expect-error Node fetch duplex for streaming bodies
+      init.duplex = 'half';
+    }
   }
 
-  const response = await angularApp.handle(request);
-  return response ?? new Response('Page not found.', { status: 404 });
+  return new Request(url, init);
 }
+
+/**
+ * Archivos estáticos del build (JS, CSS, imágenes).
+ */
+app.use(
+  express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: false,
+    redirect: false,
+  }),
+);
+
+/**
+ * API de pagos + redirects legacy + SSR Angular.
+ */
+app.use(async (req, res, next) => {
+  try {
+    const request = await toWebRequest(req);
+
+    const paymentResponse = await handlePaymentApi(request);
+    if (paymentResponse) {
+      await writeResponseToNodeResponse(paymentResponse, res);
+      return;
+    }
+
+    const legacyRedirect = tryLegacyRedirect(request);
+    if (legacyRedirect) {
+      await writeResponseToNodeResponse(legacyRedirect, res);
+      return;
+    }
+
+    const response = await angularApp.handle(request);
+    if (response) {
+      await writeResponseToNodeResponse(response, res);
+      return;
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 /**
  * Handler usado por Angular CLI (dev-server y build).
  */
-export const reqHandler = createRequestHandler(handleRequest);
+export const reqHandler = createNodeRequestHandler(app);
 
 /**
- * Entry point de Cloudflare Workers.
+ * Arranque explícito (Hostinger llama esto desde server.js en la raíz).
  */
-export default {
-  fetch(request: Request, env: PaymentServerEnv = {}) {
-    setPaymentServerEnv(env);
-    return reqHandler(request);
-  },
-};
+export function startTunegocioServer(): void {
+  const port = Number(process.env['PORT'] ?? 4000);
+  app.listen(port, () => {
+    console.log(`TUNEGOCIO escuchando en http://localhost:${port}`);
+  });
+}
+
+if (isMainModule(import.meta.url)) {
+  startTunegocioServer();
+}

@@ -87,7 +87,7 @@
     <div #modelsTrack class="models-carousel__track" (scroll)="onModelsScroll()">
       @for (category of categories(); track category.slug) {
         <article class="model-card">
-          <div class="model-card__media">
+          <a class="model-card__media" [routerLink]="['/', category.slug]">
             <p class="model-card__eyebrow">{{ category.intro }}</p>
             <img
               class="model-card__image"
@@ -97,10 +97,13 @@
               height="600"
               loading="lazy"
             />
-          </div>
+          </a>
           <div class="model-card__footer">
             <h2 class="model-card__title">{{ category.heading }}</h2>
             <div class="model-card__actions">
+              <a class="btn-tesla btn-tesla--secondary" [routerLink]="['/', category.slug]">
+                Más información
+              </a>
               <a
                 class="btn-tesla btn-tesla--primary"
                 [href]="categoryWhatsappUrl(category)"
@@ -108,9 +111,6 @@
                 rel="noopener noreferrer"
               >
                 Cotizar
-              </a>
-              <a class="btn-tesla btn-tesla--secondary" [routerLink]="['/', category.slug]">
-                Más información
               </a>
             </div>
           </div>

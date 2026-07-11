@@ -112,7 +112,7 @@
               <div #addiHostCart class="payment-options__addi-widget"></div>
               @if (addiWidgetError()) {
                 <p class="payment-options__error" role="alert">
-                  No se pudo cargar el widget de Addi. Recarga la página o cotiza por WhatsApp.
+                  No se pudo cargar el widget de Addi. Usa el formulario o cotiza por WhatsApp.
                 </p>
               }
               <p class="payment-options__addi-cta">
@@ -138,7 +138,13 @@
                 @if (showAddiLocalNote()) {
                   <p class="payment-options__addi-cta">
                     En <strong>localhost</strong> Addi no permite el widget; aquí pruebas por
-                    redirección. En <strong>tunegocio.com.co</strong> verás el recuadro azul.
+                    redirección.
+                  </p>
+                }
+                @if (showAddiApiNote()) {
+                  <p class="payment-options__addi-cta">
+                    Completa tus datos y pulsa <strong>Paga con Addi</strong> para continuar en
+                    Addi de forma segura.
                   </p>
                 }
                 <form class="payment-options__form" [formGroup]="addiForm" (ngSubmit)="payWithAddi()">
@@ -182,6 +188,13 @@
         <div class="payment-options__block">
           <p class="payment-options__label">Financia con Addi</p>
           <div #addiHostCompact class="payment-options__addi-widget"></div>
+        </div>
+      } @else if (useAddiApi() && addiEligible()) {
+        <div class="payment-options__block">
+          <p class="payment-options__label">Financia con Addi</p>
+          <p class="payment-options__addi-cta">
+            Agrégalo al carrito para pagar con Addi (crédito o débito).
+          </p>
         </div>
       }
     }

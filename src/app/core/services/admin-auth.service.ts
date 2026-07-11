@@ -7,6 +7,8 @@ import {
 } from 'firebase/auth';
 import { FirebaseService } from './firebase.service';
 
+const AUTH_READY_TIMEOUT_MS = 8_000;
+
 @Injectable({ providedIn: 'root' })
 export class AdminAuthService {
   private readonly firebase = inject(FirebaseService);
@@ -22,10 +24,7 @@ export class AdminAuthService {
       return;
     }
 
-    onAuthStateChanged(auth, (user) => {
-      this.user.set(user);
-      this.loading.set(false);
-    });
+    void this.bootstrapAuth();
   }
 
   isLoggedIn(): boolean {
@@ -52,5 +51,34 @@ export class AdminAuthService {
     this.error.set(null);
     if (!auth) return;
     await signOut(auth);
+  }
+
+  /**
+   * En móvil (Safari) IndexedDB/Auth a veces tarda o no dispara el callback.
+   * Nunca dejamos `loading` en true indefinidamente.
+   */
+  private async bootstrapAuth(): Promise<void> {
+    const auth = this.firebase.auth;
+    if (!auth) {
+      this.loading.set(false);
+      return;
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      this.user.set(user);
+      this.loading.set(false);
+    });
+
+    try {
+      await Promise.race([
+        auth.authStateReady(),
+        new Promise<void>((resolve) => setTimeout(resolve, AUTH_READY_TIMEOUT_MS)),
+      ]);
+      this.user.set(auth.currentUser);
+    } catch {
+      this.user.set(auth.currentUser);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

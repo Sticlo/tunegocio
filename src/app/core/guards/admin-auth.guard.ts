@@ -3,12 +3,15 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AdminAuthService } from '../services/admin-auth.service';
 import { FirebaseService } from '../services/firebase.service';
 
+const AUTH_WAIT_TIMEOUT_MS = 8_000;
+
 function waitForAuthReady(auth: AdminAuthService): Promise<void> {
   if (!auth.loading()) return Promise.resolve();
 
   return new Promise((resolve) => {
+    const started = Date.now();
     const timer = setInterval(() => {
-      if (!auth.loading()) {
+      if (!auth.loading() || Date.now() - started >= AUTH_WAIT_TIMEOUT_MS) {
         clearInterval(timer);
         resolve();
       }

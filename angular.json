@@ -40,11 +40,15 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": ["tunegocio.com.co", "localhost", ".workers.dev"]
+              "allowedHosts": [
+                "tunegocio.com.co",
+                "www.tunegocio.com.co",
+                "localhost",
+                "*.hostingersite.com"
+              ]
             },
             "ssr": {
-              "entry": "src/server.ts",
-              "platform": "neutral"
+              "entry": "src/server.ts"
             }
           },
           "configurations": {
