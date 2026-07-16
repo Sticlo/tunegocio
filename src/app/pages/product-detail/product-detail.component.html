@@ -1,3 +1,4 @@
+@if (product) {
 <section class="page-hero">
   <div class="container">
     <app-breadcrumb [items]="breadcrumbs" />
@@ -13,14 +14,40 @@
 <section class="section">
   <div class="container product">
     <div class="product__gallery">
-      @if (product) {
-        <img
-          class="product__image"
-          [src]="assetUrl(product.image)"
-          [alt]="product.imageAlt || (title + ' - equipos industriales TUNEGOCIO.COM')"
-          width="800"
-          height="600"
-        />
+      @if (product && galleryImages().length > 0) {
+        <div class="product__gallery-main">
+          <img
+            class="product__image"
+            [src]="assetUrl(activeImage())"
+            [alt]="activeImageAlt()"
+            width="800"
+            height="600"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+        @if (galleryImages().length > 1) {
+          <div class="product__thumbs" role="list">
+            @for (image of galleryImages(); track image; let i = $index) {
+              <button
+                type="button"
+                class="product__thumb"
+                role="listitem"
+                [class.product__thumb--active]="activeImageIndex() === i"
+                [attr.aria-label]="'Ver foto ' + (i + 1)"
+                [attr.aria-pressed]="activeImageIndex() === i"
+                (click)="selectImage(i)"
+              >
+                <img
+                  [src]="assetUrl(image)"
+                  [alt]="galleryImageAlt(i)"
+                  width="120"
+                  height="90"
+                />
+              </button>
+            }
+          </div>
+        }
       } @else {
         <div class="product__image-placeholder">Imagen no disponible</div>
       }
@@ -28,9 +55,23 @@
 
     <div class="product__info">
       @if (product) {
-        <p class="product__price">{{ product.priceLabel }}</p>
+        <div class="product__prices">
+          @if (product.compareAtPriceLabel) {
+            <p class="product__price product__price--was">{{ product.compareAtPriceLabel }}</p>
+            <span class="product__sale-badge">Oferta</span>
+          }
+          <p class="product__price" [class.product__price--sale]="!!product.compareAtPriceLabel">
+            {{ product.priceLabel }}
+          </p>
+        </div>
         @if (product.price > 0) {
-          <p class="product__price-note">Precio base · IVA 19% incluido al pagar</p>
+          <p class="product__price-note">
+            @if (product.compareAtPriceLabel) {
+              Precio de oferta · IVA 19% incluido al pagar
+            } @else {
+              Precio base · IVA 19% incluido al pagar
+            }
+          </p>
           <app-payment-options
             [amountCop]="payableAmount()"
             [productId]="product.id"
@@ -39,8 +80,12 @@
         }
       }
       <p>
-        Equipo industrial fabricado en acero inoxidable. Cotiza disponibilidad, medidas, capacidad,
-        tipo de energía e instalación según las necesidades de tu negocio.
+        @if (product) {
+          {{ pageDescription() }}
+        } @else {
+          Equipo industrial fabricado en acero inoxidable. Cotiza disponibilidad, medidas, capacidad,
+          tipo de energía e instalación según las necesidades de tu negocio.
+        }
       </p>
       <ul class="product__specs">
         <li>Material: acero inoxidable</li>
@@ -61,3 +106,12 @@
     </div>
   </div>
 </section>
+} @else {
+  <section class="section">
+    <div class="container not-found">
+      <h1>404</h1>
+      <p>El producto que buscas no existe o fue movido.</p>
+      <a class="btn btn--primary" routerLink="/productos">Ver productos</a>
+    </div>
+  </section>
+}

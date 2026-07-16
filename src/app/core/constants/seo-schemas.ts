@@ -1,8 +1,8 @@
 import { CategoryPageData } from '../models/nav-item.model';
 import { BreadcrumbItem } from '../models/breadcrumb.model';
 import { CATEGORY_LIST } from './categories';
-import { FeaturedProduct, FEATURED_PRODUCTS } from './featured-products';
-import { CatalogProduct } from './products.catalog';
+import { pickFeaturedProducts } from './featured-products';
+import { CatalogProduct, PRODUCT_CATALOG, productGalleryImages, productPageDescription } from './products.catalog';
 import {
   PHONE_NUMBER,
   SITE_DESCRIPTION,
@@ -11,6 +11,11 @@ import {
 } from './navigation';
 import { GOOGLE_MAPS_URL, GOOGLE_REVIEWS_SUMMARY } from './reviews';
 import { BUSINESS_INFO, SITE_OG_IMAGE, SITE_URL } from './site';
+import { absoluteAssetUrl } from '../utils/resolve-asset-url';
+
+function absoluteCatalogImageUrl(path: string): string {
+  return absoluteAssetUrl(path, SITE_URL);
+}
 
 export function combineJsonLd(
   ...schemas: Array<Record<string, unknown> | undefined>
@@ -50,32 +55,61 @@ export function buildProductJsonLd(
   product: CatalogProduct,
   title: string,
 ): Record<string, unknown> {
-  const offer: Record<string, unknown> = {
-    '@type': 'Offer',
-    url: `${SITE_URL}/productos/${product.slug}`,
-    priceCurrency: 'COP',
-    availability: 'https://schema.org/InStock',
-    seller: {
-      '@id': `${SITE_URL}/#localbusiness`,
-    },
-  };
+  const price =
+    Number.isFinite(product.price) && product.price > 0 ? Math.round(product.price) : 0;
+  const compareAt =
+    product.onSale === true &&
+    Number.isFinite(product.compareAtPrice) &&
+    (product.compareAtPrice ?? 0) > price
+      ? Math.round(product.compareAtPrice as number)
+      : 0;
 
-  if (product.price > 0) {
-    offer['price'] = product.price;
+  const gallery = productGalleryImages(product).map(absoluteCatalogImageUrl).filter(Boolean);
+  const description = productPageDescription(product);
+
+  const offer: Record<string, unknown> | undefined =
+    price > 0
+      ? {
+          '@type': 'Offer',
+          url: `${SITE_URL}/productos/${product.slug}`,
+          price,
+          priceCurrency: 'COP',
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: {
+            '@id': `${SITE_URL}/#localbusiness`,
+          },
+        }
+      : undefined;
+
+  if (offer && compareAt > 0) {
+    offer['priceSpecification'] = [
+      {
+        '@type': 'UnitPriceSpecification',
+        priceType: 'https://schema.org/StrikethroughPrice',
+        price: compareAt,
+        priceCurrency: 'COP',
+      },
+      {
+        '@type': 'UnitPriceSpecification',
+        price,
+        priceCurrency: 'COP',
+      },
+    ];
   }
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: title,
-    description: product.shortDescription,
-    image: `${SITE_URL}/${product.image}`,
+    description,
+    image: gallery.length === 1 ? gallery[0] : gallery,
     category: product.categorySlug,
     brand: {
       '@type': 'Brand',
       name: SITE_NAME,
     },
-    offers: offer,
+    ...(offer ? { offers: offer } : {}),
   };
 }
 
@@ -98,8 +132,12 @@ export function buildCategoryProductsJsonLd(
   };
 }
 
-export function buildHomeJsonLd(): Record<string, unknown>[] {
+export function buildHomeJsonLd(
+  categories: CategoryPageData[] = CATEGORY_LIST,
+  products: CatalogProduct[] = PRODUCT_CATALOG,
+): Record<string, unknown>[] {
   const telephone = `+${PHONE_NUMBER}`;
+  const featured = pickFeaturedProducts(products);
 
   return [
     {
@@ -155,7 +193,7 @@ export function buildHomeJsonLd(): Record<string, unknown>[] {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
       name: 'Categorías de equipos industriales',
-      itemListElement: CATEGORY_LIST.map((category, index) => ({
+      itemListElement: categories.map((category, index) => ({
         '@type': 'ListItem',
         position: index + 1,
         name: category.heading,
@@ -166,7 +204,7 @@ export function buildHomeJsonLd(): Record<string, unknown>[] {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
       name: 'Equipos industriales destacados',
-      itemListElement: FEATURED_PRODUCTS.map((product, index) => ({
+      itemListElement: featured.map((product, index) => ({
         '@type': 'ListItem',
         position: index + 1,
         name: product.name,

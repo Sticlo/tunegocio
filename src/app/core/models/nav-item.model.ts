@@ -11,4 +11,5 @@ export interface CategoryPageData {
   heading: string;
   intro: string;
   image: string;
+  imageAlt?: string;
 }

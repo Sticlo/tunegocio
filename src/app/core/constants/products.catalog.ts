@@ -7,13 +7,50 @@ export interface CatalogProduct {
   slug: string;
   name: string;
   categorySlug: string;
+  /** Cover image (cards, cart, SEO fallback). */
   image: string;
+  /** Gallery for product detail (includes cover). */
+  images?: string[];
+  /** Current / sale price charged at checkout. */
   price: number;
+  /**
+   * Optional list price shown struck through when higher than `price`.
+   */
+  compareAtPrice?: number;
+  /** When false/undefined with no compare, no sale UI. Explicit true enables it. */
+  onSale?: boolean;
   priceLabel: string;
+  compareAtPriceLabel?: string;
   shortDescription: string;
+  /** Long product-page body (~300–400 words). */
+  description?: string;
   seoTitle?: string;
   metaDescription?: string;
   imageAlt?: string;
+  /** Alt text per gallery image (same order as `images`). */
+  imageAlts?: string[];
+}
+
+export function productGalleryImages(product: CatalogProduct): string[] {
+  const gallery = (product.images ?? []).map((item) => item.trim()).filter(Boolean);
+  if (gallery.length > 0) return gallery;
+  return product.image ? [product.image] : [];
+}
+
+export function productImageAltAt(product: CatalogProduct, index: number, fallbackName?: string): string {
+  const name = fallbackName || product.name;
+  const alts = product.imageAlts ?? [];
+  const fromSlot = alts[index]?.trim() ?? '';
+  if (fromSlot) return fromSlot;
+  if (index === 0 && product.imageAlt?.trim()) return product.imageAlt.trim();
+  if (product.imageAlt?.trim()) return `${product.imageAlt.trim()} foto ${index + 1}`;
+  return `${name} - equipos industriales TUNEGOCIO.COM`;
+}
+
+export function productPageDescription(product: CatalogProduct): string {
+  const long = product.description?.trim() ?? '';
+  if (long) return long;
+  return product.shortDescription?.trim() ?? '';
 }
 
 export const PRODUCT_CATALOG: CatalogProduct[] = [

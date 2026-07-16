@@ -6,12 +6,19 @@
 }
 
 .product__gallery {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.product__gallery-main {
   aspect-ratio: 4 / 3;
-  max-height: 420px;
+  max-height: 520px;
+  min-height: 280px;
   overflow: hidden;
   border-radius: 1rem;
-  background: #f4f7fb;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
   border: 1px solid var(--color-border);
+  padding: 0.85rem;
 }
 
 .product__image-placeholder {
@@ -28,16 +35,86 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  background: #f4f7fb;
+  background: transparent;
+}
+
+.product__thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.product__thumb {
+  display: block;
+  padding: 0.35rem;
+  margin: 0;
+  border: 2px solid transparent;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  cursor: pointer;
+  aspect-ratio: 4 / 3;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &:hover {
+    border-color: #cbd5e1;
+  }
+
+  &--active {
+    border-color: var(--color-metal-blue-3);
+    box-shadow: 0 0 0 1px var(--color-metal-blue-3);
+  }
+}
+
+.product__info > p {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  color: #334155;
+}
+
+.product__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.75rem;
+  margin: 0 0 0.35rem;
 }
 
 .product__price {
-  margin: 0 0 0.35rem;
+  margin: 0;
   font-size: 1.75rem;
   font-weight: 800;
   color: #ea580c;
+
+  &--was {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-decoration: line-through;
+  }
+
+  &--sale {
+    font-size: 1.9rem;
+  }
+}
+
+.product__sale-badge {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--gradient-metal-orange);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .product__price-note {

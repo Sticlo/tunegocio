@@ -37,7 +37,15 @@
             </td>
             <td data-label="Nombre">{{ product.name }}</td>
             <td data-label="Categoría">{{ categoryLabel(product.categorySlug) }}</td>
-            <td data-label="Precio">{{ formatCop(product.price) }}</td>
+            <td data-label="Precio">
+              @if (product.onSale && product.compareAtPrice > product.price && product.price > 0) {
+                <span style="text-decoration: line-through; color: #94a3b8; margin-right: 0.35rem">
+                  {{ formatCop(product.compareAtPrice) }}
+                </span>
+                <span class="admin-badge admin-badge--on" style="margin-right: 0.35rem">Oferta</span>
+              }
+              {{ formatCop(product.price) }}
+            </td>
             <td data-label="Estado">
               <span class="admin-badge" [class.admin-badge--on]="product.active" [class.admin-badge--off]="!product.active">
                 {{ product.active ? 'Activo' : 'Oculto' }}

@@ -352,10 +352,28 @@
   margin-top: 0.25rem;
 }
 
+.featured-product-card__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.45rem;
+}
+
 .featured-product-card__price {
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--color-brand-accent-muted);
+
+  &--was {
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  &--sale {
+    font-weight: 800;
+    color: #ea580c;
+  }
 }
 
 .featured-product-card__link {

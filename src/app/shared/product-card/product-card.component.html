@@ -16,7 +16,15 @@
     </h3>
     <p>{{ product().shortDescription }}</p>
     <div class="product-card__footer">
-      <span class="product-card__price">{{ product().priceLabel }}</span>
+      <div class="product-card__prices">
+        @if (product().compareAtPriceLabel) {
+          <span class="product-card__price product-card__price--was">{{ product().compareAtPriceLabel }}</span>
+          <span class="product-card__badge">Oferta</span>
+        }
+        <span class="product-card__price" [class.product-card__price--sale]="!!product().compareAtPriceLabel">
+          {{ product().priceLabel }}
+        </span>
+      </div>
       <div class="product-card__actions">
         @if (product().price > 0) {
           <button type="button" class="btn btn--gold btn--sm" (click)="onAddToCart()">

@@ -1,12 +1,14 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { PRODUCT_CATALOG } from './core/constants/products.catalog';
 
+/**
+ * Product and category pages use Server rendering so each request can load
+ * Firestore (via REST) before HTML is sent — Google sees DB truth, not the
+ * static fallback catalog.
+ */
 export const serverRoutes: ServerRoute[] = [
   {
     path: 'productos/:slug',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () =>
-      PRODUCT_CATALOG.map((product) => ({ slug: product.slug })),
+    renderMode: RenderMode.Server,
   },
   {
     path: ':categorySlug',
@@ -30,6 +32,6 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: '**',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
 ];

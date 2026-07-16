@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { categoryExistsGuard, categoryResolver } from './core/guards/category-page.guard';
+import { categoryResolver } from './core/guards/category-page.guard';
 import { LEGACY_CATEGORY_SLUGS, LEGACY_EXACT_REDIRECTS } from './core/constants/legacy-redirects';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { CategoryComponent } from './pages/category/category.component';
@@ -36,14 +36,15 @@ const categoryRoute = {
   path: ':categorySlug',
   component: CategoryComponent,
   resolve: { category: categoryResolver },
-  canActivate: [categoryExistsGuard],
 };
 
 export const routes: Routes = [
   ...legacyExactRoutes,
   ...legacyCategoryRoutes,
-  { path: 'product/:slug', redirectTo: 'productos/:slug' },
-  { path: 'producto/:slug', redirectTo: 'productos/:slug' },
+  // Known legacy product URLs are permanently redirected by server.ts.
+  // Unknown legacy URLs must remain real 404s instead of creating redirect chains.
+  { path: 'product/:slug', component: NotFoundComponent },
+  { path: 'producto/:slug', component: NotFoundComponent },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes').then((m) => m.adminRoutes),

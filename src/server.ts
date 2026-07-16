@@ -11,8 +11,14 @@ import { fileURLToPath } from 'node:url';
 import {
   LEGACY_CATEGORY_SLUGS,
   LEGACY_EXACT_REDIRECTS,
+  LEGACY_PRODUCT_SLUGS,
 } from './app/core/constants/legacy-redirects';
 import { handlePaymentApi } from './server/payments/api-handler';
+import {
+  buildLiveSitemap,
+  liveCategorySlugExists,
+  liveProductSlugExists,
+} from './server/seo-catalog';
 
 const CANONICAL_HOST = 'tunegocio.com.co';
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +40,7 @@ function permanentRedirect(target: string): Response {
   return Response.redirect(target, 301);
 }
 
-function tryLegacyRedirect(request: Request): Response | null {
+async function tryLegacyRedirect(request: Request): Promise<Response | null> {
   const url = new URL(request.url);
 
   if (url.hostname.startsWith('www.')) {
@@ -43,19 +49,49 @@ function tryLegacyRedirect(request: Request): Response | null {
 
   const exactTarget = LEGACY_EXACT_REDIRECTS[url.pathname];
   if (exactTarget) {
-    return permanentRedirect(new URL(exactTarget, url.origin).toString());
+    return permanentRedirect(`https://${CANONICAL_HOST}${exactTarget}`);
   }
 
   const categoryMatch = url.pathname.match(/^\/product-category\/([^/]+)\/?$/);
   if (categoryMatch) {
     const wpSlug = categoryMatch[1].toLowerCase();
-    const target = LEGACY_CATEGORY_SLUGS[wpSlug] ?? 'productos';
-    return permanentRedirect(new URL(`/${target}`, url.origin).toString());
+    const mapped = LEGACY_CATEGORY_SLUGS[wpSlug];
+    if (mapped) {
+      return permanentRedirect(`https://${CANONICAL_HOST}/${mapped}`);
+    }
+    try {
+      if (await liveCategorySlugExists(wpSlug)) {
+        return permanentRedirect(`https://${CANONICAL_HOST}/${wpSlug}`);
+      }
+    } catch {
+      // Let Angular return a normal 404 if Firestore is temporarily unavailable.
+    }
   }
 
   const productMatch = url.pathname.match(/^\/product(?:o)?\/([^/]+)\/?$/);
   if (productMatch) {
-    return permanentRedirect(new URL(`/productos/${productMatch[1]}`, url.origin).toString());
+    const wpSlug = decodeURIComponent(productMatch[1]).toLowerCase();
+    const mapped = LEGACY_PRODUCT_SLUGS[wpSlug];
+    if (mapped) {
+      return permanentRedirect(`https://${CANONICAL_HOST}/productos/${mapped}`);
+    }
+    try {
+      if (await liveProductSlugExists(wpSlug)) {
+        return permanentRedirect(`https://${CANONICAL_HOST}/productos/${wpSlug}`);
+      }
+    } catch {
+      // Let Angular return a normal 404 if Firestore is temporarily unavailable.
+    }
+  }
+
+  // Old product slug opened under /productos/... (ghost/noindex pages after WP migration)
+  const productosMatch = url.pathname.match(/^\/productos\/([^/]+)\/?$/);
+  if (productosMatch) {
+    const wpSlug = decodeURIComponent(productosMatch[1]).toLowerCase();
+    const mapped = LEGACY_PRODUCT_SLUGS[wpSlug];
+    if (mapped && mapped !== wpSlug) {
+      return permanentRedirect(`https://${CANONICAL_HOST}/productos/${mapped}`);
+    }
   }
 
   return null;
@@ -98,6 +134,20 @@ async function toWebRequest(req: express.Request): Promise<Request> {
 /**
  * Archivos estáticos del build (JS, CSS, imágenes).
  */
+app.get('/sitemap.xml', async (_req, res, next) => {
+  try {
+    const sitemap = await buildLiveSitemap();
+    res
+      .status(200)
+      .type('application/xml')
+      .set('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600')
+      .send(sitemap);
+  } catch (error) {
+    // If Firestore is temporarily unavailable, preserve the last static sitemap.
+    next();
+  }
+});
+
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -119,7 +169,7 @@ app.use(async (req, res, next) => {
       return;
     }
 
-    const legacyRedirect = tryLegacyRedirect(request);
+    const legacyRedirect = await tryLegacyRedirect(request);
     if (legacyRedirect) {
       await writeResponseToNodeResponse(legacyRedirect, res);
       return;

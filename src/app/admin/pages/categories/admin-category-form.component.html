@@ -121,7 +121,7 @@
             <img
               class="admin-file__preview-img"
               [src]="imagePreview() || form.controls.imageUrl.value"
-              alt="Vista previa de la categoría"
+              [alt]="form.controls.imageAlt.value || 'Vista previa de la categoría'"
             />
             <div class="admin-file__preview-meta">
               <p class="admin-file__preview-name">
@@ -153,6 +153,28 @@
         @if (imagePreviewError()) {
           <p class="admin-error">{{ imagePreviewError() }}</p>
         }
+
+        <label class="admin-field admin-file__alt">
+          <span class="admin-field__label">Texto alt de la foto (SEO)</span>
+          <input
+            type="text"
+            formControlName="imageAlt"
+            maxlength="125"
+            placeholder="Ej: Hornos industriales en acero inoxidable"
+            (blur)="form.controls.imageAlt.markAsTouched()"
+          />
+          @if (fieldError('imageAlt')) {
+            <span class="admin-field-error">{{ fieldError('imageAlt') }}</span>
+          }
+          <span class="admin-field-hint">
+            Describe la imagen. Ayuda a Google y a lectores de pantalla.
+          </span>
+          <app-seo-field-meter
+            [length]="fieldLen('imageAlt')"
+            [min]="seoLimits.imageAlt.min"
+            [max]="seoLimits.imageAlt.max"
+          />
+        </label>
       </div>
     </div>
 

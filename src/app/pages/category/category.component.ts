@@ -1,4 +1,5 @@
 import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CategoryPageData } from '../../core/models/nav-item.model';
 import { BreadcrumbItem } from '../../core/models/breadcrumb.model';
 import { CatalogProduct } from '../../core/constants/products.catalog';
@@ -16,7 +17,7 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
 
 @Component({
   selector: 'app-category',
-  imports: [BreadcrumbComponent, ProductCardComponent],
+  imports: [BreadcrumbComponent, ProductCardComponent, RouterLink],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
 })
@@ -24,16 +25,29 @@ export class CategoryComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly cart = inject(CartService);
   private readonly catalog = inject(ProductCatalogService);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly category = input.required<CategoryPageData>();
+  readonly category = input<CategoryPageData | null>(null);
 
   protected breadcrumbs: BreadcrumbItem[] = [];
-  protected readonly products = computed(() =>
-    this.catalog.getByCategory(this.category().slug),
-  );
+  protected readonly products = computed(() => {
+    const category = this.category();
+    return category ? this.catalog.getByCategory(category.slug) : [];
+  });
 
   ngOnInit(): void {
     const data = this.category();
+    if (!data) {
+      const slug = this.route.snapshot.paramMap.get('categorySlug') ?? '';
+      this.seo.updatePageMeta({
+        title: 'Página no encontrada',
+        description: 'La categoría que buscas no existe o fue movida.',
+        canonicalPath: slug ? `/${slug}` : '/',
+        noIndex: true,
+      });
+      return;
+    }
+
     this.breadcrumbs = [
       { label: 'Inicio', path: '/' },
       { label: 'Categorías', path: '/productos' },

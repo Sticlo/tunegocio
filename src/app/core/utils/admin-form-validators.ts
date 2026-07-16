@@ -73,6 +73,10 @@ export const productShortDescriptionValidators = [
   noEdgeWhitespaceValidator,
 ];
 
+export const productDescriptionValidators = [
+  Validators.maxLength(SEO_LIMITS.description.maxChars),
+];
+
 export const productSeoTitleValidators = [
   Validators.required,
   seoMinLength(SEO_LIMITS.title.min),
@@ -103,6 +107,10 @@ export function relaxProductValidatorsForEdit(form: FormGroup): void {
         Validators.maxLength(SEO_LIMITS.shortDescription.max),
         noEdgeWhitespaceValidator,
       ],
+    },
+    {
+      key: 'description',
+      validators: [Validators.maxLength(SEO_LIMITS.description.maxChars)],
     },
     {
       key: 'seoTitle',
@@ -153,6 +161,14 @@ export function relaxCategoryValidatorsForEdit(form: FormGroup): void {
       validators: [
         Validators.required,
         Validators.maxLength(SEO_LIMITS.metaDescription.max),
+        noEdgeWhitespaceValidator,
+      ],
+    },
+    {
+      key: 'imageAlt',
+      validators: [
+        Validators.required,
+        Validators.maxLength(SEO_LIMITS.imageAlt.max),
         noEdgeWhitespaceValidator,
       ],
     },

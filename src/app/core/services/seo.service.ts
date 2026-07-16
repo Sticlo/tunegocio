@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SITE_NAME } from '../constants/navigation';
 import { SITE_OG_IMAGE, SITE_URL } from '../constants/site';
+import { absoluteAssetUrl } from '../utils/resolve-asset-url';
 
 export interface PageMetaOptions {
   title: string;
@@ -26,7 +27,7 @@ export class SeoService {
   updatePageMeta(options: PageMetaOptions): void {
     const fullTitle = `${options.title} | ${SITE_NAME}`;
     const canonicalUrl = this.buildCanonicalUrl(options.canonicalPath ?? '/');
-    const ogImage = options.ogImage ?? SITE_OG_IMAGE;
+    const ogImage = absoluteAssetUrl(options.ogImage ?? SITE_OG_IMAGE);
     const ogType = options.ogType ?? 'website';
 
     this.title.setTitle(fullTitle);
@@ -48,6 +49,7 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:url', content: canonicalUrl });
     this.meta.updateTag({ property: 'og:type', content: ogType });
     this.meta.updateTag({ property: 'og:image', content: ogImage });
+    this.meta.updateTag({ property: 'og:image:secure_url', content: ogImage });
     this.meta.updateTag({ property: 'og:locale', content: 'es_CO' });
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
 

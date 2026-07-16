@@ -196,7 +196,19 @@
             </h3>
             <p>{{ product.shortDescription }}</p>
             <div class="featured-product-card__footer">
-              <span class="featured-product-card__price">{{ product.priceLabel }}</span>
+              <div class="featured-product-card__prices">
+                @if (product.compareAtPriceLabel) {
+                  <span class="featured-product-card__price featured-product-card__price--was">
+                    {{ product.compareAtPriceLabel }}
+                  </span>
+                }
+                <span
+                  class="featured-product-card__price"
+                  [class.featured-product-card__price--sale]="!!product.compareAtPriceLabel"
+                >
+                  {{ product.priceLabel }}
+                </span>
+              </div>
               <a class="featured-product-card__link" [routerLink]="['/', product.categorySlug]">
                 Ver categoría
               </a>

@@ -1,5 +1,11 @@
 import { Component, computed, input } from '@angular/core';
-import { SeoMeterStatus, seoMeterMessage, seoMeterStatus } from '../../core/constants/seo-limits';
+import {
+  productDescriptionMeterMessage,
+  productDescriptionMeterStatus,
+  SeoMeterStatus,
+  seoMeterMessage,
+  seoMeterStatus,
+} from '../../core/constants/seo-limits';
 
 @Component({
   selector: 'app-seo-field-meter',
@@ -8,7 +14,13 @@ import { SeoMeterStatus, seoMeterMessage, seoMeterStatus } from '../../core/cons
       <div class="seo-meter__bar" aria-hidden="true">
         <span class="seo-meter__fill" [style.width.%]="fillPercent()"></span>
       </div>
-      <p class="seo-meter__count">{{ length() }} de {{ max() }} letras</p>
+      <p class="seo-meter__count">
+        @if (unit() === 'words') {
+          {{ length() }} de {{ max() }} palabras
+        } @else {
+          {{ length() }} de {{ max() }} letras
+        }
+      </p>
       <p class="seo-meter__hint">{{ message() }}</p>
     </div>
   `,
@@ -18,13 +30,18 @@ export class SeoFieldMeterComponent {
   readonly length = input.required<number>();
   readonly min = input.required<number>();
   readonly max = input.required<number>();
+  readonly unit = input<'letters' | 'words'>('letters');
 
   protected readonly status = computed<SeoMeterStatus>(() =>
-    seoMeterStatus(this.length(), this.min(), this.max()),
+    this.unit() === 'words'
+      ? productDescriptionMeterStatus(this.length())
+      : seoMeterStatus(this.length(), this.min(), this.max()),
   );
 
   protected readonly message = computed(() =>
-    seoMeterMessage(this.status(), this.min(), this.max()),
+    this.unit() === 'words'
+      ? productDescriptionMeterMessage(this.status())
+      : seoMeterMessage(this.status(), this.min(), this.max()),
   );
 
   protected readonly fillPercent = computed(() =>

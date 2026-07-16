@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryCatalogService } from '../../core/services/category-catalog.service';
-import { FEATURED_PRODUCTS } from '../../core/constants/featured-products';
+import { ProductCatalogService } from '../../core/services/product-catalog.service';
+import { pickFeaturedProducts } from '../../core/constants/featured-products';
 import {
   SITE_NAME,
   WHATSAPP_MESSAGE,
@@ -22,6 +23,7 @@ import { ReviewsSectionComponent } from '../../shared/reviews-section/reviews-se
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly seo = inject(SeoService);
   private readonly categoryCatalog = inject(CategoryCatalogService);
+  private readonly productCatalog = inject(ProductCatalogService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private heroAutoplayId?: ReturnType<typeof setInterval>;
@@ -29,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modelsTrack') private modelsTrack?: ElementRef<HTMLDivElement>;
 
   protected readonly categories = this.categoryCatalog.categories;
-  protected readonly featuredProducts = FEATURED_PRODUCTS;
+  protected readonly featuredProducts = pickFeaturedProducts(this.productCatalog.getAll());
   protected readonly siteName = SITE_NAME;
   protected readonly whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
   protected activeHeroSlide = 0;
@@ -81,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       keywords:
         'equipos industriales Bogotá, hornos industriales Colombia, asadores de pollos, estufas industriales, vitrinas industriales, maquinaria panadería, acero inoxidable',
       canonicalPath: '/',
-      jsonLd: buildHomeJsonLd(),
+      jsonLd: buildHomeJsonLd(this.categoryCatalog.getAll(), this.productCatalog.getAll()),
     });
 
     this.heroAutoplayId = setInterval(() => this.nextHeroSlide(), 5500);

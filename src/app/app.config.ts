@@ -4,11 +4,13 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideCatalogInitializer } from './core/providers/catalog-initializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withFetch()),
+    provideCatalogInitializer(),
     provideRouter(
       routes,
       withComponentInputBinding(),

@@ -23,6 +23,8 @@ export const LEGACY_EXACT_REDIRECTS: Record<string, string> = {
   '/tienda/': '/productos',
   '/catalogo': '/productos',
   '/catalogo/': '/productos',
+  '/product/mantenimiento-de-extractores-y-ductos': '/instalacion-extraccion-industrial',
+  '/product/mantenimiento-de-extractores-y-ductos/': '/instalacion-extraccion-industrial',
 };
 
 /** Slugs de productos WordPress que cambiaron o ya no existen en el catálogo */
@@ -31,4 +33,9 @@ export const LEGACY_PRODUCT_SLUGS: Record<string, string> = {
   'carro-de-perros-y-comidas-rapidas': 'carro-de-comidas-rapidas',
   'asador-giratorio-para-arepas-boyacences': 'asador-giratorio-para-arepas-boyacenses',
   'horno-lechonero-con-termometro': 'horno-4-camaras-con-termometro-acero',
+  'meson-en-acero-inoxidable': 'meson-en-acero-100-cm',
+  'carro-de-comidas-3-puestos': 'puesto-de-comidas-3-servicios',
+  'mantenimiento-de-extractores-y-ductos': 'instalacion-de-ductos-y-equipos-de-cocina',
+  /** WP / GSC typo: "para" vs slug real "de" */
+  'asador-para-pollos': 'asador-de-pollos',
 };

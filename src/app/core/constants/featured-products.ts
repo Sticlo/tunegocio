@@ -1,4 +1,4 @@
-import { CatalogProduct, PRODUCT_CATALOG } from './products.catalog';
+import { CatalogProduct } from './products.catalog';
 
 export interface FeaturedProduct {
   name: string;
@@ -6,6 +6,7 @@ export interface FeaturedProduct {
   categorySlug: string;
   image: string;
   priceLabel: string;
+  compareAtPriceLabel?: string;
   shortDescription: string;
 }
 
@@ -23,12 +24,16 @@ function toFeatured(product: CatalogProduct): FeaturedProduct {
     categorySlug: product.categorySlug,
     image: product.image,
     priceLabel: product.priceLabel,
+    compareAtPriceLabel: product.compareAtPriceLabel,
     shortDescription: product.shortDescription,
   };
 }
 
-export const FEATURED_PRODUCTS: FeaturedProduct[] = FEATURED_CATEGORY_SLUGS.map((categorySlug) =>
-  PRODUCT_CATALOG.find((product) => product.categorySlug === categorySlug),
-)
-  .filter((product): product is CatalogProduct => Boolean(product))
-  .map(toFeatured);
+/** Picks one product per featured category from the live catalog (Firestore when ready). */
+export function pickFeaturedProducts(products: CatalogProduct[]): FeaturedProduct[] {
+  return FEATURED_CATEGORY_SLUGS.map((categorySlug) =>
+    products.find((product) => product.categorySlug === categorySlug),
+  )
+    .filter((product): product is CatalogProduct => Boolean(product))
+    .map(toFeatured);
+}

@@ -77,20 +77,45 @@
         <label class="admin-field">
           <span class="admin-field__label">
             <span class="admin-field__icon" aria-hidden="true">💰</span>
-            Precio en pesos
+            Precio actual
           </span>
-          <input type="number" formControlName="price" min="0" step="1000" placeholder="500000" />
+          <input type="number" formControlName="price" min="0" step="1000" placeholder="4800000" />
+          <span class="admin-field-hint">Lo que paga el cliente hoy.</span>
         </label>
       </div>
+
+      <label class="admin-toggle">
+        <span class="admin-toggle__text">
+          Producto en oferta
+          <span class="admin-toggle__hint">
+            Actívalo para mostrar el precio anterior tachado y el de oferta. Si lo apagas, solo se ve el precio normal.
+          </span>
+        </span>
+        <input type="checkbox" formControlName="onSale" />
+        <span class="admin-toggle__switch" aria-hidden="true"></span>
+      </label>
+
+      @if (form.controls.onSale.value) {
+        <label class="admin-field">
+          <span class="admin-field__label">
+            <span class="admin-field__icon" aria-hidden="true">🏷️</span>
+            Precio anterior (tachado)
+          </span>
+          <input type="number" formControlName="compareAtPrice" min="0" step="1000" placeholder="5000000" />
+          <span class="admin-field-hint">
+            Debe ser mayor que el precio actual. Ej.: anterior $5.000.000 y actual $4.800.000.
+          </span>
+        </label>
+      }
 
       <label class="admin-field">
         <span class="admin-field__label">
           <span class="admin-field__icon" aria-hidden="true">📝</span>
-          Descripción del producto
+          Resumen corto (catálogo)
         </span>
         <textarea
           formControlName="shortDescription"
-          rows="4"
+          rows="3"
           placeholder="Ej: Horno en acero inoxidable para panadería. Cotiza envío e instalación en todo Colombia."
           (input)="onShortDescriptionChange()"
           (blur)="onShortDescriptionBlur()"
@@ -98,11 +123,37 @@
         @if (fieldError('shortDescription')) {
           <span class="admin-field-error">{{ fieldError('shortDescription') }}</span>
         }
-        <span class="admin-field-hint">Esta descripción la ve el cliente en la ficha del producto.</span>
+        <span class="admin-field-hint">Texto breve que sale en las tarjetas del catálogo. No es la meta de Google.</span>
         <app-seo-field-meter
           [length]="fieldLen('shortDescription')"
           [min]="seoLimits.shortDescription.min"
           [max]="seoLimits.shortDescription.max"
+        />
+      </label>
+
+      <label class="admin-field">
+        <span class="admin-field__label">
+          <span class="admin-field__icon" aria-hidden="true">📖</span>
+          Descripción del producto (ficha)
+        </span>
+        <textarea
+          formControlName="description"
+          rows="10"
+          placeholder="Describe beneficios, usos, materiales, capacidad e instalación. Ideal entre 300 y 400 palabras."
+          (input)="onDescriptionChange()"
+          (blur)="onDescriptionBlur()"
+        ></textarea>
+        @if (fieldError('description')) {
+          <span class="admin-field-error">{{ fieldError('description') }}</span>
+        }
+        <span class="admin-field-hint">
+          Esta es la descripción larga que ve el cliente en la ficha. Expertos SEO recomiendan 300–400 palabras.
+        </span>
+        <app-seo-field-meter
+          unit="words"
+          [length]="descriptionWordCount()"
+          [min]="seoLimits.description.minWords"
+          [max]="seoLimits.description.maxWords"
         />
       </label>
     </div>
@@ -111,7 +162,10 @@
       <div class="admin-field admin-file">
         <span class="admin-field__label">
           <span class="admin-field__icon" aria-hidden="true">📷</span>
-          Foto del producto
+          Fotos del producto
+        </span>
+        <span class="admin-field-hint">
+          Hasta {{ maxImages }} fotos. La primera es la principal (catálogo y Google). Escribe un texto alt en cada foto para SEO.
         </span>
 
         <input
@@ -122,37 +176,81 @@
           (change)="onFileSelected($event)"
         />
 
-        @if (imagePreview() || form.controls.imageUrl.value) {
-          <div class="admin-file__preview-card">
-            <img
-              class="admin-file__preview-img"
-              [src]="imagePreview() || form.controls.imageUrl.value"
-              [alt]="form.controls.imageAlt.value || 'Vista previa del producto'"
-            />
-            <div class="admin-file__preview-meta">
-              <p class="admin-file__preview-name">
-                {{ selectedFileName() || 'Foto actual del producto' }}
-              </p>
-              <p class="admin-file__preview-hint">
-                {{ imagePreview() ? 'Así se verá en el catálogo (recortada para que se vea bien).' : 'Esta es la foto que ya tiene el producto.' }}
-              </p>
-              <div class="admin-file__preview-actions">
-                <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="openFilePicker()">
-                  Cambiar foto
-                </button>
-                @if (imagePreview()) {
-                  <button type="button" class="admin-link-danger" (click)="removeSelectedPhoto()">
+        @if (imageSlots().length > 0) {
+          <div class="admin-file__gallery">
+            @for (slot of imageSlots(); track $index; let i = $index) {
+              <div class="admin-file__gallery-item" [class.admin-file__gallery-item--cover]="i === 0">
+                <img
+                  class="admin-file__gallery-img"
+                  [src]="slot.preview || slot.url"
+                  [alt]="slot.alt || 'Foto del producto' + (i === 0 ? ' (principal)' : '')"
+                />
+                @if (i === 0) {
+                  <span class="admin-file__badge">Principal</span>
+                }
+                <div class="admin-file__gallery-actions">
+                  <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="openFilePicker(i)">
+                    Cambiar
+                  </button>
+                  @if (i > 0) {
+                    <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="moveImageSlot(i, -1)">
+                      Subir
+                    </button>
+                  }
+                  @if (i < imageSlots().length - 1) {
+                    <button type="button" class="btn btn--ghost admin-file__change-btn" (click)="moveImageSlot(i, 1)">
+                      Bajar
+                    </button>
+                  }
+                  <button type="button" class="admin-link-danger" (click)="removeImageSlot(i)">
                     Quitar
                   </button>
+                </div>
+                @if (slot.fileName) {
+                  <p class="admin-file__preview-name">{{ slot.fileName }}</p>
                 }
+                <label class="admin-field admin-file__alt">
+                  <span class="admin-field__label">
+                    Texto alt{{ i === 0 ? ' (obligatorio, SEO)' : ' (SEO)' }}
+                  </span>
+                  <input
+                    type="text"
+                    [value]="slot.alt"
+                    maxlength="125"
+                    [attr.placeholder]="
+                      i === 0
+                        ? 'Ej: Horno multifuncional con bandejas en acero inoxidable'
+                        : 'Ej: Detalle lateral del equipo'
+                    "
+                    (input)="onImageAltInput(i, $event)"
+                    (blur)="onImageAltBlur(i)"
+                  />
+                  @if (i === 0 && fieldError('imageAlt')) {
+                    <span class="admin-field-error">{{ fieldError('imageAlt') }}</span>
+                  }
+                  <span class="admin-field-hint">
+                    Describe qué se ve. Ayuda a Google y a lectores de pantalla.
+                  </span>
+                  <app-seo-field-meter
+                    [length]="imageAltLen(i)"
+                    [min]="i === 0 ? seoLimits.imageAlt.min : 0"
+                    [max]="seoLimits.imageAlt.max"
+                  />
+                </label>
               </div>
-            </div>
+            }
           </div>
-        } @else {
+        }
+
+        @if (imageSlots().length < maxImages) {
           <button type="button" class="admin-file__zone" (click)="openFilePicker()">
             <span class="admin-file__icon" aria-hidden="true">⬆️</span>
-            <span class="admin-file__text">Toca para elegir una foto</span>
-            <span class="admin-file__sub">Foto del equipo en JPG o PNG. No uses captura de pantalla; mejor foto horizontal del producto.</span>
+            <span class="admin-file__text">
+              {{ imageSlots().length === 0 ? 'Toca para elegir la foto principal' : 'Agregar otra foto' }}
+            </span>
+            <span class="admin-file__sub">
+              JPG o PNG. {{ imageSlots().length }}/{{ maxImages }} fotos. No tienes que recortarlas: se muestran completas.
+            </span>
           </button>
         }
 
@@ -165,7 +263,7 @@
     <section class="admin-form__section admin-form__section--seo">
       <h2>Cómo aparece en Google</h2>
       <p class="admin-form__section-intro">
-        Estos textos salen cuando alguien busca en Google o comparte el enlace. Si la barra está verde, vas bien.
+        Estos textos salen en los resultados de búsqueda. La meta description es distinta a la descripción larga de la ficha: aquí van ~150–160 letras.
       </p>
 
       <label class="admin-field">
@@ -188,7 +286,7 @@
       </label>
 
       <label class="admin-field">
-        <span class="admin-field__label">Texto que sale en Google</span>
+        <span class="admin-field__label">Meta description (Google)</span>
         <textarea
           formControlName="metaDescription"
           rows="3"
@@ -199,30 +297,13 @@
         @if (fieldError('metaDescription')) {
           <span class="admin-field-error">{{ fieldError('metaDescription') }}</span>
         }
+        <span class="admin-field-hint">
+          Es el texto debajo del título en Google. Ideal 150–160 letras para que no lo corten.
+        </span>
         <app-seo-field-meter
           [length]="fieldLen('metaDescription')"
           [min]="seoLimits.metaDescription.min"
           [max]="seoLimits.metaDescription.max"
-        />
-      </label>
-
-      <label class="admin-field">
-        <span class="admin-field__label">Descripción de la foto (para Google)</span>
-        <input
-          type="text"
-          formControlName="imageAlt"
-          maxlength="125"
-          placeholder="Ej: Horno multifuncional con bandejas en acero inoxidable"
-          (blur)="form.controls.imageAlt.markAsTouched()"
-        />
-        @if (fieldError('imageAlt')) {
-          <span class="admin-field-error">{{ fieldError('imageAlt') }}</span>
-        }
-        <span class="admin-field-hint">Explica qué se ve en la imagen. Ayuda a que Google entienda el producto.</span>
-        <app-seo-field-meter
-          [length]="fieldLen('imageAlt')"
-          [min]="seoLimits.imageAlt.min"
-          [max]="seoLimits.imageAlt.max"
         />
       </label>
     </section>
@@ -247,7 +328,7 @@
     }
     <div class="admin-form__actions">
       <button class="btn btn--gold" type="submit" [disabled]="saving()">
-        {{ saving() ? (uploading() ? 'Subiendo foto...' : 'Guardando...') : 'Guardar producto' }}
+        {{ saving() ? (uploading() ? 'Subiendo fotos...' : 'Guardando...') : 'Guardar producto' }}
       </button>
       <a class="btn btn--ghost" routerLink="/admin/productos">Cancelar</a>
     </div>

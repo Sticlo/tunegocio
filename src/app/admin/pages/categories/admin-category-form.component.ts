@@ -11,6 +11,7 @@ import {
   collapseCatalogSpaces,
   FORM_VALIDATION_ERROR,
   normalizeCatalogText,
+  productImageAltValidators,
   relaxCategoryValidatorsForEdit,
   scrollToFirstInvalidField,
 } from '../../../core/utils/admin-form-validators';
@@ -50,6 +51,7 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
     intro: ['', categoryIntroValidators],
     description: ['', categorySeoDescriptionValidators],
     imageUrl: [''],
+    imageAlt: ['', productImageAltValidators],
     order: [0, [Validators.min(0)]],
     active: [true],
     slug: [''],
@@ -92,6 +94,7 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
       intro: category.intro,
       description: category.description,
       imageUrl: category.imageUrl,
+      imageAlt: category.imageAlt || category.heading,
       order: category.order,
       active: category.active,
       slug: category.slug,
@@ -122,11 +125,11 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
     this.showRunOnNameHint.set(looksLikeRunOnName(heading || typingHeading));
   }
 
-  protected fieldLen(field: 'intro' | 'description'): number {
+  protected fieldLen(field: 'intro' | 'description' | 'imageAlt'): number {
     return this.form.controls[field].value.trim().length;
   }
 
-  protected fieldError(field: 'heading' | 'intro' | 'description'): string | null {
+  protected fieldError(field: 'heading' | 'intro' | 'description' | 'imageAlt'): string | null {
     return adminFieldError(this.form.controls[field]);
   }
 
@@ -141,6 +144,11 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
     this.form.controls.name.setValue(heading);
     if (!this.isEdit()) {
       this.form.controls.slug.setValue(catalogSlugFromName(heading));
+    }
+    if (heading && !this.form.controls.imageAlt.dirty) {
+      this.form.controls.imageAlt.setValue(
+        `${heading} en acero inoxidable`.slice(0, SEO_LIMITS.imageAlt.max),
+      );
     }
     this.updateUrlPreview();
   }
@@ -257,7 +265,8 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
     this.error.set(null);
 
     try {
-      let imageUrl = this.form.controls.imageUrl.value;      if (this.selectedFile) {
+      let imageUrl = this.form.controls.imageUrl.value;
+      if (this.selectedFile) {
         this.uploading.set(true);
         imageUrl = await this.catalog.uploadImage('categories', id, this.selectedFile);
         this.uploading.set(false);
@@ -270,6 +279,7 @@ export class AdminCategoryFormComponent implements OnInit, OnDestroy {
         description: normalizeCatalogText(this.form.controls.description.value),
         intro: normalizeCatalogText(this.form.controls.intro.value),
         imageUrl,
+        imageAlt: normalizeCatalogText(this.form.controls.imageAlt.value),
         order: this.form.controls.order.value,
         active: this.form.controls.active.value,
       });

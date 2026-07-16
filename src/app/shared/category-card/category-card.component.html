@@ -8,7 +8,7 @@
     @if (!imageError) {
       <img
         [src]="category().image"
-        [alt]="category().heading"
+        [alt]="category().imageAlt || category().heading"
         loading="lazy"
         (error)="onImageError()"
       />

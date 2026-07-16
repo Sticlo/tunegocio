@@ -1,29 +1,17 @@
-import { isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { inject, Injectable, makeStateKey, PLATFORM_ID, signal, TransferState } from '@angular/core';
 import { CATEGORY_LIST } from '../constants/categories';
 import { CategoryPageData } from '../models/nav-item.model';
-import { FirestoreCategory } from '../models/firestore-catalog.model';
-import { CatalogFirestoreService } from './catalog-firestore.service';
+import { toCategoryPageData } from '../utils/firestore-catalog-mappers';
 import { sortCategories } from '../utils/sort-categories';
+import { CatalogFirestoreService } from './catalog-firestore.service';
 
-function toCategoryPageData(category: FirestoreCategory): CategoryPageData {
-  const image = category.imageUrl;
-  return {
-    slug: category.slug,
-    title: `${category.heading} en Colombia`,
-    description: category.description,
-    heading: category.heading,
-    intro: category.intro,
-    image:
-      image.startsWith('http') || image.startsWith('/')
-        ? image
-        : `/${image}`,
-  };
-}
+const CATEGORIES_STATE_KEY = makeStateKey<CategoryPageData[]>('catalog.categories');
 
 @Injectable({ providedIn: 'root' })
 export class CategoryCatalogService {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly transferState = inject(TransferState);
   private readonly firestoreCatalog = inject(CatalogFirestoreService);
 
   private readonly categoriesSignal = signal<CategoryPageData[]>(CATEGORY_LIST);
@@ -38,11 +26,16 @@ export class CategoryCatalogService {
       this.resolveReady = resolve;
     });
 
-    if (isPlatformBrowser(this.platformId)) {
-      void this.syncFromFirestore().finally(() => this.resolveReady());
-    } else {
+    const transferred = this.transferState.get(CATEGORIES_STATE_KEY, null);
+    if (transferred && transferred.length > 0) {
+      this.categoriesSignal.set(transferred);
+      this.loadedFromFirestore.set(true);
+      this.transferState.remove(CATEGORIES_STATE_KEY);
       this.resolveReady();
+      return;
     }
+
+    void this.syncFromFirestore().finally(() => this.resolveReady());
   }
 
   whenReady(): Promise<void> {
@@ -58,13 +51,17 @@ export class CategoryCatalogService {
   }
 
   private async syncFromFirestore(): Promise<void> {
-    if (!this.firestoreCatalog.isAvailable()) return;
+    if (!this.firestoreCatalog.canReadCatalog()) return;
 
     try {
       const remote = await this.firestoreCatalog.listCategories();
       if (remote.length > 0) {
-        this.categoriesSignal.set(sortCategories(remote).map(toCategoryPageData));
+        const categories = sortCategories(remote).map(toCategoryPageData);
+        this.categoriesSignal.set(categories);
         this.loadedFromFirestore.set(true);
+        if (isPlatformServer(this.platformId)) {
+          this.transferState.set(CATEGORIES_STATE_KEY, categories);
+        }
       }
     } catch {
       // Mantiene categorías estáticas si Firestore falla
@@ -72,6 +69,18 @@ export class CategoryCatalogService {
   }
 
   async refresh(): Promise<void> {
+    if (isPlatformBrowser(this.platformId) && this.firestoreCatalog.isAvailable()) {
+      try {
+        const remote = await this.firestoreCatalog.listCategories();
+        if (remote.length > 0) {
+          this.categoriesSignal.set(sortCategories(remote).map(toCategoryPageData));
+          this.loadedFromFirestore.set(true);
+        }
+      } catch {
+        // keep current
+      }
+      return;
+    }
     await this.syncFromFirestore();
   }
 }
